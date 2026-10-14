@@ -8,7 +8,7 @@ const SKETCH_FS = /* glsl */`
 precision highp float;
 uniform sampler2D tLit, tNormal, tDepth;
 uniform vec2 res;
-uniform float near, far, px, seed, hatch, fadeNear, fadeFar, grid, inkAlpha;
+uniform float near, far, px, seed, hatch, fadeNear, fadeFar, grid, inkAlpha, accentK;
 uniform vec3 paper, ink, accent;
 varying vec2 vUv;
 
@@ -60,13 +60,14 @@ void main(){
   float floorK = mix(1.0, 0.18, smoothstep(0.75, 0.95, nC.y));        // chão quase sem hachura
   float line1 = 1.0 - smoothstep(0.06, 0.16, abs(fract((p.x + p.y + noise(p * 0.02) * 6.0) / sp) - 0.5));
   float line2 = 1.0 - smoothstep(0.06, 0.16, abs(fract((p.x - p.y + noise(p * 0.02 + 5.0) * 6.0) / sp) - 0.5));
-  float h1 = smoothstep(0.34, 0.22, L + jit) * line1;
-  float h2 = smoothstep(0.16, 0.08, L + jit) * line2;
-  float hatchAmt = max(h1 * 0.45, h2 * 0.55) * hatch * floorK * mix(0.6, 1.0, noise(p * 0.05));
+  float h1 = smoothstep(0.32, 0.2, L + jit) * line1;
+  float h2 = smoothstep(0.09, 0.04, L + jit) * line2;
+  float hatchAmt = max(h1 * 0.4, h2 * 0.32) * hatch * floorK * mix(0.55, 1.0, noise(p * 0.05));
 
   // destaque: pinturas amarelas (equipamentos) recebem um véu de cor
   float sat = max(lit.r, max(lit.g, lit.b)) - min(lit.r, min(lit.g, lit.b));
-  float yellow = smoothstep(0.08, 0.25, sat) * step(lit.b * 1.6, lit.r) * step(lit.b * 1.3, lit.g);
+  float mx = max(lit.r, max(lit.g, lit.b));
+  float yellow = smoothstep(0.35, 0.6, sat / max(mx, 1e-3)) * step(0.12, mx) * step(lit.b * 2.2, lit.g) * smoothstep(0.55, 0.85, lit.g / max(lit.r, 1e-3)) * (1.0 - smoothstep(0.75, 0.95, nC.y));
 
   float inkAmt = clamp(max(e, hatchAmt), 0.0, 1.0) * fade * (1.0 - isBg) * inkAlpha;
 
@@ -77,7 +78,7 @@ void main(){
     vec2 g = abs(fract(frag / (48.0 * px)) - 0.5);
     base = mix(base, ink, 0.035 * grid * step(0.488, max(g.x, g.y)));
   }
-  vec3 col = mix(base, accent, yellow * fade * (1.0 - isBg) * 0.22);
+  vec3 col = mix(base, accent, yellow * fade * (1.0 - isBg) * accentK);
   col = mix(col, ink, inkAmt);
   gl_FragColor = vec4(col, 1.0);
   #include <colorspace_fragment>
@@ -85,8 +86,8 @@ void main(){
 
 export function createSketch(renderer, scene, camera, style = "blueprint") {
   const S = {
-    blueprint: { paper: 0x0d2747, ink: 0xd3e2f3, accent: 0xffcc00, grid: 1, hatch: 0.8, inkAlpha: 0.92 },
-    paper:     { paper: 0xf1ede4, ink: 0x1d2b3d, accent: 0xf2b400, grid: 0, hatch: 0.9, inkAlpha: 0.9 },
+    blueprint: { paper: 0x0d2747, ink: 0xd3e2f3, accent: 0xffcc00, grid: 1, hatch: 0.6, inkAlpha: 0.9, accentK: 0.1 },
+    paper:     { paper: 0xf1ede4, ink: 0x1d2b3d, accent: 0xf2b400, grid: 0, hatch: 0.8, inkAlpha: 0.88, accentK: 0.16 },
   }[style];
   const opts = { type: THREE.HalfFloatType };
   let rtLit = null, rtNor = null;
@@ -96,7 +97,7 @@ export function createSketch(renderer, scene, camera, style = "blueprint") {
     uniforms: {
       tLit: { value: null }, tNormal: { value: null }, tDepth: { value: null },
       res: { value: new THREE.Vector2() }, near: { value: camera.near }, far: { value: camera.far },
-      px: { value: 1 }, seed: { value: 3.7 }, hatch: { value: S.hatch }, grid: { value: S.grid }, inkAlpha: { value: S.inkAlpha },
+      px: { value: 1 }, seed: { value: 3.7 }, hatch: { value: S.hatch }, grid: { value: S.grid }, inkAlpha: { value: S.inkAlpha }, accentK: { value: S.accentK },
       fadeNear: { value: 38 }, fadeFar: { value: 120 },
       paper: { value: new THREE.Color(S.paper) }, ink: { value: new THREE.Color(S.ink) }, accent: { value: new THREE.Color(S.accent) },
     },
