@@ -1,0 +1,42 @@
+<svg class="sketch-svg" viewBox="0 0 600 420" role="img" aria-label="Desenho técnico do ensaio de compressão: prensa, corpo de prova cilíndrico e idades de ruptura">
+  <g filter="url(#rascunho)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- prensa -->
+    <g stroke-width="1.6">
+      <rect x="40" y="40" width="200" height="22" rx="3"/><rect x="40" y="330" width="200" height="30" rx="3"/>
+      <path d="M58 62v268M222 62v268M66 62v268M214 62v268"/>
+      <rect x="100" y="62" width="80" height="34" rx="2"/><path d="M128 96v14h24v-14"/>
+      <rect x="96" y="300" width="88" height="30" rx="2"/>
+    </g>
+    <!-- corpo de prova -->
+    <g stroke-width="1.6">
+      <ellipse cx="140" cy="132" rx="38" ry="10"/><path d="M102 132v164M178 132v164"/><path d="M102 296a38 10 0 0 0 76 0"/>
+      <path d="M118 170l10 22 -6 20 12 26M160 160l-8 30 10 18" stroke-width="1.1" opacity=".8"/>
+    </g>
+    <!-- seta de força -->
+    <g stroke-width="1.4"><path d="M140 14v20"/><path d="M134 26l6 10 6 -10" /></g>
+    <!-- cotas -->
+    <g stroke-width="1" opacity=".75">
+      <path d="M102 312h76M102 306v12M178 306v12"/><path d="M102 312l7 -3v6zM178 312l-7 -3v6z" fill="currentColor"/>
+      <path d="M196 132v164M190 132h12M190 296h12"/><path d="M196 132l-3 7h6zM196 296l-3 -7h6z" fill="currentColor"/>
+    </g>
+    <!-- manômetro -->
+    <g transform="translate(258 92)" stroke-width="1.4"><circle r="26"/><path d="M0 0l15 -12" /><path d="M-18 8a20 20 0 0 1 36 0" opacity=".5"/><path d="M-26 0h-18"/></g>
+    <!-- gráfico idade x resistência (sem valores) -->
+    <g transform="translate(330 70)" stroke-width="1.3">
+      <path d="M0 0v260h240"/>
+      <path d="M0 70h240" stroke-dasharray="6 6" opacity=".7"/>
+      <path d="M8 250 C 30 150 70 110 110 92 S 200 74 236 70" />
+      <g fill="currentColor" stroke="none"><circle cx="18" cy="214" r="4"/><circle cx="56" cy="140" r="4"/><circle cx="104" cy="96" r="4"/><circle cx="226" cy="72" r="4"/></g>
+      <path d="M18 260v6M56 260v6M104 260v6M226 260v6" />
+    </g>
+  </g>
+  <g class="sketch-label" fill="currentColor">
+    <text x="106" y="336" font-size="12">Ø</text>
+    <text x="206" y="220">h</text>
+    <text x="318" y="64">RESISTÊNCIA</text>
+    <text x="520" y="62">fck</text>
+    <text x="336" y="352">24h</text><text x="376" y="352">3d</text><text x="424" y="352">7d</text><text x="546" y="352">28d</text>
+    <text x="496" y="380">IDADE</text>
+    <text x="40" y="392">CORPO DE PROVA CILÍNDRICO</text>
+  </g>
+</svg>
