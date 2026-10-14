@@ -21,6 +21,10 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).parent
+# --verify gera uma cópia com marcações do verificador scroll-craft (data-sc-act / data-sc-copy)
+import sys
+VERIFY = "--verify" in sys.argv
+OUT = ROOT / "scrollcraft" / "builds" / "ipr-rota" / "site" if VERIFY else ROOT
 SRC = ROOT / "src"
 
 # A rota de cravação: a ordem das páginas é a descida da estaca pelas camadas do solo.
@@ -160,6 +164,20 @@ def nav_html(active, root):
     return "\n".join(items)
 
 
+def mark_for_verify(html):
+    """Marca seções como atos e blocos de texto como cópia, só para o verificador."""
+    html = re.sub(r'<section class="([^"]*\bdrive\b[^"]*)"', r'<section data-sc-act="pin" class="\1"', html)
+    html = re.sub(r'<section(?! data-sc-act)( [^>]*)?>', lambda m: f'<section data-sc-act="flow"{m.group(1) or ""}>', html)
+    # cada título e parágrafo é medido sozinho: um bloco inteiro mistura botões e fundos
+    main = html.split("<main", 1)
+    if len(main) == 2:
+        main[1] = re.sub(r"<(h1|h2|h3|p)(?=[\s>])", r"<\1 data-sc-copy", main[1])
+        html = "<main".join(main)
+    # o verificador espera o sinal de pronto do motor scroll-craft; este site não usa o motor
+    html = html.replace("</body>", '<script>document.addEventListener("DOMContentLoaded",function(){document.documentElement.classList.add("sc-ready")})</script></body>')
+    return html
+
+
 def build():
     icon_map = icons()
     layout = read("partials/layout.html")
@@ -171,7 +189,7 @@ def build():
             for k, v in (line.split(":", 1) for line in meta_block.strip().splitlines())
         )
         slug = page.stem
-        out = ROOT / ("index.html" if slug == "index" else f"{slug}/index.html")
+        out = OUT / ("index.html" if slug == "index" else f"{slug}/index.html")
         root = "" if slug == "index" else "../"
         ctx = {
             "root": root,
@@ -189,6 +207,8 @@ def build():
         html = re.sub(r'src="((?:\.\./)?)assets/img/3d/([\w-]+)\.jpg"',
                       lambda m: f'src="{m[1]}assets/img/3d/{m[2]}.webp" '
                                 f'srcset="{m[1]}assets/img/3d/{m[2]}-900.webp 900w, {m[1]}assets/img/3d/{m[2]}.webp 1600w"', html)
+        if VERIFY:
+            html = mark_for_verify(html)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding="utf-8")
         print("ok", out.relative_to(ROOT))

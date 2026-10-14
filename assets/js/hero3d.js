@@ -4,12 +4,11 @@ import { createYard } from "./3d/yard.js";
 const root = document.querySelector("[data-hero3d]");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function webglOk() {
-  try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); }
-  catch (e) { return false; }
-}
+// sem criar um contexto de teste: abrir um WebGL descartável custa caro e o
+// three falha cedo (com a imagem estática no lugar) se o contexto não vier
+const webglOk = () => "WebGL2RenderingContext" in window;
 
-if (root && !reduce && webglOk()) {
+function boot() {
   const hero = root.closest(".hero");
   const canvas = root.querySelector("canvas");
   const hud = hero.querySelector("[data-hud]");
@@ -20,7 +19,9 @@ if (root && !reduce && webglOk()) {
   };
   const fmt = (n, d) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
   const small = window.innerWidth < 760;
-  const yard = createYard(canvas, { live: true, shot: "hero", style: "blueprint", quality: small ? 0.4 : 0.6, pixelRatio: Math.min(window.devicePixelRatio, small ? 1.25 : 1.5) });
+  let yard;
+  try { yard = createYard(canvas, { live: true, shot: "hero", style: "blueprint", quality: small ? 0.4 : 0.6, pixelRatio: Math.min(window.devicePixelRatio, small ? 1.25 : 1.5) }); }
+  catch (e) { return; }
 
   yard.onBlow = (s) => {
     out.prof.textContent = fmt(s.depth, 2) + " m";
@@ -49,4 +50,11 @@ if (root && !reduce && webglOk()) {
   });
   hero.addEventListener("pointerleave", () => yard.pointer(0, 0));
   hud.querySelector("[data-strike]").addEventListener("click", () => yard.strikeNow());
+}
+
+// a maquete monta depois do primeiro desenho da página: a imagem estática segura a capa até lá
+if (root && !reduce && webglOk()) {
+  const later = window.requestIdleCallback || ((f) => setTimeout(f, 200));
+  const go = () => later(boot, { timeout: 1500 });
+  document.readyState === "complete" ? go() : window.addEventListener("load", go, { once: true });
 }

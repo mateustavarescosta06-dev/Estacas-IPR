@@ -83,7 +83,7 @@ function craterAt(list, u, v) {
 }
 
 export function makeTextures(quality = 1) {
-  const S = quality >= 1 ? 1024 : 512, s = quality >= 1 ? 512 : 256;
+  const S = quality >= 1 ? 1024 : quality >= 0.5 ? 512 : 256, s = S / 2;  // 0.25: rascunho ao vivo, a textura só tinge a hachura
   const T = {};
 
   // Concreto C40: cinza quente, poros, manchas de cura e eflorescência

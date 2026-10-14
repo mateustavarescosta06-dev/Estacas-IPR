@@ -50,7 +50,7 @@ export function createYard(canvas, opts = {}) {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
-  const T = makeTextures(q >= 1 ? 1 : 0.5);
+  const T = makeTextures(q >= 1 ? 1 : style && live ? 0.25 : 0.5);
   const camera = new THREE.PerspectiveCamera(36, 16 / 9, style ? 0.2 : 0.08, style ? 420 : 3000);
 
   /* ---------- Céu físico, sol e ambiente ---------- */

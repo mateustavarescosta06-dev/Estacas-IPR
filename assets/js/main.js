@@ -286,6 +286,7 @@
       lastBlow = Math.floor(blows);
 
       var li = layerAt(Math.max(0, b - .001));
+      root.setAttribute("data-sc-verify-state", stepIdx + ":" + b.toFixed(2));
       r.prof.textContent = fmt(b, 2) + " m";
       r.golpes.textContent = fmt(Math.floor(blows));
       r.nega.textContent = b > 0 ? fmt(layers[li].pen * 10, 0) + " mm" : "aguardando";
@@ -305,6 +306,8 @@
       var rect = track.getBoundingClientRect();
       var total = rect.height - window.innerHeight;
       render(clamp(-rect.top / (total > 0 ? total : 1), 0, 1));
+      // estado do palco para o verificador scroll-craft, só enquanto o palco está na tela
+      if (rect.bottom < 0 || rect.top > window.innerHeight) root.removeAttribute("data-sc-verify-state");
     }
     if (reduceMotion) {
       render(1);

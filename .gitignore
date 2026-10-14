@@ -1,2 +1,4 @@
 .previews/
 node_modules
+scrollcraft/builds/*/site/
+scrollcraft/builds/*/lab/
