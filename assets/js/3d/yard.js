@@ -99,7 +99,7 @@ export function createYard(canvas, opts = {}) {
     normalScale: new THREE.Vector2(ns, ns), roughness: 1, ...extra,
   });
   const M = {
-    concrete: pbr(T.concrete, { color: 0xfff3e2, envMapIntensity: 0.55 }, [1, 1], 1.6),
+    concrete: pbr(T.concrete, { color: 0xf3f1ee, envMapIntensity: 0.6 }, [1, 1], 1.6),
     concreteFresh: pbr(T.slab, { color: 0x8f8a82, roughness: 0.7 }, [6, 1]),
     slab: pbr(T.slab, {}, [1, 1], 0.6),
     yellowP: pbr(T.yellow, { metalness: 0.35 }, [1, 1], 0.5),
@@ -272,7 +272,7 @@ export function createYard(canvas, opts = {}) {
   for (let k = 0; k < 6; k++) cone(b, M, 1.5 + k * 1.9, 10.2);
   for (let k = 0; k < 4; k++) cone(b, M, -10 + k * 2.2, 16.8);
   barrier(b, M, -12, -15.6, 0.05); barrier(b, M, -9.9, -15.5, 0.05); barrier(b, M, 4.5, 16.6, -0.1);
-  lightTower(b, M, 19, 15.5, -0.9);
+  lightTower(b, M, -1.5, -17.5, 0.3);
   lightTower(b, M, -24, -9.5, 0.6);
   office(b, M, -31, 11.5, 0.55);
   office(b, M, -31.8, 14.4, 0.55);
@@ -604,14 +604,14 @@ export function createYard(canvas, opts = {}) {
   /* ---------- Câmeras ---------- */
   const SHOTS = {
     hero:      { pos: [-8.5, 3.0, 21.5], look: [-4.0, 5.6, -2], fov: 38, focus: [0, 3, 0], shadow: 34 },
-    estacas:   { pos: [-6.7, 1.05, 10.3], look: [-9.4, 0.95, 8.0], fov: 32, focus: [-9, 1, 6], shadow: 9, dof: { focus: 2.6, aperture: 0.012 }, sunAz: -28 },
+    estacas:   { pos: [-6.7, 1.05, 10.3], look: [-9.4, 0.95, 8.0], fov: 32, focus: [-9, 1, 6], shadow: 9, dof: { focus: 2.6, aperture: 0.012 }, sunAz: -30, sunEl: 30 },
     cravacao:  { pos: [-3.0, 1.55, 4.6], look: [0.45, 1.5, 0.3], fov: 34, focus: [0, 1, 0.5], shadow: 8, dof: { focus: 5.4, aperture: 0.003 } },
     fundacao:  { pos: [9.5, 6.2, 15.5], look: [1.6, 2.4, 0.4], fov: 36, focus: [3, 0, 2], shadow: 22 },
     central:   { pos: [17.5, 1.7, -14.5], look: [32, 10.5, -26], fov: 46, focus: [32, 0, -22], shadow: 26 },
     protensao: { pos: [-6.4, 2.9, -21.2], look: [-40, 0.6, -22.4], fov: 40, focus: [-22, 0, -22], shadow: 26 },
     logistica: { pos: [23, 4.0, 21], look: [13.2, 1.8, 8.6], fov: 34, focus: [13, 0, 8], shadow: 14 },
     aerea:     { pos: [52, 36, 50], look: [-6, 0, -10], fov: 38, focus: [-4, 0, -10], shadow: 62, fogD: 0.0024 },
-    pilha:     { pos: [-1.2, 2.5, 16], look: [-12.5, 1.4, 3], fov: 30, focus: [-14, 0, 2], shadow: 18, sunAz: -40 },
+    pilha:     { pos: [-1.2, 2.5, 16], look: [-12.5, 1.4, 3], fov: 30, focus: [-14, 0, 2], shadow: 18, sunAz: -45, sunEl: 24 },
   };
   const look = new THREE.Vector3();
   let current = SHOTS.hero;
@@ -620,7 +620,9 @@ export function createYard(canvas, opts = {}) {
     camera.position.set(...current.pos); look.set(...current.look); camera.fov = current.fov;
     camera.lookAt(look); camera.updateProjectionMatrix();
     scene.fog.density = current.fogD ?? 0.0058;
-    sunDir.setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - 13), THREE.MathUtils.degToRad(current.sunAz ?? -72));
+    const el = current.sunEl ?? 13;
+    sunDir.setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - el), THREE.MathUtils.degToRad(current.sunAz ?? -72));
+    sun.color.set(0xffc790).lerp(new THREE.Color(0xfff1df), THREE.MathUtils.smoothstep(el, 13, 35));
     su.sunPosition.value.copy(sunDir);
     const f = V(...current.focus), s = current.shadow;
     sun.target.position.copy(f); sun.position.copy(f).addScaledVector(sunDir, 140);

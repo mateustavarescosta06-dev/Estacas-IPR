@@ -139,7 +139,7 @@ export function person(b, M, x, z, ry, opts = {}) {
       point: [[0.1, 0], [-1.35, 0.3]],
       signal: [[-2.6, 0.2], [0.15, 0]],
       clipboard: [[-0.9, 0.5], [-0.9, -0.5]],
-      measure: [[-1.0, 0.25], [-1.25, -0.15]],
+      measure: [[-0.55, 0.3], [-0.75, -0.2]],
       walk: [[0.4, 0], [-0.4, 0]],
       crouch: [[-0.9, 0.2], [-0.9, -0.2]],
     }[pose] || [[0.1, 0], [0.1, 0]];
@@ -160,7 +160,7 @@ export function person(b, M, x, z, ry, opts = {}) {
     b.add(rbox(0.03, 0.05, 0.22, 0.012), helmet, 0, 1.83, 0);
     b.add(rbox(0.16, 0.035, 0.03, 0.01), M.glasses, 0, 1.68, 0.1);
     if (pose === "clipboard") b.add(box(0.22, 0.3, 0.012), M.clipboard, 0, 1.12, 0.32, -0.9);
-    if (pose === "measure") b.add(box(0.025, 0.012, 0.7), M.yellow, 0.05, 1.05, 0.5, -0.2);
+    if (pose === "measure") b.add(box(0.025, 0.012, 0.75), M.yellow, 0.1, 1.0, 0.48, 0.35);
     b.pop();
   });
 }
