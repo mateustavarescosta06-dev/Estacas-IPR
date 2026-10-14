@@ -37,7 +37,7 @@
     if (progress) progress.style.transform = "scaleX(" + (h > 0 ? y / h : 0) + ")";
     document.body.classList.toggle("scrolled", y > 36);
     if (heroImg && !reduceMotion && y < window.innerHeight) {
-      heroImg.style.transform = "scale(1.08) translateY(" + y * 0.18 + "px)";
+      heroImg.parentNode.style.transform = "translateY(" + y * 0.18 + "px)";
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true });

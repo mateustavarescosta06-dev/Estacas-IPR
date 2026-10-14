@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0A1A2B">
 <meta property="og:title" content="IPR Estacas — Fabricação e cravação de estacas pré-fabricadas de concreto">
 <meta property="og:description" content="Há 35 anos a IPR fabrica e crava estacas pré-fabricadas protendidas de concreto, com central de concreto própria, controle laboratorial e frota própria.">
-<meta property="og:image" content="assets/img/hero.jpg">
+<meta property="og:image" content="assets/img/3d/hero.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" href="assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,8 +56,19 @@
 
 <main id="conteudo">
 <section class="hero">
-  <div class="hero__media"><img src="assets/img/hero.jpg" alt="Pátio da fábrica IPR com estacas pré-fabricadas estocadas" fetchpriority="high"></div>
+  <div class="hero__media" data-hero3d>
+    <img src="assets/img/3d/hero.jpg" alt="Maquete 3D do pátio IPR: bate-estacas cravando uma estaca, pilhas de estacas e silos da central de concreto" fetchpriority="high">
+    <canvas aria-hidden="true"></canvas>
+  </div>
   <div class="hero__grid blueprint"></div>
+  <div class="hero__fx" aria-hidden="true"></div>
+  <div class="hud" data-hud hidden>
+    <span class="hud__title"><i></i>Cravação ao vivo · maquete 3D</span>
+    <span>Profundidade</span><b data-h="prof">3,20 m</b>
+    <span>Golpes</span><b data-h="golpes">64</b>
+    <span>Nega (10 golpes)</span><b data-h="nega" class="y">500 mm</b>
+    <button type="button" class="hud__btn" data-strike>Cravar <kbd>golpe</kbd></button>
+  </div>
   <div class="hero__tag" aria-hidden="true">
     <span>Concreto <b>C40</b></span>
     <span>Protensão <b>CP-175</b></span>
@@ -100,8 +111,8 @@
         <a class="btn btn--line" href="fundacao/">Como funciona a fundação <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
       </div>
       <div class="photo-stack reveal" style="--d:.15s">
-        <figure><img src="assets/img/estacas-patio.jpg" alt="Estacas estocadas no pátio" loading="lazy"><figcaption>Pátio de estocagem</figcaption></figure>
-        <figure><img src="assets/img/transporte.png" alt="Equipe IPR descarregando estacas do caminhão" loading="lazy"></figure>
+        <figure><img src="assets/img/3d/pilha.jpg" alt="Pilhas de estacas hexagonais sobre dormentes no pátio" loading="lazy"><figcaption>Pátio de estocagem</figcaption></figure>
+        <figure><img src="assets/img/3d/logistica.jpg" alt="Caminhão com guindaste carregado de estacas" loading="lazy"></figure>
         <div class="badge"><b>35</b><span>anos de<br>fundações</span></div>
       </div>
     </div>
@@ -281,7 +292,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-central" aria-labelledby="t-central" hidden>
-          <figure><img src="assets/img/central-concreto.png" alt="Painel de balanças da central de concreto" loading="lazy"><figcaption>Dosagem gravimétrica</figcaption></figure>
+          <figure><img src="assets/img/3d/central.jpg" alt="Silos da central de concreto" loading="lazy"><figcaption>Central de concreto</figcaption></figure>
           <div class="process__body">
             <h3>Central automatizada</h3>
             <p>Balanças de alta precisão calibradas conforme a NBR 7212 reproduzem o traço de laboratório com fidelidade em cada ciclo.</p>
@@ -290,7 +301,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-protensao" aria-labelledby="t-protensao" hidden>
-          <figure><img src="assets/img/pista-protensao.png" alt="Pistas de protensão da fábrica" loading="lazy"><figcaption>Pistas de protensão</figcaption></figure>
+          <figure><img src="assets/img/3d/protensao.jpg" alt="Pista de protensão com cordoalhas tracionadas" loading="lazy"><figcaption>Pistas de protensão</figcaption></figure>
           <div class="process__body">
             <h3>Protensão e cura controlada</h3>
             <p>Moldes metálicos de alta precisão e cordoalhas tracionadas antes da concretagem conferem resistência à flexão e menor porosidade.</p>
@@ -308,7 +319,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-inspecao" aria-labelledby="t-inspecao" hidden>
-          <figure><img src="assets/img/equipe.jpg" alt="Profissional IPR diante de estacas hexagonais" loading="lazy"><figcaption>Inspeção visual individual</figcaption></figure>
+          <figure><img src="assets/img/3d/estacas.jpg" alt="Pontas de estacas hexagonais com as cordoalhas aparentes" loading="lazy"><figcaption>Inspeção visual individual</figcaption></figure>
           <div class="process__body">
             <h3>Inspeção de 100% das peças</h3>
             <p>Após a desmoldagem, cada unidade passa por inspeção visual individual antes de ser liberada para estoque.</p>
@@ -317,7 +328,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-logistica" aria-labelledby="t-logistica" hidden>
-          <figure><img src="assets/img/transporte.png" alt="Descarregamento de estacas na obra" loading="lazy"><figcaption>Frota própria</figcaption></figure>
+          <figure><img src="assets/img/3d/logistica.jpg" alt="Caminhão com estacas pronto para o transporte" loading="lazy"><figcaption>Frota própria</figcaption></figure>
           <div class="process__body">
             <h3>Logística integrada</h3>
             <p>Veículos próprios e equipes treinadas para içamento e descarregamento preservam a integridade das peças e o cronograma da obra.</p>
@@ -358,6 +369,8 @@
   </div>
 </section>
 
+
+<script type="module" src="assets/js/hero3d.js"></script>
 </main>
 
 <footer class="footer">

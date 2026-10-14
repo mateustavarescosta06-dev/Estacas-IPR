@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><title>Render da maquete</title>
+<style>html,body{margin:0;background:#08172a}canvas{display:block}</style></head>
+<body>
+<!-- Gera as imagens estáticas da maquete 3D: render.html?shot=hero&w=2400&h=1350
+     Usado por tools/render.js (Playwright) para exportar assets/img/3d/*.jpg -->
+<canvas id="c"></canvas>
+<script type="module">
+  import { createYard } from "../assets/js/fabrica3d.js";
+  const q = new URLSearchParams(location.search);
+  const w = +q.get("w") || 1600, h = +q.get("h") || 900;
+  const c = document.getElementById("c");
+  c.style.width = w + "px"; c.style.height = h + "px";
+  const yard = createYard(c, { pixelRatio: 1 });
+  const depth = q.has("depth") ? +q.get("depth") : 3.2;
+  yard.renderStill(q.get("shot") || "hero", w, h, depth);
+  requestAnimationFrame(() => { yard.renderStill(q.get("shot") || "hero", w, h, depth); window.__done = true; });
+</script>
+</body>
+</html>
