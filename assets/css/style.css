@@ -712,7 +712,8 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 18px; }
 .sketch-svg { width: 100%; height: auto; max-height: 100%; color: #cfe0f2; }
 .sketch-svg .sketch-label { font: 500 11px var(--f-mono); letter-spacing: .1em; fill: var(--yellow); }
 .process__panel .sketch-fig svg { animation: none; }
-.sketch-fig + .process__body, .process__panel .sketch-fig { min-height: 320px; }
+@media (min-width: 981px) { .process__panel .sketch-fig { min-height: 320px; } }
+@media (max-width: 980px) { .process__panel .sketch-fig { aspect-ratio: auto; } }
 
 /* topos de página: o rascunho em prancha azul aparece sem filtro, só um véu para leitura */
 .phero__media img { opacity: .9; filter: none; }
@@ -733,3 +734,7 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 18px; }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='190' viewBox='0 0 220 190'%3E%3Cg fill='none' stroke='%2300244a' stroke-opacity='.07' stroke-width='1.2'%3E%3Cpolygon points='40,20 70,20 85,46 70,72 40,72 25,46'/%3E%3Ccircle cx='160' cy='50' r='26'/%3E%3Crect x='86' y='112' width='48' height='48'/%3E%3Cpath d='M0 46h25M85 46h49M186 50h34M110 72v40M110 160v30' stroke-dasharray='3 5'/%3E%3C/g%3E%3Cg fill='%2300244a' fill-opacity='.08'%3E%3Ccircle cx='48' cy='34' r='2'/%3E%3Ccircle cx='62' cy='34' r='2'/%3E%3Ccircle cx='75' cy='46' r='2'/%3E%3Ccircle cx='62' cy='58' r='2'/%3E%3Ccircle cx='48' cy='58' r='2'/%3E%3Ccircle cx='35' cy='46' r='2'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 220px 190px; mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent); -webkit-mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent); }
 .dark .geo-bg::before, .dark.geo-bg::before { filter: invert(1); opacity: .6; }
+.process__panel, .process__panel > *, .sketch-fig { min-width: 0; }
+.sketch-svg { max-width: 560px; }
+.sketch-svg .sketch-label { font-size: 13px; }
+.process > div { min-width: 0; }

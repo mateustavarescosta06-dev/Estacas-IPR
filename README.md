@@ -14,13 +14,17 @@ assets/
   css/style.css          sistema visual
   js/main.js             interações (menu, simulador de cravação, catálogo, seletor, FAQ, formulário)
   js/estacas-data.js     dados técnicos das estacas (extraídos dos ábacos em assets/docs)
-  js/fabrica3d.js        maquete 3D procedural do pátio (Three.js): bate-estacas, pilhas, silos, galpão, caminhão
-  js/hero3d.js           capa da home com a maquete ao vivo (martelo cravando, botão "Cravar")
-  vendor/                Three.js r169 (sem CDN)
-  img/3d/                imagens renderizadas da maquete
+  js/3d/yard.js          maquete 3D procedural do pátio (Three.js): bate-estacas, pilhas, silos, galpão, caminhão
+  js/3d/kit.js, tex.js   peças modeladas e texturas geradas em código
+  js/3d/sketch.js        filtro de rascunho técnico (contornos trêmulos + hachura; prancha azul ou papel)
+  js/hero3d.js           capa da home com a maquete ao vivo em rascunho (martelo cravando, botão "Cravar")
+  vendor/three/          Three.js r169 e módulos usados (sem CDN, via importmap)
+  img/3d/                rascunhos renderizados da maquete (WebP 1600 px e 900 px) + og.jpg
+src/illustrations/       desenhos técnicos em SVG (insumos, ensaios) com o filtro #rascunho
   img/, clientes/, docs/ fotos, logos de clientes e ábacos em PDF
 build.py                 gera index.html e <pagina>/index.html
-tools/render.html|.js    renderiza a maquete em JPG (assets/img/3d)
+tools/render.html|.js    renderiza a maquete (assets/img/3d)
+tools/webp.py            converte os renders em WebP e gera og.jpg
 ```
 
 As URLs geradas mantêm as do site atual (`/estacas/`, `/fundacao/`, `/central-de-concreto/`,
@@ -37,17 +41,20 @@ Para incluir/alterar uma estaca, edite `assets/js/estacas-data.js` e coloque o P
 
 ## Imagens da maquete 3D
 
-As imagens de `assets/img/3d/` são geradas a partir da própria cena 3D. Para ajustar um
-ângulo, edite `SHOTS` em `assets/js/fabrica3d.js` e rode:
+As imagens de `assets/img/3d/` são rascunhos técnicos gerados a partir da própria cena 3D,
+em dois estilos: `blueprint` (traço claro sobre marinho, para áreas escuras) e `paper`
+(grafite sobre papel, para áreas claras). Para ajustar um ângulo, edite `SHOTS` em
+`assets/js/3d/yard.js` e rode:
 
 ```
 npm i playwright
 python3 -m http.server 8765 &
-CHROME=/caminho/do/chrome node tools/render.js            # todas
-CHROME=/caminho/do/chrome node tools/render.js hero       # só uma
+CHROME=/caminho/do/chrome STYLE=blueprint node tools/render.js hero estacas
+CHROME=/caminho/do/chrome STYLE=paper node tools/render.js pilha
+python3 tools/webp.py && python3 build.py
 ```
 
-Sem WebGL ou com "reduzir movimento" ativo, a capa mostra a imagem estática `3d/hero.jpg`.
+Sem WebGL ou com "reduzir movimento" ativo, a capa mostra a imagem estática `3d/hero-blueprint.webp`.
 
 ## Observações
 

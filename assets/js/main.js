@@ -97,7 +97,7 @@
   }
   function drawSection(e, opts) {
     opts = opts || {};
-    var W = 300, H = opts.mini ? 220 : 300, cx = W / 2, cy = opts.mini ? 100 : 136;
+    var W = 300, H = opts.mini ? 250 : 300, cx = W / 2, cy = opts.mini ? 108 : 136;
     var s = opts.scale || 5.4, R = e.d / 2 * s, cov = 2.5 * s, svg = "";
     svg += '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Seção transversal da estaca ' + e.nome + '">';
     svg += '<line class="axis" x1="' + (cx - R - 22) + '" y1="' + cy + '" x2="' + (cx + R + 22) + '" y2="' + cy + '"/>';
