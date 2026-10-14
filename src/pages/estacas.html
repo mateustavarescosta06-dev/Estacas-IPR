@@ -1,0 +1,104 @@
+<!--
+title: Estacas pré-fabricadas protendidas — Catálogo técnico | IPR Estacas
+desc: Estacas pré-fabricadas de concreto protendido circulares, hexagonais e quadradas. Consulte cargas, características geométricas e ábacos de cada seção.
+nav: estacas
+-->
+<section class="phero">
+  <div class="phero__media"><img src="{{root}}assets/img/equipe.jpg" alt=""></div>
+  <div class="wrap phero__inner">
+    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Estacas</span></nav>
+    <p class="eyebrow eyebrow--light">Linha de produtos</p>
+    <h1 class="h-xl phero__title">Estacas pré-fabricadas <span class="hl">com precisão.</span></h1>
+    <p class="lead">Elementos estruturais para fundações profundas, fabricados em ambiente industrial controlado, com monitoramento laboratorial contínuo e inspeção individual de 100% das peças.</p>
+    <div class="phero__meta"><span>Concreto C40</span><span>Cordoalhas CP-175</span><span>6, 8 e 10 m</span><span>Anéis de emenda</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head section__head--split reveal">
+      <div>
+        <p class="eyebrow">Características técnicas</p>
+        <h2 class="h-lg">Produção industrial, desempenho previsível.</h2>
+      </div>
+      <p class="lead">Vantagens significativas em relação às soluções moldadas in loco: controle de qualidade rigoroso, rapidez de execução e rastreabilidade total.</p>
+    </div>
+    <div class="cards-4 reveal">
+      <article class="card"><span class="card__k">01</span>{{icon:factory}}<h3>Produção industrial</h3><p>Moldes metálicos de alta precisão em ambiente controlado garantem padronização dimensional e qualidade superior em cada peça.</p></article>
+      <article class="card"><span class="card__k">02</span>{{icon:ruler}}<h3>Dimensões sob projeto</h3><p>Seções quadrada, circular e hexagonal em comprimentos variados, atendendo às especificações de cada fundação.</p></article>
+      <article class="card"><span class="card__k">03</span>{{icon:layers}}<h3>Concreto protendido</h3><p>Cordoalhas protendidas conferem maior resistência à flexão no transporte, içamento e cravação, e reduzem a porosidade.</p></article>
+      <article class="card"><span class="card__k">04</span>{{icon:link}}<h3>Anéis de emenda</h3><p>Emendas metálicas de alta precisão permitem a união soldada de segmentos, com continuidade estrutural em grandes profundidades.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section concrete blueprint-light" id="catalogo">
+  <span class="sec-num" aria-hidden="true">FICHAS TÉCNICAS</span>
+  <div class="wrap">
+    <div class="section__head section__head--split reveal">
+      <div>
+        <p class="eyebrow">Especificações por geometria</p>
+        <h2 class="h-lg">Catálogo técnico.</h2>
+      </div>
+      <p class="lead">Selecione a geometria e a bitola para ver a seção em escala, as características geométricas, a capacidade de carga estrutural e baixar o ábaco de interação.</p>
+    </div>
+    <div class="catalog reveal" data-catalog>
+      <div class="catalog__side">
+        <div class="catalog__tabs" role="group" aria-label="Geometria">
+          <button type="button" data-forma="circular" aria-selected="true">Circular</button>
+          <button type="button" data-forma="hexagonal" aria-selected="false">Hexagonal</button>
+          <button type="button" data-forma="quadrada" aria-selected="false">Quadrada</button>
+        </div>
+        <ul class="catalog__items" aria-label="Bitolas"></ul>
+      </div>
+      <div class="catalog__main" aria-live="polite">
+        <div class="catalog__drawing blueprint-light" data-drawing></div>
+        <div class="catalog__data" data-specs></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark blueprint" id="seletor">
+  <span class="sec-num" aria-hidden="true">PRÉ-DIMENSIONAMENTO</span>
+  <div class="wrap">
+    <div class="section__head section__head--split reveal">
+      <div>
+        <p class="eyebrow">Seletor por carga</p>
+        <h2 class="h-lg">Qual seção atende a sua carga?</h2>
+      </div>
+      <p class="lead">Informe a carga de compressão por estaca e veja quais seções atendem pelo limite estrutural da NBR 6118 — e qual é a mais leve entre elas.</p>
+    </div>
+    <div class="selector reveal" data-selector>
+      <div class="selector__controls">
+        <label for="carga">Carga de compressão por estaca</label>
+        <div class="load-value"><input id="carga-num" type="number" min="100" max="1300" step="10" value="450" aria-label="Carga em kN"><small>kN</small></div>
+        <input id="carga" class="range" type="range" min="100" max="1300" step="10" value="450">
+        <div class="range__scale"><span>100</span><span>700</span><span>1.300 kN</span></div>
+        <div class="chips" role="group" aria-label="Filtrar geometria">
+          <button type="button" data-f="todas" aria-pressed="true">Todas</button>
+          <button type="button" data-f="circular" aria-pressed="false">Circular</button>
+          <button type="button" data-f="hexagonal" aria-pressed="false">Hexagonal</button>
+          <button type="button" data-f="quadrada" aria-pressed="false">Quadrada</button>
+        </div>
+        <div class="reco" aria-live="polite"></div>
+      </div>
+      <div class="selector__chart">
+        <h3>Compressão máxima pela NBR 6118</h3>
+        <span class="caption">kN por estaca · clique em uma seção para abrir a ficha</span>
+        <div class="bars"></div>
+        <div class="legend">
+          <span><i style="background:#ffcc00"></i>Mais leve que atende</span>
+          <span><i style="background:#dfe7f1"></i>Atende</span>
+          <span><i style="background:rgba(111,125,140,.45)"></i>Não atende</span>
+        </div>
+      </div>
+    </div>
+    <div class="note reveal" style="margin-top: 24px">
+      {{icon:gauge}}
+      <p><b>Ferramenta de referência.</b> Os valores representam a capacidade estrutural da seção, conforme os ábacos IPR. A carga admissível final depende também da capacidade geotécnica, definida a partir do relatório de sondagem (SPT) e do projeto de fundações. Consulte nossa engenharia.</p>
+    </div>
+  </div>
+</section>
+
+{{cta}}

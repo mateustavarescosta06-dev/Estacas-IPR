@@ -1,0 +1,62 @@
+<!--
+title: Contato e orçamento | IPR Estacas
+desc: Solicite um orçamento técnico de estacas pré-fabricadas. Fale com a IPR por WhatsApp, telefone ou e-mail.
+nav: contato
+-->
+<section class="phero">
+  <div class="phero__media"><img src="{{root}}assets/img/hero.jpg" alt=""></div>
+  <div class="wrap phero__inner">
+    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Contato</span></nav>
+    <p class="eyebrow eyebrow--light">Contato</p>
+    <h1 class="h-xl phero__title">Vamos dimensionar <span class="hl">sua fundação.</span></h1>
+    <p class="lead">Obras industriais, comerciais, residenciais e de infraestrutura. Conte sobre o seu projeto e nossa equipe comercial retorna com um orçamento técnico.</p>
+  </div>
+</section>
+
+<section class="section concrete blueprint-light">
+  <div class="wrap contact">
+    <form class="form reveal" data-quote novalidate>
+      <p class="eyebrow">Solicitação de orçamento</p>
+      <h2 class="h-md">Dados da obra</h2>
+      <div class="form__steps" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="form__row">
+        <div class="field"><label for="f-nome">Nome *</label><input id="f-nome" name="nome" autocomplete="name" required><span class="field__err">Informe seu nome.</span></div>
+        <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" name="empresa" autocomplete="organization"></div>
+      </div>
+      <div class="form__row">
+        <div class="field"><label for="f-tel">Telefone / WhatsApp *</label><input id="f-tel" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" required><span class="field__err">Informe um telefone com DDD.</span></div>
+        <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email"><span class="field__err">Verifique o e-mail informado.</span></div>
+      </div>
+      <fieldset class="field">
+        <legend>Tipo de obra</legend>
+        <div class="seg">
+          <label><input type="radio" name="tipo" value="Industrial / logística"><span>Industrial</span></label>
+          <label><input type="radio" name="tipo" value="Comercial"><span>Comercial</span></label>
+          <label><input type="radio" name="tipo" value="Residencial"><span>Residencial</span></label>
+          <label><input type="radio" name="tipo" value="Infraestrutura"><span>Infraestrutura</span></label>
+          <label><input type="radio" name="tipo" value="Outro"><span>Outro</span></label>
+        </div>
+      </fieldset>
+      <div class="field"><label for="f-cidade">Cidade / local da obra</label><input id="f-cidade" name="cidade" autocomplete="address-level2"></div>
+      <div class="field"><label for="f-msg">Mensagem *</label><textarea id="f-msg" name="mensagem" placeholder="Cargas de projeto, quantidade de estacas, profundidade estimada, prazo…" required></textarea><span class="field__err">Descreva brevemente o projeto.</span></div>
+      <div class="form__actions">
+        <button class="btn btn--primary" type="submit" value="whatsapp">{{icon:whatsapp}} Enviar pelo WhatsApp</button>
+        <button class="btn btn--line" type="submit" value="email">{{icon:mail}} Enviar por e-mail</button>
+      </div>
+      <p class="form__hint">Se possível, tenha em mãos o relatório de sondagem (SPT) — ele agiliza a análise técnica.</p>
+      <div class="form__ok" role="status">Mensagem preparada! Conclua o envio no aplicativo que foi aberto. Se nada abriu, fale conosco pelos canais ao lado.</div>
+    </form>
+
+    <aside class="reveal" style="--d:.1s">
+      <p class="eyebrow">Fale conosco</p>
+      <div class="channels">
+        <a class="channel channel--wa" href="https://wa.me/5511984472267" target="_blank" rel="noopener"><span class="channel__ico">{{icon:whatsapp}}</span><span><small>WhatsApp comercial</small><b>(11) 98447-2267</b></span>{{icon:arrow}}</a>
+        <a class="channel" href="tel:+551138314181"><span class="channel__ico">{{icon:phone}}</span><span><small>Telefone</small><b>(11) 3831-4181</b></span>{{icon:arrow}}</a>
+        <a class="channel" href="tel:+551138322372"><span class="channel__ico">{{icon:phone}}</span><span><small>Telefone</small><b>(11) 3832-2372</b></span>{{icon:arrow}}</a>
+        <a class="channel" href="tel:+551934961616"><span class="channel__ico">{{icon:phone}}</span><span><small>Telefone</small><b>(19) 3496-1616</b></span>{{icon:arrow}}</a>
+        <a class="channel" href="tel:+551934961074"><span class="channel__ico">{{icon:phone}}</span><span><small>Telefone</small><b>(19) 3496-1074</b></span>{{icon:arrow}}</a>
+        <a class="channel" href="mailto:comercial@estacasipr.com.br"><span class="channel__ico">{{icon:mail}}</span><span><small>E-mail comercial</small><b>comercial@estacasipr.com.br</b></span>{{icon:arrow}}</a>
+      </div>
+    </aside>
+  </div>
+</section>
