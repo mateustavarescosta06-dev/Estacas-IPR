@@ -5,7 +5,7 @@ nav: home
 -->
 <section class="hero">
   <div class="hero__media" data-hero3d>
-    <img src="{{root}}assets/img/3d/hero.jpg" alt="Maquete 3D do pátio IPR: bate-estacas cravando uma estaca, pilhas de estacas e silos da central de concreto" fetchpriority="high">
+    <img src="{{root}}assets/img/3d/hero-blueprint.jpg" alt="Maquete 3D do pátio IPR: bate-estacas cravando uma estaca, pilhas de estacas e silos da central de concreto" fetchpriority="high">
     <canvas aria-hidden="true"></canvas>
   </div>
   <div class="hero__grid blueprint"></div>
@@ -45,7 +45,7 @@ nav: home
   </div>
 </section>
 
-<section class="section">
+<section class="section geo-bg">
   <span class="sec-num" aria-hidden="true">§ 01 — A EMPRESA</span>
   <div class="wrap">
     <div class="grid-2 grid-2--wide-left">
@@ -59,8 +59,8 @@ nav: home
         <a class="btn btn--line" href="{{root}}fundacao/">Como funciona a fundação {{icon:arrow}}</a>
       </div>
       <div class="photo-stack reveal" style="--d:.15s">
-        <figure><img src="{{root}}assets/img/3d/pilha.jpg" alt="Pilhas de estacas hexagonais sobre dormentes no pátio" loading="lazy"><figcaption>Pátio de estocagem</figcaption></figure>
-        <figure><img src="{{root}}assets/img/3d/logistica.jpg" alt="Caminhão com guindaste carregado de estacas" loading="lazy"></figure>
+        <figure><img src="{{root}}assets/img/3d/pilha-paper.jpg" alt="Pilhas de estacas hexagonais sobre dormentes no pátio" loading="lazy"><figcaption>Pátio de estocagem</figcaption></figure>
+        <figure><img src="{{root}}assets/img/3d/logistica-paper.jpg" alt="Caminhão com guindaste carregado de estacas" loading="lazy"></figure>
         <div class="badge"><b>35</b><span>anos de<br>fundações</span></div>
       </div>
     </div>
@@ -231,7 +231,7 @@ nav: home
       </div>
       <div>
         <div class="process__panel" role="tabpanel" id="p-insumos" aria-labelledby="t-insumos">
-          <figure><img src="{{root}}assets/img/cordoalha.png" alt="Rolo de cordoalha de aço para protensão" loading="lazy"><figcaption>Cordoalha CP-175</figcaption></figure>
+          <figure class="sketch-fig">{{svg:insumos}}<figcaption>Insumos homologados</figcaption></figure>
           <div class="process__body">
             <h3>Insumos homologados</h3>
             <p>A cadeia de suprimentos é vinculada a fornecedores com certificação de conformidade.</p>
@@ -240,7 +240,7 @@ nav: home
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-central" aria-labelledby="t-central" hidden>
-          <figure><img src="{{root}}assets/img/3d/central.jpg" alt="Silos da central de concreto" loading="lazy"><figcaption>Central de concreto</figcaption></figure>
+          <figure><img src="{{root}}assets/img/3d/central-blueprint.jpg" alt="Silos da central de concreto" loading="lazy"><figcaption>Central de concreto</figcaption></figure>
           <div class="process__body">
             <h3>Central automatizada</h3>
             <p>Balanças de alta precisão calibradas conforme a NBR 7212 reproduzem o traço de laboratório com fidelidade em cada ciclo.</p>
@@ -249,7 +249,7 @@ nav: home
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-protensao" aria-labelledby="t-protensao" hidden>
-          <figure><img src="{{root}}assets/img/3d/protensao.jpg" alt="Pista de protensão com cordoalhas tracionadas" loading="lazy"><figcaption>Pistas de protensão</figcaption></figure>
+          <figure><img src="{{root}}assets/img/3d/protensao-blueprint.jpg" alt="Pista de protensão com cordoalhas tracionadas" loading="lazy"><figcaption>Pistas de protensão</figcaption></figure>
           <div class="process__body">
             <h3>Protensão e cura controlada</h3>
             <p>Moldes metálicos de alta precisão e cordoalhas tracionadas antes da concretagem conferem resistência à flexão e menor porosidade.</p>
@@ -258,7 +258,7 @@ nav: home
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-ensaios" aria-labelledby="t-ensaios" hidden>
-          <figure><img src="{{root}}assets/img/corpo-de-prova.jpg" alt="Corpos de prova de concreto" loading="lazy"><figcaption>Corpos de prova</figcaption></figure>
+          <figure class="sketch-fig">{{svg:ensaios}}<figcaption>Ensaio de compressão</figcaption></figure>
           <div class="process__body">
             <h3>Ensaios de compressão</h3>
             <p>Amostras de cada concretagem são moldadas em corpos de prova cilíndricos e rompidas em idades críticas.</p>
@@ -267,7 +267,7 @@ nav: home
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-inspecao" aria-labelledby="t-inspecao" hidden>
-          <figure><img src="{{root}}assets/img/3d/estacas.jpg" alt="Pontas de estacas hexagonais com as cordoalhas aparentes" loading="lazy"><figcaption>Inspeção visual individual</figcaption></figure>
+          <figure><img src="{{root}}assets/img/3d/estacas-blueprint.jpg" alt="Pontas de estacas hexagonais com as cordoalhas aparentes" loading="lazy"><figcaption>Inspeção visual individual</figcaption></figure>
           <div class="process__body">
             <h3>Inspeção de 100% das peças</h3>
             <p>Após a desmoldagem, cada unidade passa por inspeção visual individual antes de ser liberada para estoque.</p>
@@ -276,7 +276,7 @@ nav: home
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-logistica" aria-labelledby="t-logistica" hidden>
-          <figure><img src="{{root}}assets/img/3d/logistica.jpg" alt="Caminhão com estacas pronto para o transporte" loading="lazy"><figcaption>Frota própria</figcaption></figure>
+          <figure><img src="{{root}}assets/img/3d/logistica-blueprint.jpg" alt="Caminhão com estacas pronto para o transporte" loading="lazy"><figcaption>Frota própria</figcaption></figure>
           <div class="process__body">
             <h3>Logística integrada</h3>
             <p>Veículos próprios e equipes treinadas para içamento e descarregamento preservam a integridade das peças e o cronograma da obra.</p>

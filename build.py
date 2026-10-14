@@ -75,6 +75,7 @@ def render(text, ctx, icon_map):
                   lambda m: f'<div class="marquee">{marquee(m.group(1), root)}</div>', text)
     text = text.replace("{{logos}}", logo_tiles(CLIENTES, root))
     text = re.sub(r"\{\{icon:([\w-]+)\}\}", lambda m: icon_map[m.group(1)], text)
+    text = re.sub(r"\{\{svg:([\w-]+)\}\}", lambda m: read(f"illustrations/{m.group(1)}.svg"), text)
     for key, value in ctx.items():
         text = text.replace("{{" + key + "}}", value)
     return text

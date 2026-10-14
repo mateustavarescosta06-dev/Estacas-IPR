@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0A1A2B">
 <meta property="og:title" content="Contato e orçamento | IPR Estacas">
 <meta property="og:description" content="Solicite um orçamento técnico de estacas pré-fabricadas. Fale com a IPR por WhatsApp, telefone ou e-mail.">
-<meta property="og:image" content="../assets/img/3d/hero.jpg">
+<meta property="og:image" content="../assets/img/3d/hero-blueprint.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" href="../assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +19,13 @@
 </head>
 <body data-page="contato">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- traço trêmulo de rascunho, usado nas ilustrações técnicas -->
+  <filter id="rascunho" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
 <div class="topbar">
   <div class="wrap topbar__inner">
@@ -57,7 +64,7 @@
 
 <main id="conteudo">
 <section class="phero">
-  <div class="phero__media"><img src="../assets/img/3d/aerea.jpg" alt=""></div>
+  <div class="phero__media"><img src="../assets/img/3d/aerea-blueprint.webp" srcset="../assets/img/3d/aerea-blueprint-900.webp 900w, ../assets/img/3d/aerea-blueprint.webp 1800w" alt=""></div>
   <div class="wrap phero__inner">
     <nav class="crumbs mono" aria-label="Você está em"><a href="../">Home</a><span aria-hidden="true">/</span><span>Contato</span></nav>
     <p class="eyebrow eyebrow--light">Contato</p>
@@ -66,7 +73,7 @@
   </div>
 </section>
 
-<section class="section concrete blueprint-light">
+<section class="section concrete geo-bg">
   <div class="wrap contact">
     <form class="form reveal" data-quote novalidate>
       <p class="eyebrow">Solicitação de orçamento</p>

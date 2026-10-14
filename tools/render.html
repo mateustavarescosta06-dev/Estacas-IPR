@@ -15,7 +15,7 @@
   const c = document.getElementById("c");
   c.style.width = w + "px"; c.style.height = h + "px";
   try {
-    const yard = createYard(c, { pixelRatio: ss, quality: 1 });
+    const yard = createYard(c, { pixelRatio: ss, quality: 1, style: q.get("style") || null });
     const shot = q.get("shot") || "hero", depth = q.has("depth") ? +q.get("depth") : 3.2;
     yard.renderStill(shot, w, h, depth);
     await new Promise(r => requestAnimationFrame(r));

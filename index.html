@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0A1A2B">
 <meta property="og:title" content="IPR Estacas — Fabricação e cravação de estacas pré-fabricadas de concreto">
 <meta property="og:description" content="Há 35 anos a IPR fabrica e crava estacas pré-fabricadas protendidas de concreto, com central de concreto própria, controle laboratorial e frota própria.">
-<meta property="og:image" content="assets/img/3d/hero.jpg">
+<meta property="og:image" content="assets/img/3d/hero-blueprint.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" href="assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +19,13 @@
 </head>
 <body data-page="index">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- traço trêmulo de rascunho, usado nas ilustrações técnicas -->
+  <filter id="rascunho" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
 <div class="topbar">
   <div class="wrap topbar__inner">
@@ -58,7 +65,7 @@
 <main id="conteudo">
 <section class="hero">
   <div class="hero__media" data-hero3d>
-    <img src="assets/img/3d/hero.jpg" alt="Maquete 3D do pátio IPR: bate-estacas cravando uma estaca, pilhas de estacas e silos da central de concreto" fetchpriority="high">
+    <img src="assets/img/3d/hero-blueprint.webp" srcset="assets/img/3d/hero-blueprint-900.webp 900w, assets/img/3d/hero-blueprint.webp 1800w" alt="Maquete 3D do pátio IPR: bate-estacas cravando uma estaca, pilhas de estacas e silos da central de concreto" fetchpriority="high">
     <canvas aria-hidden="true"></canvas>
   </div>
   <div class="hero__grid blueprint"></div>
@@ -98,7 +105,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section geo-bg">
   <span class="sec-num" aria-hidden="true">§ 01 — A EMPRESA</span>
   <div class="wrap">
     <div class="grid-2 grid-2--wide-left">
@@ -112,8 +119,8 @@
         <a class="btn btn--line" href="fundacao/">Como funciona a fundação <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
       </div>
       <div class="photo-stack reveal" style="--d:.15s">
-        <figure><img src="assets/img/3d/pilha.jpg" alt="Pilhas de estacas hexagonais sobre dormentes no pátio" loading="lazy"><figcaption>Pátio de estocagem</figcaption></figure>
-        <figure><img src="assets/img/3d/logistica.jpg" alt="Caminhão com guindaste carregado de estacas" loading="lazy"></figure>
+        <figure><img src="assets/img/3d/pilha-paper.webp" srcset="assets/img/3d/pilha-paper-900.webp 900w, assets/img/3d/pilha-paper.webp 1800w" alt="Pilhas de estacas hexagonais sobre dormentes no pátio" loading="lazy"><figcaption>Pátio de estocagem</figcaption></figure>
+        <figure><img src="assets/img/3d/logistica-paper.webp" srcset="assets/img/3d/logistica-paper-900.webp 900w, assets/img/3d/logistica-paper.webp 1800w" alt="Caminhão com guindaste carregado de estacas" loading="lazy"></figure>
         <div class="badge"><b>35</b><span>anos de<br>fundações</span></div>
       </div>
     </div>
@@ -284,7 +291,47 @@
       </div>
       <div>
         <div class="process__panel" role="tabpanel" id="p-insumos" aria-labelledby="t-insumos">
-          <figure><img src="assets/img/cordoalha.png" alt="Rolo de cordoalha de aço para protensão" loading="lazy"><figcaption>Cordoalha CP-175</figcaption></figure>
+          <figure class="sketch-fig"><svg class="sketch-svg" viewBox="0 0 600 420" role="img" aria-label="Desenho técnico dos insumos: rolo de cordoalha de aço, agregados e cimento">
+  <g filter="url(#rascunho)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- rolo de cordoalha -->
+    <g stroke-width="1.6">
+      <ellipse cx="150" cy="150" rx="92" ry="34"/><ellipse cx="150" cy="158" rx="92" ry="34" opacity=".7"/><ellipse cx="150" cy="166" rx="92" ry="34" opacity=".55"/>
+      <ellipse cx="150" cy="174" rx="92" ry="34" opacity=".45"/><ellipse cx="150" cy="182" rx="92" ry="34"/>
+      <ellipse cx="150" cy="150" rx="46" ry="16"/><path d="M58 150v32M242 150v32"/>
+      <path d="M104 150c0 -40 92 -40 92 0" opacity=".35"/>
+    </g>
+    <path d="M232 128c40 -30 70 -36 104 -30" stroke-width="1.4" stroke-dasharray="2 5"/>
+    <!-- seção da cordoalha 7 fios -->
+    <g transform="translate(360 92)" stroke-width="1.3">
+      <circle r="9" cx="0" cy="0"/><circle r="9" cx="18" cy="0"/><circle r="9" cx="-18" cy="0"/>
+      <circle r="9" cx="9" cy="15.6"/><circle r="9" cx="-9" cy="15.6"/><circle r="9" cx="9" cy="-15.6"/><circle r="9" cx="-9" cy="-15.6"/>
+      <circle r="31" stroke-dasharray="3 4" opacity=".6"/>
+    </g>
+    <!-- agregados: polígonos irregulares em monte -->
+    <g stroke-width="1.3" transform="translate(30 250)">
+      <path d="M0 140 L120 40 L250 140 Z" opacity=".5"/>
+      <path d="M60 120l14 -12 18 4 2 16 -16 8 -16 -4z"/><path d="M96 92l12 -10 16 6 -2 14 -14 4z"/><path d="M128 118l16 -8 14 8 -4 14 -18 2z"/>
+      <path d="M150 96l10 -10 14 4 2 12 -12 6z"/><path d="M110 64l10 -8 12 4 0 10 -12 4z"/><path d="M178 122l14 -6 12 10 -8 10 -14 -2z"/>
+      <path d="M40 132l12 -8 12 6 -4 8z"/><path d="M200 136l12 -6 10 6z"/><path d="M84 132l10 -6 10 4 -2 6z"/>
+    </g>
+    <!-- saco de cimento -->
+    <g transform="translate(370 250)" stroke-width="1.5">
+      <path d="M0 20 Q4 0 30 4 L150 4 Q176 0 180 20 L176 128 Q172 144 150 142 L30 142 Q6 144 4 128 Z"/>
+      <path d="M20 40h140M20 112h140" opacity=".55"/><path d="M60 64h60M60 84h44" opacity=".75"/>
+    </g>
+    <!-- cotas -->
+    <g stroke-width="1" opacity=".75">
+      <path d="M58 228h184M58 222v12M242 222v12"/><path d="M58 228l8 -3v6zM242 228l-8 -3v6z" fill="currentColor"/>
+    </g>
+  </g>
+  <g class="sketch-label" fill="currentColor">
+    <text x="104" y="250">AÇO CP-175 RB</text>
+    <text x="318" y="160">CORDOALHA 7 FIOS</text>
+    <text x="100" y="408">AGREGADOS · GRANULOMETRIA</text>
+    <text x="408" y="408">CIMENTO · PROCEDÊNCIA</text>
+  </g>
+</svg>
+<figcaption>Insumos homologados</figcaption></figure>
           <div class="process__body">
             <h3>Insumos homologados</h3>
             <p>A cadeia de suprimentos é vinculada a fornecedores com certificação de conformidade.</p>
@@ -293,7 +340,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-central" aria-labelledby="t-central" hidden>
-          <figure><img src="assets/img/3d/central.jpg" alt="Silos da central de concreto" loading="lazy"><figcaption>Central de concreto</figcaption></figure>
+          <figure><img src="assets/img/3d/central-blueprint.webp" srcset="assets/img/3d/central-blueprint-900.webp 900w, assets/img/3d/central-blueprint.webp 1800w" alt="Silos da central de concreto" loading="lazy"><figcaption>Central de concreto</figcaption></figure>
           <div class="process__body">
             <h3>Central automatizada</h3>
             <p>Balanças de alta precisão calibradas conforme a NBR 7212 reproduzem o traço de laboratório com fidelidade em cada ciclo.</p>
@@ -302,7 +349,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-protensao" aria-labelledby="t-protensao" hidden>
-          <figure><img src="assets/img/3d/protensao.jpg" alt="Pista de protensão com cordoalhas tracionadas" loading="lazy"><figcaption>Pistas de protensão</figcaption></figure>
+          <figure><img src="assets/img/3d/protensao-blueprint.webp" srcset="assets/img/3d/protensao-blueprint-900.webp 900w, assets/img/3d/protensao-blueprint.webp 1800w" alt="Pista de protensão com cordoalhas tracionadas" loading="lazy"><figcaption>Pistas de protensão</figcaption></figure>
           <div class="process__body">
             <h3>Protensão e cura controlada</h3>
             <p>Moldes metálicos de alta precisão e cordoalhas tracionadas antes da concretagem conferem resistência à flexão e menor porosidade.</p>
@@ -311,7 +358,49 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-ensaios" aria-labelledby="t-ensaios" hidden>
-          <figure><img src="assets/img/corpo-de-prova.jpg" alt="Corpos de prova de concreto" loading="lazy"><figcaption>Corpos de prova</figcaption></figure>
+          <figure class="sketch-fig"><svg class="sketch-svg" viewBox="0 0 600 420" role="img" aria-label="Desenho técnico do ensaio de compressão: prensa, corpo de prova cilíndrico e idades de ruptura">
+  <g filter="url(#rascunho)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- prensa -->
+    <g stroke-width="1.6">
+      <rect x="40" y="40" width="200" height="22" rx="3"/><rect x="40" y="330" width="200" height="30" rx="3"/>
+      <path d="M58 62v268M222 62v268M66 62v268M214 62v268"/>
+      <rect x="100" y="62" width="80" height="34" rx="2"/><path d="M128 96v14h24v-14"/>
+      <rect x="96" y="300" width="88" height="30" rx="2"/>
+    </g>
+    <!-- corpo de prova -->
+    <g stroke-width="1.6">
+      <ellipse cx="140" cy="132" rx="38" ry="10"/><path d="M102 132v164M178 132v164"/><path d="M102 296a38 10 0 0 0 76 0"/>
+      <path d="M118 170l10 22 -6 20 12 26M160 160l-8 30 10 18" stroke-width="1.1" opacity=".8"/>
+    </g>
+    <!-- seta de força -->
+    <g stroke-width="1.4"><path d="M140 14v20"/><path d="M134 26l6 10 6 -10" /></g>
+    <!-- cotas -->
+    <g stroke-width="1" opacity=".75">
+      <path d="M102 312h76M102 306v12M178 306v12"/><path d="M102 312l7 -3v6zM178 312l-7 -3v6z" fill="currentColor"/>
+      <path d="M196 132v164M190 132h12M190 296h12"/><path d="M196 132l-3 7h6zM196 296l-3 -7h6z" fill="currentColor"/>
+    </g>
+    <!-- manômetro -->
+    <g transform="translate(258 92)" stroke-width="1.4"><circle r="26"/><path d="M0 0l15 -12" /><path d="M-18 8a20 20 0 0 1 36 0" opacity=".5"/><path d="M-26 0h-18"/></g>
+    <!-- gráfico idade x resistência (sem valores) -->
+    <g transform="translate(330 70)" stroke-width="1.3">
+      <path d="M0 0v260h240"/>
+      <path d="M0 70h240" stroke-dasharray="6 6" opacity=".7"/>
+      <path d="M8 250 C 30 150 70 110 110 92 S 200 74 236 70" />
+      <g fill="currentColor" stroke="none"><circle cx="18" cy="214" r="4"/><circle cx="56" cy="140" r="4"/><circle cx="104" cy="96" r="4"/><circle cx="226" cy="72" r="4"/></g>
+      <path d="M18 260v6M56 260v6M104 260v6M226 260v6" />
+    </g>
+  </g>
+  <g class="sketch-label" fill="currentColor">
+    <text x="106" y="336" font-size="12">Ø</text>
+    <text x="206" y="220">h</text>
+    <text x="318" y="64">RESISTÊNCIA</text>
+    <text x="520" y="62">fck</text>
+    <text x="336" y="352">24h</text><text x="376" y="352">3d</text><text x="424" y="352">7d</text><text x="546" y="352">28d</text>
+    <text x="496" y="380">IDADE</text>
+    <text x="40" y="392">CORPO DE PROVA CILÍNDRICO</text>
+  </g>
+</svg>
+<figcaption>Ensaio de compressão</figcaption></figure>
           <div class="process__body">
             <h3>Ensaios de compressão</h3>
             <p>Amostras de cada concretagem são moldadas em corpos de prova cilíndricos e rompidas em idades críticas.</p>
@@ -320,7 +409,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-inspecao" aria-labelledby="t-inspecao" hidden>
-          <figure><img src="assets/img/3d/estacas.jpg" alt="Pontas de estacas hexagonais com as cordoalhas aparentes" loading="lazy"><figcaption>Inspeção visual individual</figcaption></figure>
+          <figure><img src="assets/img/3d/estacas-blueprint.webp" srcset="assets/img/3d/estacas-blueprint-900.webp 900w, assets/img/3d/estacas-blueprint.webp 1800w" alt="Pontas de estacas hexagonais com as cordoalhas aparentes" loading="lazy"><figcaption>Inspeção visual individual</figcaption></figure>
           <div class="process__body">
             <h3>Inspeção de 100% das peças</h3>
             <p>Após a desmoldagem, cada unidade passa por inspeção visual individual antes de ser liberada para estoque.</p>
@@ -329,7 +418,7 @@
           </div>
         </div>
         <div class="process__panel" role="tabpanel" id="p-logistica" aria-labelledby="t-logistica" hidden>
-          <figure><img src="assets/img/3d/logistica.jpg" alt="Caminhão com estacas pronto para o transporte" loading="lazy"><figcaption>Frota própria</figcaption></figure>
+          <figure><img src="assets/img/3d/logistica-blueprint.webp" srcset="assets/img/3d/logistica-blueprint-900.webp 900w, assets/img/3d/logistica-blueprint.webp 1800w" alt="Caminhão com estacas pronto para o transporte" loading="lazy"><figcaption>Frota própria</figcaption></figure>
           <div class="process__body">
             <h3>Logística integrada</h3>
             <p>Veículos próprios e equipes treinadas para içamento e descarregamento preservam a integridade das peças e o cronograma da obra.</p>

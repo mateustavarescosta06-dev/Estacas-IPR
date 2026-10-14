@@ -20,7 +20,7 @@ if (root && !reduce && webglOk()) {
   };
   const fmt = (n, d) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
   const small = window.innerWidth < 760;
-  const yard = createYard(canvas, { live: true, shot: "hero", quality: small ? 0.4 : 0.6, post: !small, pixelRatio: Math.min(window.devicePixelRatio, small ? 1.25 : 1.25) });
+  const yard = createYard(canvas, { live: true, shot: "hero", style: "blueprint", quality: small ? 0.4 : 0.6, pixelRatio: Math.min(window.devicePixelRatio, small ? 1.25 : 1.5) });
 
   yard.onBlow = (s) => {
     out.prof.textContent = fmt(s.depth, 2) + " m";

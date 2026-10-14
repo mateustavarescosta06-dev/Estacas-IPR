@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0A1A2B">
 <meta property="og:title" content="Controle de Qualidade — Rigor técnico e rastreabilidade | IPR Estacas">
 <meta property="og:description" content="Homologação de insumos, central de concreto automatizada, ensaios de compressão em 24 h, 3, 7 e 28 dias e inspeção individual de 100% das estacas IPR.">
-<meta property="og:image" content="../assets/img/3d/hero.jpg">
+<meta property="og:image" content="../assets/img/3d/hero-blueprint.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" href="../assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +19,13 @@
 </head>
 <body data-page="controle-de-qualidade">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- traço trêmulo de rascunho, usado nas ilustrações técnicas -->
+  <filter id="rascunho" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
 <div class="topbar">
   <div class="wrap topbar__inner">
@@ -57,7 +64,7 @@
 
 <main id="conteudo">
 <section class="phero">
-  <div class="phero__media"><img src="../assets/img/3d/pilha.jpg" alt=""></div>
+  <div class="phero__media"><img src="../assets/img/3d/pilha-blueprint.webp" srcset="../assets/img/3d/pilha-blueprint-900.webp 900w, ../assets/img/3d/pilha-blueprint.webp 1800w" alt=""></div>
   <div class="wrap phero__inner">
     <nav class="crumbs mono" aria-label="Você está em"><a href="../">Home</a><span aria-hidden="true">/</span><span>Controle de Qualidade</span></nav>
     <p class="eyebrow eyebrow--light">Controle de qualidade</p>
@@ -98,7 +105,7 @@
       </ul>
     </div>
     <figure class="frame reveal" style="--d:.1s">
-      <img src="../assets/img/central-concreto.png" alt="Balanças de dosagem da central de concreto" loading="lazy">
+      <img src="../assets/img/3d/central-blueprint.webp" srcset="../assets/img/3d/central-blueprint-900.webp 900w, ../assets/img/3d/central-blueprint.webp 1800w" alt="Balanças de dosagem da central de concreto" loading="lazy">
       <figcaption>Dosagem gravimétrica</figcaption>
     </figure>
   </div>
@@ -146,7 +153,7 @@
       </ul>
     </div>
     <figure class="frame reveal" style="--d:.1s">
-      <img src="../assets/img/equipe.jpg" alt="Profissional da IPR com capacete diante de estacas hexagonais" loading="lazy">
+      <img src="../assets/img/3d/estacas-paper.webp" srcset="../assets/img/3d/estacas-paper-900.webp 900w, ../assets/img/3d/estacas-paper.webp 1800w" alt="Profissional da IPR com capacete diante de estacas hexagonais" loading="lazy">
       <figcaption>Inspeção visual individual</figcaption>
     </figure>
   </div>

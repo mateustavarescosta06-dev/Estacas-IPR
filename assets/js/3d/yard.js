@@ -11,6 +11,7 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { SMAAPass } from "three/addons/postprocessing/SMAAPass.js";
 import { makeTextures, stencilTexture, rng } from "./tex.js";
+import { createSketch } from "./sketch.js";
 import {
   Builder, box, rbox, cyl, sph, tor, pileGeometry, strandOffsets, person, pileDriver, hammerParts, RIG,
   truck, cone, barrier, lightTower, office, spool, pallet, coil,
@@ -38,7 +39,8 @@ const GradeShader = {
 export function createYard(canvas, opts = {}) {
   const live = !!opts.live;
   const q = opts.quality ?? (live ? 0.6 : 1);   // 1 = máximo (renders), < 1 = tempo real
-  const post = opts.post ?? true;
+  const style = opts.style || null;            // "blueprint" | "paper" = rascunho técnico
+  const post = style ? false : (opts.post ?? true);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !post, preserveDrawingBuffer: !live, powerPreference: "high-performance" });
   renderer.setPixelRatio(opts.pixelRatio || 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -49,7 +51,7 @@ export function createYard(canvas, opts = {}) {
 
   const scene = new THREE.Scene();
   const T = makeTextures(q >= 1 ? 1 : 0.5);
-  const camera = new THREE.PerspectiveCamera(36, 16 / 9, 0.08, 3000);
+  const camera = new THREE.PerspectiveCamera(36, 16 / 9, style ? 0.2 : 0.08, style ? 420 : 3000);
 
   /* ---------- Céu físico, sol e ambiente ---------- */
   const sky = new Sky();
@@ -635,6 +637,7 @@ export function createYard(canvas, opts = {}) {
 
   /* ---------- Pós-processamento ---------- */
   let composer = null, gtao = null, bokeh = null, grade = null;
+  const sketch = style ? createSketch(renderer, scene, camera, style) : null;
   function setupPost(w, h) {
     if (!post) return;
     const pr = renderer.getPixelRatio();
@@ -691,10 +694,11 @@ export function createYard(canvas, opts = {}) {
     camera.aspect = w / h;
     camera.fov = current.fov * (w / h < 1 ? 1.45 : 1);
     camera.updateProjectionMatrix();
+    if (sketch) sketch.setSize(w, h);
     if (!composer && post) setupPost(w, h);
     else if (composer) { composer.setSize(w, h); gtao.setSize(w * renderer.getPixelRatio(), h * renderer.getPixelRatio()); }
   }
-  function draw() { if (composer) { grade.uniforms.time.value = (performance.now() % 1000) / 1000; composer.render(); } else renderer.render(scene, camera); }
+  function draw() { if (sketch) { sketch.render(); return; } if (composer) { grade.uniforms.time.value = (performance.now() % 1000) / 1000; composer.render(); } else renderer.render(scene, camera); }
 
   /* ---------- Loop ao vivo ---------- */
   const clock = new THREE.Clock(), pointer = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -742,6 +746,13 @@ export function createYard(canvas, opts = {}) {
     camera.lookAt(look);
     draw(); framesDone++;
     if (running) raf = requestAnimationFrame(frame);
+  }
+
+  if (style) {
+    const hide = new Set([...M.leaves, M.grassTuft, M.rut, M.fence, cloudMat, M.puddle, M.bark]);
+    scene.traverse(o => { if ((o.isMesh || o.isPoints) && (hide.has(o.material) || o.material === dMat)) o.visible = false; });
+    sky.visible = false;
+    scene.background = new THREE.Color(0x000000);
   }
 
   setShot(opts.shot || "hero");
