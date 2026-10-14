@@ -1,5 +1,5 @@
 /* Capa da home: maquete 3D ao vivo do pátio IPR com o bate-estacas cravando. */
-import { createYard } from "./fabrica3d.js";
+import { createYard } from "./3d/yard.js";
 
 const root = document.querySelector("[data-hero3d]");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -20,9 +20,7 @@ if (root && !reduce && webglOk()) {
   };
   const fmt = (n, d) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
   const small = window.innerWidth < 760;
-  const yard = createYard(canvas, { live: true, shot: "hero", pixelRatio: Math.min(window.devicePixelRatio, small ? 1.25 : 1.6) });
-  yard.state.depth = 3.2;
-  yard.state.blows = 64;
+  const yard = createYard(canvas, { live: true, shot: "hero", quality: small ? 0.4 : 0.6, post: !small, pixelRatio: Math.min(window.devicePixelRatio, small ? 1.25 : 1.25) });
 
   yard.onBlow = (s) => {
     out.prof.textContent = fmt(s.depth, 2) + " m";

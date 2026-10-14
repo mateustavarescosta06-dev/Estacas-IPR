@@ -1,21 +1,31 @@
 <!doctype html>
 <html lang="pt-BR">
 <head><meta charset="utf-8"><title>Render da maquete</title>
+<script type="importmap">{"imports":{"three":"../assets/vendor/three/three.module.min.js","three/addons/":"../assets/vendor/three/addons/"}}</script>
 <style>html,body{margin:0;background:#08172a}canvas{display:block}</style></head>
 <body>
-<!-- Gera as imagens estáticas da maquete 3D: render.html?shot=hero&w=2400&h=1350
+<!-- Gera as imagens estáticas da maquete 3D: render.html?shot=hero&w=2400&h=1350&ss=2
+     Renderiza com supersampling (ss) e reduz para o tamanho final.
      Usado por tools/render.js (Playwright) para exportar assets/img/3d/*.jpg -->
 <canvas id="c"></canvas>
 <script type="module">
-  import { createYard } from "../assets/js/fabrica3d.js";
+  import { createYard } from "../assets/js/3d/yard.js";
   const q = new URLSearchParams(location.search);
-  const w = +q.get("w") || 1600, h = +q.get("h") || 900;
+  const w = +q.get("w") || 1600, h = +q.get("h") || 900, ss = +q.get("ss") || 2;
   const c = document.getElementById("c");
   c.style.width = w + "px"; c.style.height = h + "px";
-  const yard = createYard(c, { pixelRatio: 1 });
-  const depth = q.has("depth") ? +q.get("depth") : 3.2;
-  yard.renderStill(q.get("shot") || "hero", w, h, depth);
-  requestAnimationFrame(() => { yard.renderStill(q.get("shot") || "hero", w, h, depth); window.__done = true; });
+  try {
+    const yard = createYard(c, { pixelRatio: ss, quality: 1 });
+    const shot = q.get("shot") || "hero", depth = q.has("depth") ? +q.get("depth") : 3.2;
+    yard.renderStill(shot, w, h, depth);
+    await new Promise(r => requestAnimationFrame(r));
+    yard.renderStill(shot, w, h, depth);
+    const out = document.createElement("canvas"); out.width = w; out.height = h;
+    const x = out.getContext("2d"); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = "high";
+    x.drawImage(c, 0, 0, w, h);
+    window.__out = out.toDataURL("image/jpeg", 0.88);
+  } catch (e) { window.__err = String(e && e.stack || e); }
+  window.__done = true;
 </script>
 </body>
 </html>
