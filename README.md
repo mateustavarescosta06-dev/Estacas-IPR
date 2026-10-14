@@ -37,6 +37,13 @@ As URLs geradas mantêm as do site atual (`/estacas/`, `/fundacao/`, `/central-d
 3. Visualize localmente: `python3 -m http.server` e abra http://localhost:8000.
 4. Publique a raiz do repositório em qualquer hospedagem estática.
 
+### GitHub Pages
+
+O workflow `.github/workflows/pages.yml` publica o site a cada push na `main`.
+Ative uma única vez em **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+O endereço fica `https://<usuário>.github.io/Estacas-IPR/` (os caminhos do site são relativos,
+então funciona em subpasta e também no domínio próprio).
+
 Para incluir/alterar uma estaca, edite `assets/js/estacas-data.js` e coloque o PDF em `assets/docs/`.
 
 ## Imagens da maquete 3D
