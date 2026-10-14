@@ -60,6 +60,14 @@ python3 tools/webp.py && python3 build.py
 
 Sem WebGL ou com "reduzir movimento" ativo, a capa mostra a imagem estática `3d/hero-blueprint.webp`.
 
+## Verificação de rolagem (scroll-craft)
+
+`python3 build.py --verify` gera uma cópia marcada em `scrollcraft/builds/ipr-rota/site/` (seções como atos,
+títulos e parágrafos como cópia, sinal de pronto). Sirva essa pasta e rode o `shoot.mjs` da skill scroll-craft
+nela, no desktop, em 390×844 e com `--reduced-motion`. A cópia e as capturas (`lab/`) ficam fora do git.
+O cabeçalho é sticky, e o verificador só esconde elementos fixos: texto passando por baixo do cabeçalho aparece
+como falha de contraste falsa. Desconte a faixa do cabeçalho ao ler o relatório.
+
 ## Observações
 
 - O formulário de contato não depende de servidor: monta a mensagem e abre o WhatsApp
