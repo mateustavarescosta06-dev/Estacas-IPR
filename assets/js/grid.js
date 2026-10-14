@@ -17,6 +17,10 @@
     var m = { x: -9999, y: -9999, tx: -9999, ty: -9999, on: 0, ton: 0 };
     var waves = [], raf = 0, visible = true;
     var label = host.getAttribute("data-grid-label") || "";
+    var light = host.getAttribute("data-grid-tone") === "light";
+    var C = light
+      ? { minor: "rgba(0,36,74,.055)", major: "rgba(0,36,74,.11)", glow: "214,150,0", cross: "rgba(0,36,74,.5)", mark: "#0c3360", box: "rgba(255,255,255,.92)", boxLine: "rgba(0,36,74,.35)", text: "#0c3360" }
+      : { minor: "rgba(214,228,245,.06)", major: "rgba(214,228,245,.13)", glow: "255,204,0", cross: "rgba(255,204,0,.55)", mark: "#ffcc00", box: "rgba(8,23,42,.86)", boxLine: "rgba(255,204,0,.5)", text: "#ffcc00" };
 
     function size() {
       var r = host.getBoundingClientRect();
@@ -57,13 +61,13 @@
       var x, y, major;
       for (x = 0; x <= W + step; x += step) {
         major = Math.round(x / step) % 4 === 0;
-        ctx.strokeStyle = major ? "rgba(214,228,245,.13)" : "rgba(214,228,245,.06)";
+        ctx.strokeStyle = major ? C.major : C.minor;
         ctx.lineWidth = major ? 1 : 0.8;
         line(x, 0, x, H, true);
       }
       for (y = 0; y <= H + step; y += step) {
         major = Math.round(y / step) % 4 === 0;
-        ctx.strokeStyle = major ? "rgba(214,228,245,.13)" : "rgba(214,228,245,.06)";
+        ctx.strokeStyle = major ? C.major : C.minor;
         ctx.lineWidth = major ? 1 : 0.8;
         line(0, y, W, y, false);
       }
@@ -71,7 +75,7 @@
       // brilho amarelo nas linhas próximas ao cursor
       ctx.save();
       var g = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, 170);
-      g.addColorStop(0, "rgba(255,204,0," + (0.55 * m.on) + ")"); g.addColorStop(1, "rgba(255,204,0,0)");
+      g.addColorStop(0, "rgba(" + C.glow + "," + (0.55 * m.on) + ")"); g.addColorStop(1, "rgba(" + C.glow + ",0)");
       ctx.strokeStyle = g; ctx.lineWidth = 1.2;
       for (x = Math.floor((m.x - 200) / step) * step; x < m.x + 200; x += step) line(x, Math.max(0, m.y - 220), x, Math.min(H, m.y + 220), true);
       for (y = Math.floor((m.y - 200) / step) * step; y < m.y + 200; y += step) line(Math.max(0, m.x - 220), y, Math.min(W, m.x + 220), y, false);
@@ -80,21 +84,21 @@
       var sx = Math.round(m.x / step) * step, sy = Math.round(m.y / step) * step;
       ctx.save();
       ctx.globalAlpha = m.on;
-      ctx.strokeStyle = "rgba(255,204,0,.55)"; ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
+      ctx.strokeStyle = C.cross; ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
       ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, H); ctx.moveTo(0, sy); ctx.lineTo(W, sy); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.strokeStyle = "#ffcc00"; ctx.lineWidth = 1.4;
+      ctx.strokeStyle = C.mark; ctx.lineWidth = 1.4;
       ctx.beginPath(); ctx.arc(sx, sy, 7, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(sx - 14, sy); ctx.lineTo(sx - 9, sy); ctx.moveTo(sx + 9, sy); ctx.lineTo(sx + 14, sy);
       ctx.moveTo(sx, sy - 14); ctx.lineTo(sx, sy - 9); ctx.moveTo(sx, sy + 9); ctx.lineTo(sx, sy + 14); ctx.stroke();
       // cota em mm (1 módulo da grade = 500 mm, escala de prancha)
       var mmX = Math.round(sx / step * 500), mmY = Math.round((H - sy) / step * 500);
       var txt = "X " + String(mmX).padStart(5, "0") + "  Y " + String(mmY).padStart(5, "0") + " mm" + (label ? "  ·  " + label : "");
-      ctx.font = "500 11px 'IBM Plex Mono', ui-monospace, monospace";
+      ctx.font = "500 11px Geist, system-ui, sans-serif";
       var tw = ctx.measureText(txt).width, bx = Math.min(sx + 14, W - tw - 22), by = sy - 30 < 8 ? sy + 18 : sy - 30;
-      ctx.fillStyle = "rgba(8,23,42,.86)"; ctx.fillRect(bx, by, tw + 16, 20);
-      ctx.strokeStyle = "rgba(255,204,0,.5)"; ctx.strokeRect(bx + 0.5, by + 0.5, tw + 15, 19);
-      ctx.fillStyle = "#ffcc00"; ctx.fillText(txt, bx + 8, by + 14);
+      ctx.fillStyle = C.box; ctx.fillRect(bx, by, tw + 16, 20);
+      ctx.strokeStyle = C.boxLine; ctx.strokeRect(bx + 0.5, by + 0.5, tw + 15, 19);
+      ctx.fillStyle = C.text; ctx.fillText(txt, bx + 8, by + 14);
       ctx.restore();
     }
     function tick() {
@@ -130,5 +134,20 @@
     size();
   }
 
+  /* toda seção sem grade própria ganha uma; o tom segue o fundo da seção */
+  function tone(el) {
+    var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
+    if (!c || (c.length > 3 && +c[3] === 0)) return "light";
+    var lum = (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255;
+    return lum > 0.5 ? "light" : "dark";
+  }
+  document.querySelectorAll("main section, .cta").forEach(function (sec) {
+    if (sec.querySelector("[data-grid]") || sec.classList.contains("drive") || sec.offsetHeight > window.innerHeight * 3) return;
+    var layer = document.createElement("div");
+    layer.className = "grid-layer"; layer.setAttribute("data-grid", "48");
+    if (tone(sec) === "light") layer.setAttribute("data-grid-tone", "light");
+    sec.setAttribute("data-grid-area", "");
+    sec.insertBefore(layer, sec.firstChild);
+  });
   document.querySelectorAll("[data-grid]").forEach(function (el) { GridField(el); });
 })();

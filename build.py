@@ -23,15 +23,28 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 SRC = ROOT / "src"
 
-NAV = [
-    ("home", "Home", ""),
-    ("estacas", "Estacas", "estacas/"),
-    ("fundacao", "Fundação", "fundacao/"),
-    ("central", "Central de Concreto", "central-de-concreto/"),
-    ("qualidade", "Controle de Qualidade", "controle-de-qualidade/"),
-    ("clientes", "Clientes", "clientes/"),
-    ("faq", "FAQ", "perguntas-frequentes/"),
+# A rota de cravação: a ordem das páginas é a descida da estaca pelas camadas do solo.
+# (slug da página, chave do menu, rótulo, caminho, profundidade em m, camada, chamada da passagem, rascunho)
+ROUTE = [
+    ("index", "home", "Home", "", 0.0, "Superfície do pátio",
+     "Onde a obra começa: o pátio, a fábrica e a cravação.", "hero-blueprint"),
+    ("central-de-concreto", "central", "Central de Concreto", "central-de-concreto/", 2.5, "Aterro",
+     "Antes da forma vem a matéria: o concreto dosado, misturado e registrado.", "central-blueprint"),
+    ("estacas", "estacas", "Estacas", "estacas/", 5.0, "Argila mole",
+     "Três geometrias, onze seções e o catálogo com os ábacos de cada uma.", "estacas-blueprint"),
+    ("controle-de-qualidade", "qualidade", "Controle de Qualidade", "controle-de-qualidade/", 7.5, "Silte argiloso",
+     "Cada lote ensaiado em 24 horas, 3, 7 e 28 dias. Cada peça inspecionada.", "pilha-blueprint"),
+    ("fundacao", "fundacao", "Fundação", "fundacao/", 10.0, "Areia fina, emenda a 10 m",
+     "Na obra, a estaca é cravada, emendada e verificada golpe a golpe.", "fundacao-blueprint"),
+    ("clientes", "clientes", "Clientes", "clientes/", 12.5, "Areia compacta",
+     "Indústria, varejo e infraestrutura que já estão sobre estacas IPR.", "aerea-blueprint"),
+    ("perguntas-frequentes", "faq", "Perguntas Frequentes", "perguntas-frequentes/", 15.0, "Areia muito compacta",
+     "As dúvidas mais comuns sobre nega, emendas, solo e transporte.", "cravacao-blueprint"),
+    ("contato", "contato", "Contato", "contato/", 17.6, "Camada resistente, nega atingida",
+     "A estaca chegou à camada resistente. A próxima etapa é a sua obra.", "hero-blueprint"),
 ]
+MAX_DEPTH = ROUTE[-1][4]
+NAV = [(key, label, href) for _, key, label, href, *_ in ROUTE if key != "contato"]
 
 
 def read(path):
@@ -81,6 +94,64 @@ def render(text, ctx, icon_map):
     return text
 
 
+def m(depth):
+    return f"{depth:.1f}".replace(".", ",") + " m"
+
+
+def route_index(slug):
+    return next(i for i, r in enumerate(ROUTE) if r[0] == slug)
+
+
+def station_html(slug):
+    _, _, label, _, depth, layer, *_ = ROUTE[route_index(slug)]
+    return (f'<p class="station"><span class="station__d">{m(depth)}</span>'
+            f'<span class="station__l">{layer}</span></p>')
+
+
+def route_html(slug, root):
+    i = route_index(slug)
+    items = []
+    for j, (_, _, label, href, depth, layer, *_rest) in enumerate(ROUTE):
+        state = "is-here" if j == i else ("is-past" if j < i else "is-ahead")
+        cur = ' aria-current="page"' if j == i else ""
+        top = depth / MAX_DEPTH * 100
+        items.append(
+            f'<li class="{state}" style="--at:{top:.2f}%"><a href="{root}{href}"{cur}>'
+            f'<span class="route__dot" aria-hidden="true"></span>'
+            f'<span class="route__txt"><b>{label}</b><small>{m(depth)} · {layer}</small></span></a></li>')
+    nxt = ROUTE[i + 1][4] if i + 1 < len(ROUTE) else MAX_DEPTH
+    return (f'<nav class="route" aria-label="Rota do site: a estaca desce pelas camadas do solo" data-route '
+            f'data-from="{ROUTE[i][4]}" data-to="{nxt}" data-max="{MAX_DEPTH}" data-step="{i}">'
+            f'<div class="route__rule" aria-hidden="true"><span class="route__pile" data-route-pile></span></div>'
+            f'<ol>{"".join(items)}</ol>'
+            f'<span class="route__read" aria-hidden="true" data-route-read>{m(ROUTE[i][4])}</span></nav>')
+
+
+def handoff_html(slug, root):
+    i = route_index(slug)
+    if i + 1 >= len(ROUTE):
+        # fim da rota: a estaca atinge a nega e o fecho resolve
+        stamps = "".join(f'<li><span>{m(r[4])}</span>{r[2]}</li>' for r in ROUTE)
+        return (f'<section class="handoff handoff--end" data-grid-area aria-label="Fim da rota">'
+                f'<div class="grid-layer" data-grid="48" data-grid-label="NEGA"></div>'
+                f'<div class="wrap handoff__inner"><div class="handoff__copy">'
+                f'<p class="station"><span class="station__d">{m(MAX_DEPTH)}</span><span class="station__l">Nega atingida</span></p>'
+                f'<h2 class="h-lg">A estaca chegou à camada resistente.</h2>'
+                f'<p class="lead">Você percorreu a rota inteira, da superfície do pátio à nega. A próxima etapa é a sua obra.</p>'
+                f'<a class="btn btn--ghost" href="{root}">Voltar à superfície {{{{icon:arrow}}}}</a></div>'
+                f'<ol class="handoff__log" aria-label="Camadas percorridas">{stamps}</ol></div></section>')
+    _, _, label, href, depth, layer, teaser, sketch = ROUTE[i + 1]
+    return (f'<section class="handoff" data-grid-area aria-label="Próxima camada: {label}">'
+            f'<div class="handoff__media" aria-hidden="true"><img src="{root}assets/img/3d/{sketch}.jpg" alt="" loading="lazy"></div>'
+            f'<div class="grid-layer" data-grid="48" data-grid-label="{m(depth)}"></div>'
+            f'<a class="wrap handoff__inner handoff__link" href="{root}{href}">'
+            f'<span class="handoff__copy">'
+            f'<span class="station"><span class="station__d">{m(depth)}</span><span class="station__l">{layer}</span></span>'
+            f'<span class="handoff__title">{label}</span>'
+            f'<span class="handoff__teaser">{teaser}</span></span>'
+            f'<span class="handoff__go">Descer para a próxima camada {{{{icon:arrow}}}}</span></a></section>')
+
+
 def nav_html(active, root):
     items = []
     for key, label, href in NAV:
@@ -108,6 +179,9 @@ def build():
             "desc": meta["desc"],
             "page": slug,
             "nav": nav_html(meta.get("nav", ""), root),
+            "route": route_html(slug, root),
+            "station": station_html(slug),
+            "handoff": handoff_html(slug, root),
         }
         html = layout.replace("{{content}}", body.strip())
         html = render(render(html, ctx, icon_map), ctx, icon_map)

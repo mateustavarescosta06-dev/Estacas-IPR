@@ -34,7 +34,6 @@
   var heroImg = $(".hero__media img");
   function onScroll() {
     var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
-    if (progress) progress.style.transform = "scaleX(" + (h > 0 ? y / h : 0) + ")";
     document.body.classList.toggle("scrolled", y > 36);
     if (heroImg && !reduceMotion && y < window.innerHeight) {
       heroImg.parentNode.style.transform = "translateY(" + y * 0.18 + "px)";
@@ -42,6 +41,26 @@
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* ---------- Rascunhos acompanham o ponteiro (profundidade sutil) ---------- */
+  if (!reduceMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    $$(".phero, .handoff").forEach(function (sec) {
+      var img = $(".phero__media img, .handoff__media img", sec);
+      if (!img) return;
+      var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+      function step() {
+        x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+        img.style.translate = x.toFixed(2) + "px " + y.toFixed(2) + "px";
+        raf = Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05 ? requestAnimationFrame(step) : 0;
+      }
+      sec.addEventListener("pointermove", function (e) {
+        var r = sec.getBoundingClientRect();
+        tx = ((e.clientX - r.left) / r.width - 0.5) * -18; ty = ((e.clientY - r.top) / r.height - 0.5) * -10;
+        if (!raf) raf = requestAnimationFrame(step);
+      });
+      sec.addEventListener("pointerleave", function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(step); });
+    });
+  }
 
   /* ---------- Revelação e contadores ---------- */
   function countUp(el) {
@@ -219,7 +238,7 @@
     s += "</svg>";
     s += '<div class="readout" aria-live="off"><span class="readout__title">Registro de cravação · simulação</span>';
     s += '<span>Profundidade</span><b data-r="prof">0,00 m</b><span>Golpes</span><b data-r="golpes">0</b>';
-    s += '<span>Nega (10 golpes)</span><b data-r="nega" class="y">—</b><span>Camada</span><b data-r="camada">—</b></div>';
+    s += '<span>Nega (10 golpes)</span><b data-r="nega" class="y">aguardando</b><span>Camada</span><b data-r="camada">superfície</b></div>';
     viz.innerHTML = s;
 
     var pile = $("[data-pile]", viz), seg1 = $("[data-seg1]", viz), seg2 = $("[data-seg2]", viz), ring = $("[data-ring]", viz);
@@ -269,8 +288,8 @@
       var li = layerAt(Math.max(0, b - .001));
       r.prof.textContent = fmt(b, 2) + " m";
       r.golpes.textContent = fmt(Math.floor(blows));
-      r.nega.textContent = b > 0 ? fmt(layers[li].pen * 10, 0) + " mm" : "—";
-      r.camada.textContent = b > 0 ? layers[li].nome : "—";
+      r.nega.textContent = b > 0 ? fmt(layers[li].pen * 10, 0) + " mm" : "aguardando";
+      r.camada.textContent = b > 0 ? layers[li].nome : "superfície";
       layerText.forEach(function (t, i) { t.classList.toggle("is-on", b > 0 && i === li); });
 
       if (stepIdx !== current) {
@@ -563,7 +582,7 @@
     function compose() {
       var tipo = (f.querySelector("input[name=tipo]:checked") || {}).value || "Não informado";
       return [
-        "*Solicitação de orçamento — site IPR*",
+        "*Solicitação de orçamento, site IPR*",
         "Nome: " + f.elements.nome.value.trim(),
         f.elements.empresa.value.trim() ? "Empresa: " + f.elements.empresa.value.trim() : "",
         "Telefone: " + f.elements.telefone.value.trim(),
@@ -587,7 +606,7 @@
       var via = ev.submitter && ev.submitter.value === "email" ? "email" : "whatsapp";
       var text = compose();
       if (via === "email") {
-        location.href = "mailto:comercial@estacasipr.com.br?subject=" + encodeURIComponent("Orçamento de estacas — " + f.elements.nome.value.trim()) + "&body=" + encodeURIComponent(text.replace(/\*/g, ""));
+        location.href = "mailto:comercial@estacasipr.com.br?subject=" + encodeURIComponent("Orçamento de estacas, " + f.elements.nome.value.trim()) + "&body=" + encodeURIComponent(text.replace(/\*/g, ""));
       } else {
         window.open("https://wa.me/5511984472267?text=" + encodeURIComponent(text), "_blank", "noopener");
       }

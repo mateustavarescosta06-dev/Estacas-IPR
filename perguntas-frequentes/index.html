@@ -13,7 +13,7 @@
 <link rel="icon" href="../assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
 <script type="importmap">{"imports":{"three":"./../assets/vendor/three/three.module.min.js","three/addons/":"./../assets/vendor/three/addons/"}}</script>
 </head>
@@ -39,19 +39,19 @@
 
 <header class="header" data-header>
   <div class="wrap header__inner">
-    <a class="brand" href="../" aria-label="IPR Estacas — página inicial">
+    <a class="brand" href="../" aria-label="IPR Estacas, página inicial">
       <img src="../assets/img/logo.png" alt="IPR Estacas" width="72" height="54">
       <span class="brand__text"><b>IPR</b><small>Estacas pré-fabricadas</small></span>
     </a>
     <nav class="nav" aria-label="Principal" data-nav>
       <ul>
 <li><a href="../">Home</a></li>
-<li><a href="../estacas/">Estacas</a></li>
-<li><a href="../fundacao/">Fundação</a></li>
 <li><a href="../central-de-concreto/">Central de Concreto</a></li>
+<li><a href="../estacas/">Estacas</a></li>
 <li><a href="../controle-de-qualidade/">Controle de Qualidade</a></li>
+<li><a href="../fundacao/">Fundação</a></li>
 <li><a href="../clientes/">Clientes</a></li>
-<li><a href="../perguntas-frequentes/" class="is-active" aria-current="page">FAQ</a></li>
+<li><a href="../perguntas-frequentes/" class="is-active" aria-current="page">Perguntas Frequentes</a></li>
       </ul>
       <a class="btn btn--primary nav__cta" href="../contato/">Orçamento <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
     </nav>
@@ -62,13 +62,15 @@
   <div class="header__progress" data-progress></div>
 </header>
 
+<nav class="route" aria-label="Rota do site: a estaca desce pelas camadas do solo" data-route data-from="15.0" data-to="17.6" data-max="17.6" data-step="6"><div class="route__rule" aria-hidden="true"><span class="route__pile" data-route-pile></span></div><ol><li class="is-past" style="--at:0.00%"><a href="../"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Home</b><small>0,0 m · Superfície do pátio</small></span></a></li><li class="is-past" style="--at:14.20%"><a href="../central-de-concreto/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Central de Concreto</b><small>2,5 m · Aterro</small></span></a></li><li class="is-past" style="--at:28.41%"><a href="../estacas/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Estacas</b><small>5,0 m · Argila mole</small></span></a></li><li class="is-past" style="--at:42.61%"><a href="../controle-de-qualidade/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Controle de Qualidade</b><small>7,5 m · Silte argiloso</small></span></a></li><li class="is-past" style="--at:56.82%"><a href="../fundacao/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Fundação</b><small>10,0 m · Areia fina, emenda a 10 m</small></span></a></li><li class="is-past" style="--at:71.02%"><a href="../clientes/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Clientes</b><small>12,5 m · Areia compacta</small></span></a></li><li class="is-here" style="--at:85.23%"><a href="../perguntas-frequentes/" aria-current="page"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Perguntas Frequentes</b><small>15,0 m · Areia muito compacta</small></span></a></li><li class="is-ahead" style="--at:100.00%"><a href="../contato/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Contato</b><small>17,6 m · Camada resistente, nega atingida</small></span></a></li></ol><span class="route__read" aria-hidden="true" data-route-read>15,0 m</span></nav>
+
 <main id="conteudo">
 <section class="phero" data-grid-area>
   <div class="phero__media"><img src="../assets/img/3d/cravacao-blueprint.webp" srcset="../assets/img/3d/cravacao-blueprint-900.webp 900w, ../assets/img/3d/cravacao-blueprint.webp 1600w" alt=""></div>
   <div class="grid-layer" data-grid="48"></div>
   <div class="wrap phero__inner">
     <nav class="crumbs mono" aria-label="Você está em"><a href="../">Home</a><span aria-hidden="true">/</span><span>Perguntas Frequentes</span></nav>
-    <p class="eyebrow eyebrow--light">FAQ</p>
+    <p class="station"><span class="station__d">15,0 m</span><span class="station__l">Areia muito compacta</span></p>
     <h1 class="h-xl phero__title">Perguntas <span class="hl">frequentes.</span></h1>
     <p class="lead">Respostas técnicas sobre estacas pré-fabricadas, cravação e controle de qualidade.</p>
   </div>
@@ -125,7 +127,6 @@
 <section class="cta">
   <div class="wrap cta__inner reveal">
     <div>
-      <p class="eyebrow eyebrow--dark">Orçamento técnico</p>
       <h2 class="cta__title">Pronto para elevar o nível da sua fundação?</h2>
       <p>Fale com nossos especialistas e solicite um orçamento técnico para o seu projeto. Envie a sondagem SPT e as cargas de projeto para agilizar a análise.</p>
     </div>
@@ -136,6 +137,7 @@
   </div>
 </section>
 
+<section class="handoff" data-grid-area aria-label="Próxima camada: Contato"><div class="handoff__media" aria-hidden="true"><img src="../assets/img/3d/hero-blueprint.webp" srcset="../assets/img/3d/hero-blueprint-900.webp 900w, ../assets/img/3d/hero-blueprint.webp 1600w" alt="" loading="lazy"></div><div class="grid-layer" data-grid="48" data-grid-label="17,6 m"></div><a class="wrap handoff__inner handoff__link" href="../contato/"><span class="handoff__copy"><span class="station"><span class="station__d">17,6 m</span><span class="station__l">Camada resistente, nega atingida</span></span><span class="handoff__title">Contato</span><span class="handoff__teaser">A estaca chegou à camada resistente. A próxima etapa é a sua obra.</span></span><span class="handoff__go">Descer para a próxima camada <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span></a></section>
 </main>
 
 <footer class="footer">
@@ -185,6 +187,7 @@
 
 <script src="../assets/js/estacas-data.js"></script>
 <script src="../assets/js/grid.js"></script>
+<script src="../assets/js/route.js"></script>
 <script src="../assets/js/main.js"></script>
 </body>
 </html>
