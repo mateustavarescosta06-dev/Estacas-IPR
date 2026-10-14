@@ -311,6 +311,7 @@
     }
     if (reduceMotion) {
       render(1);
+      root.removeAttribute("data-sc-verify-state"); // movimento reduzido: quadro final fixo, sem palco animado
       steps.forEach(function (st) { st.classList.add("is-active"); st.style.position = "relative"; });
     } else {
       window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
