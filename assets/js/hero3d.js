@@ -25,7 +25,7 @@ if (root && !reduce && webglOk()) {
   yard.onBlow = (s) => {
     out.prof.textContent = fmt(s.depth, 2) + " m";
     out.golpes.textContent = fmt(s.blows, 0);
-    out.nega.textContent = s.nega == null ? "—" : fmt(s.nega, 0) + " mm";
+    out.nega.textContent = s.nega == null ? "aguardando" : fmt(s.nega, 0) + " mm";
     if (s.manual) { hero.classList.remove("is-hit"); void hero.offsetWidth; hero.classList.add("is-hit"); document.dispatchEvent(new CustomEvent("ipr:golpe")); }
   };
 

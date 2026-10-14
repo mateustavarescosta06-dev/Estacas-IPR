@@ -13,7 +13,7 @@
 <link rel="icon" href="{{root}}assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{root}}assets/css/style.css">
 <script type="importmap">{"imports":{"three":"./{{root}}assets/vendor/three/three.module.min.js","three/addons/":"./{{root}}assets/vendor/three/addons/"}}</script>
 </head>
@@ -39,7 +39,7 @@
 
 <header class="header" data-header>
   <div class="wrap header__inner">
-    <a class="brand" href="{{root}}" aria-label="IPR Estacas — página inicial">
+    <a class="brand" href="{{root}}" aria-label="IPR Estacas, página inicial">
       <img src="{{root}}assets/img/logo.png" alt="IPR Estacas" width="72" height="54">
       <span class="brand__text"><b>IPR</b><small>Estacas pré-fabricadas</small></span>
     </a>
@@ -56,8 +56,11 @@
   <div class="header__progress" data-progress></div>
 </header>
 
+{{route}}
+
 <main id="conteudo">
 {{content}}
+{{handoff}}
 </main>
 
 <footer class="footer">
@@ -107,6 +110,7 @@
 
 <script src="{{root}}assets/js/estacas-data.js"></script>
 <script src="{{root}}assets/js/grid.js"></script>
+<script src="{{root}}assets/js/route.js"></script>
 <script src="{{root}}assets/js/main.js"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <link rel="icon" href="../assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
 <script type="importmap">{"imports":{"three":"./../assets/vendor/three/three.module.min.js","three/addons/":"./../assets/vendor/three/addons/"}}</script>
 </head>
@@ -39,19 +39,19 @@
 
 <header class="header" data-header>
   <div class="wrap header__inner">
-    <a class="brand" href="../" aria-label="IPR Estacas — página inicial">
+    <a class="brand" href="../" aria-label="IPR Estacas, página inicial">
       <img src="../assets/img/logo.png" alt="IPR Estacas" width="72" height="54">
       <span class="brand__text"><b>IPR</b><small>Estacas pré-fabricadas</small></span>
     </a>
     <nav class="nav" aria-label="Principal" data-nav>
       <ul>
 <li><a href="../">Home</a></li>
-<li><a href="../estacas/">Estacas</a></li>
-<li><a href="../fundacao/">Fundação</a></li>
 <li><a href="../central-de-concreto/" class="is-active" aria-current="page">Central de Concreto</a></li>
+<li><a href="../estacas/">Estacas</a></li>
 <li><a href="../controle-de-qualidade/">Controle de Qualidade</a></li>
+<li><a href="../fundacao/">Fundação</a></li>
 <li><a href="../clientes/">Clientes</a></li>
-<li><a href="../perguntas-frequentes/">FAQ</a></li>
+<li><a href="../perguntas-frequentes/">Perguntas Frequentes</a></li>
       </ul>
       <a class="btn btn--primary nav__cta" href="../contato/">Orçamento <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
     </nav>
@@ -62,13 +62,15 @@
   <div class="header__progress" data-progress></div>
 </header>
 
+<nav class="route" aria-label="Rota do site: a estaca desce pelas camadas do solo" data-route data-from="2.5" data-to="5.0" data-max="17.6" data-step="1"><div class="route__rule" aria-hidden="true"><span class="route__pile" data-route-pile></span></div><ol><li class="is-past" style="--at:0.00%"><a href="../"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Home</b><small>0,0 m · Superfície do pátio</small></span></a></li><li class="is-here" style="--at:14.20%"><a href="../central-de-concreto/" aria-current="page"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Central de Concreto</b><small>2,5 m · Aterro</small></span></a></li><li class="is-ahead" style="--at:28.41%"><a href="../estacas/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Estacas</b><small>5,0 m · Argila mole</small></span></a></li><li class="is-ahead" style="--at:42.61%"><a href="../controle-de-qualidade/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Controle de Qualidade</b><small>7,5 m · Silte argiloso</small></span></a></li><li class="is-ahead" style="--at:56.82%"><a href="../fundacao/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Fundação</b><small>10,0 m · Areia fina, emenda a 10 m</small></span></a></li><li class="is-ahead" style="--at:71.02%"><a href="../clientes/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Clientes</b><small>12,5 m · Areia compacta</small></span></a></li><li class="is-ahead" style="--at:85.23%"><a href="../perguntas-frequentes/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Perguntas Frequentes</b><small>15,0 m · Areia muito compacta</small></span></a></li><li class="is-ahead" style="--at:100.00%"><a href="../contato/"><span class="route__dot" aria-hidden="true"></span><span class="route__txt"><b>Contato</b><small>17,6 m · Camada resistente, nega atingida</small></span></a></li></ol><span class="route__read" aria-hidden="true" data-route-read>2,5 m</span></nav>
+
 <main id="conteudo">
 <section class="phero" data-grid-area>
   <div class="phero__media"><img src="../assets/img/3d/central-blueprint.webp" srcset="../assets/img/3d/central-blueprint-900.webp 900w, ../assets/img/3d/central-blueprint.webp 1600w" alt=""></div>
   <div class="grid-layer" data-grid="48"></div>
   <div class="wrap phero__inner">
     <nav class="crumbs mono" aria-label="Você está em"><a href="../">Home</a><span aria-hidden="true">/</span><span>Central de Concreto</span></nav>
-    <p class="eyebrow eyebrow--light">Central de concreto</p>
+    <p class="station"><span class="station__d">2,5 m</span><span class="station__l">Aterro</span></p>
     <h1 class="h-xl phero__title">O núcleo tecnológico <span class="hl">da operação.</span></h1>
     <p class="lead">Engenharia de precisão em nossa central automatizada, projetada para operar sob regimes de alta exigência.</p>
     <div class="phero__meta"><span>Dosagem 100% automatizada</span><span>Balanças NBR 7212</span><span>Rastreabilidade por m³</span></div>
@@ -78,7 +80,6 @@
 <section class="section">
   <div class="wrap grid-2">
     <div class="reveal">
-      <p class="eyebrow">Mais que uma unidade de mistura</p>
       <h2 class="h-lg">Insumos selecionados, <span class="hl--dark">material de performance superior.</span></h2>
       <div class="prose">
         <p class="lead">A Central de Concreto da IPR é responsável por converter insumos selecionados em um material de performance superior.</p>
@@ -97,7 +98,6 @@
   <div class="wrap">
     <div class="section__head section__head--split reveal">
       <div>
-        <p class="eyebrow">Fluxo de produção</p>
         <h2 class="h-lg">Do silo à estaca.</h2>
       </div>
       <p class="lead">Cada etapa é instrumentada e registrada, eliminando as variáveis e imprecisões do carregamento manual.</p>
@@ -105,7 +105,7 @@
     <div class="flow reveal">
       <div class="flow__line" aria-hidden="true"></div>
       <div class="flow__step"><div class="flow__node"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg></div><span class="mono">01</span><h3>Armazenagem</h3><p>Cimento em silos e agregados com granulometria controlada.</p></div>
-      <div class="flow__step"><div class="flow__node"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="m12 18 4-6"/><path d="M4 18h16"/></svg></div><span class="mono">02</span><h3>Dosagem</h3><p>Pesagem gravimétrica em balanças calibradas — o traço de laboratório reproduzido em cada ciclo.</p></div>
+      <div class="flow__step"><div class="flow__node"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="m12 18 4-6"/><path d="M4 18h16"/></svg></div><span class="mono">02</span><h3>Dosagem</h3><p>Pesagem gravimétrica em balanças calibradas: o traço de laboratório reproduzido em cada ciclo.</p></div>
       <div class="flow__step"><div class="flow__node"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M5 3h14l-3 7H8z"/><path d="M8 10v8a4 4 0 0 0 8 0v-8M12 21v2"/></svg></div><span class="mono">03</span><h3>Mistura</h3><p>Misturadores industriais distribuem cimento, agregados e aditivos de forma uniforme.</p></div>
       <div class="flow__step"><div class="flow__node"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><span class="mono">04</span><h3>Registro</h3><p>Cada metro cúbico é registrado, da origem dos insumos ao elemento estrutural.</p></div>
     </div>
@@ -115,14 +115,13 @@
 <section class="section">
   <div class="wrap">
     <div class="section__head reveal">
-      <p class="eyebrow">Diferenciais técnicos e operacionais</p>
       <h2 class="h-lg">Quatro garantias de processo.</h2>
     </div>
     <div class="cards-4 reveal">
-      <article class="card"><span class="card__k">01</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="m12 18 4-6"/><path d="M4 18h16"/></svg><h3>Precisão digital na dosagem</h3><p>Sistemas 100% automatizados e balanças de alta precisão, calibradas conforme a NBR 7212. A dosagem eletrônica reproduz o traço com fidelidade absoluta.</p></article>
-      <article class="card"><span class="card__k">02</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M5 3h14l-3 7H8z"/><path d="M8 10v8a4 4 0 0 0 8 0v-8M12 21v2"/></svg><h3>Homogeneidade reológica</h3><p>Massa com consistência controlada e excelente trabalhabilidade, evitando segregações e garantindo a integridade durante o adensamento.</p></article>
-      <article class="card"><span class="card__k">03</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 6-7"/></svg><h3>Controle do fck</h3><p>Controle exato da relação água/cimento, fator determinante para a durabilidade e para a resistência à compressão projetada, com margens de segurança consistentes.</p></article>
-      <article class="card"><span class="card__k">04</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><h3>Rastreabilidade total</h3><p>Monitoramento completo da carga — desde a origem dos insumos até a aplicação final no elemento estrutural.</p></article>
+      <article class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="m12 18 4-6"/><path d="M4 18h16"/></svg><h3>Precisão digital na dosagem</h3><p>Sistemas 100% automatizados e balanças de alta precisão, calibradas conforme a NBR 7212. A dosagem eletrônica reproduz o traço com fidelidade absoluta.</p></article>
+      <article class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M5 3h14l-3 7H8z"/><path d="M8 10v8a4 4 0 0 0 8 0v-8M12 21v2"/></svg><h3>Homogeneidade reológica</h3><p>Massa com consistência controlada e excelente trabalhabilidade, evitando segregações e garantindo a integridade durante o adensamento.</p></article>
+      <article class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 6-7"/></svg><h3>Controle do fck</h3><p>Controle exato da relação água/cimento, fator determinante para a durabilidade e para a resistência à compressão projetada, com margens de segurança consistentes.</p></article>
+      <article class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><h3>Rastreabilidade total</h3><p>Monitoramento completo da carga, desde a origem dos insumos até a aplicação final no elemento estrutural.</p></article>
     </div>
   </div>
 </section>
@@ -134,7 +133,6 @@
       <figcaption>Silos de cimento</figcaption>
     </figure>
     <div class="reveal" style="--d:.1s">
-      <p class="eyebrow">O diferencial da sua obra</p>
       <h2 class="h-md">Por que a Central IPR importa para a fundação?</h2>
       <p class="muted">Ao centralizar a produção, a IPR mitiga riscos operacionais externos e garante que o concreto aplicado possua características físicas e químicas superiores às misturas de canteiro convencionais.</p>
       <div class="note" style="margin-top: 24px"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m8.5 12 2.5 2.5L16 9.5"/></svg><p><b>Resultado:</b> fundações com maior vida útil e resistência a agentes agressivos.</p></div>
@@ -145,7 +143,6 @@
 <section class="cta">
   <div class="wrap cta__inner reveal">
     <div>
-      <p class="eyebrow eyebrow--dark">Orçamento técnico</p>
       <h2 class="cta__title">Pronto para elevar o nível da sua fundação?</h2>
       <p>Fale com nossos especialistas e solicite um orçamento técnico para o seu projeto. Envie a sondagem SPT e as cargas de projeto para agilizar a análise.</p>
     </div>
@@ -156,6 +153,7 @@
   </div>
 </section>
 
+<section class="handoff" data-grid-area aria-label="Próxima camada: Estacas"><div class="handoff__media" aria-hidden="true"><img src="../assets/img/3d/estacas-blueprint.webp" srcset="../assets/img/3d/estacas-blueprint-900.webp 900w, ../assets/img/3d/estacas-blueprint.webp 1600w" alt="" loading="lazy"></div><div class="grid-layer" data-grid="48" data-grid-label="5,0 m"></div><a class="wrap handoff__inner handoff__link" href="../estacas/"><span class="handoff__copy"><span class="station"><span class="station__d">5,0 m</span><span class="station__l">Argila mole</span></span><span class="handoff__title">Estacas</span><span class="handoff__teaser">Três geometrias, onze seções e o catálogo com os ábacos de cada uma.</span></span><span class="handoff__go">Descer para a próxima camada <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span></a></section>
 </main>
 
 <footer class="footer">
@@ -205,6 +203,7 @@
 
 <script src="../assets/js/estacas-data.js"></script>
 <script src="../assets/js/grid.js"></script>
+<script src="../assets/js/route.js"></script>
 <script src="../assets/js/main.js"></script>
 </body>
 </html>
