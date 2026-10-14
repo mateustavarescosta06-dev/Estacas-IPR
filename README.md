@@ -37,14 +37,11 @@ As URLs geradas mantêm as do site atual (`/estacas/`, `/fundacao/`, `/central-d
 3. Visualize localmente: `python3 -m http.server` e abra http://localhost:8000.
 4. Publique a raiz do repositório em qualquer hospedagem estática.
 
-### GitHub Pages
+### Publicação (Vercel)
 
-O workflow `.github/workflows/pages.yml` publica o site a cada push na `main`.
-Ative uma única vez em **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-O endereço fica `https://<usuário>.github.io/Estacas-IPR/` (os caminhos do site são relativos,
-então funciona em subpasta e também no domínio próprio).
-
-Para incluir/alterar uma estaca, edite `assets/js/estacas-data.js` e coloque o PDF em `assets/docs/`.
+O projeto na Vercel está ligado a este repositório: cada push na `main` publica o site em
+https://estacas-ipr.vercel.app/ e cada PR ganha um endereço de prévia. Não há etapa de build:
+as páginas geradas por `build.py` já ficam versionadas, então rode `python3 build.py` antes do commit.
 
 ## Imagens da maquete 3D
 
