@@ -648,11 +648,12 @@ export function createYard(canvas, opts = {}) {
   const clock = new THREE.Clock(), pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   let running = false, raf = 0, tAll = 0;
   // qualidade adaptativa: se a máquina não sustentar ~25 fps, simplifica a cena ao vivo
-  let perfN = 0, perfSum = 0, degraded = 0;
+  let perfN = 0, perfSum = 0, degraded = 0, framesDone = 0;
   function adapt(raw) {
     if (!live || degraded > 1) return;
     perfN++; perfSum += raw;
-    if (perfN < 40) return;
+    if (raw > 0.25 && perfN > 2) { perfSum = 1; perfN = 12; }
+    if (perfN < 12) return;
     const avg = perfSum / perfN; perfN = 0; perfSum = 0;
     if (avg > 0.04) {
       degraded++;
@@ -687,7 +688,7 @@ export function createYard(canvas, opts = {}) {
       s.pos[1] + pointer.y * 0.9 + (Math.random() - .5) * state.shake,
       s.pos[2] + Math.cos(tAll * 0.1) * 0.7);
     camera.lookAt(look);
-    draw();
+    draw(); framesDone++;
     if (running) raf = requestAnimationFrame(frame);
   }
 
@@ -695,6 +696,7 @@ export function createYard(canvas, opts = {}) {
   placeDrive(0.7);
 
   return {
+    get fps() { return framesDone; },
     renderer, scene, camera, state, SHOTS,
     setShot, resize,
     renderStill(name, w, h, depth) {
