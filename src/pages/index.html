@@ -3,12 +3,12 @@ title: IPR Estacas — Fabricação e cravação de estacas pré-fabricadas de c
 desc: Há 35 anos a IPR fabrica e crava estacas pré-fabricadas protendidas de concreto, com central de concreto própria, controle laboratorial e frota própria.
 nav: home
 -->
-<section class="hero">
+<section class="hero" data-grid-area>
   <div class="hero__media" data-hero3d>
     <img src="{{root}}assets/img/3d/hero-blueprint.jpg" alt="Maquete 3D do pátio IPR: bate-estacas cravando uma estaca, pilhas de estacas e silos da central de concreto" fetchpriority="high">
     <canvas aria-hidden="true"></canvas>
   </div>
-  <div class="hero__grid blueprint"></div>
+  <div class="hero__grid" data-grid="48" data-grid-label="PÁTIO IPR"></div>
   <div class="hero__fx" aria-hidden="true"></div>
   <div class="hud" data-hud hidden>
     <span class="hud__title"><i></i>Cravação ao vivo · maquete 3D</span>
@@ -90,7 +90,8 @@ nav: home
 
 <section class="dark drive" data-drive aria-label="Como funciona a cravação">
   <div class="drive__track">
-    <div class="drive__sticky blueprint">
+    <div class="drive__sticky" data-grid-area>
+      <div class="grid-layer" data-grid="48" data-grid-label="CRAVAÇÃO"></div>
       <div class="wrap drive__layout">
         <div>
           <p class="eyebrow"><b>§ 02</b> — Processo de cravação</p>

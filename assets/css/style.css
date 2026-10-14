@@ -738,3 +738,11 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 18px; }
 .sketch-svg { max-width: 560px; }
 .sketch-svg .sketch-label { font-size: 13px; }
 .process > div { min-width: 0; }
+
+/* ---------- Grade técnica interativa ---------- */
+.grid-layer, .hero__grid { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hero__grid { background: none; mask-image: none; -webkit-mask-image: none; }
+.grid-canvas { position: absolute; inset: 0; display: block; pointer-events: none; }
+.phero__inner, .drive__layout, #seletor > .wrap, .section.dark > .wrap { position: relative; z-index: 2; }
+.drive__sticky > .wrap { position: relative; z-index: 2; }
+@media (prefers-reduced-motion: reduce) { .grid-canvas { opacity: .6; } }
