@@ -157,6 +157,10 @@ export function createYard(canvas, opts = {}) {
     fence: std({ color: 0x8a9096, metalness: 0.8, roughness: 0.4, alphaMap: tx(T.fence, [40, 2.4]), alphaTest: 0.5, side: THREE.DoubleSide }),
   };
   M.yellow = M.yellowP;
+  M.leaves = T.leaves.map((t, i) => std({ map: t, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.85, color: [0xe8ecd8, 0xdfe6cf, 0xf0eedd][i] }));
+  M.bark = pbr(T.bark, {}, [1, 5], 1);
+  M.grassTuft = std({ map: T.grassCard, alphaTest: 0.4, side: THREE.DoubleSide, roughness: 1, color: 0xe6dcc4 });
+  M.rut = std({ color: 0x3e3427, roughness: 1, transparent: true, opacity: 0.28, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1 });
 
   const b = new Builder();
 
@@ -471,16 +475,64 @@ export function createYard(canvas, opts = {}) {
 
   /* ---------- Entorno: árvores, galpões vizinhos, torres de transmissão ---------- */
   const tr = rng(21);
-  for (let i = 0; i < (q >= 1 ? 340 : 200); i++) {
-    const a = tr() * Math.PI * 2, d = 82 + tr() * 70;
+  const leafPlane = new THREE.PlaneGeometry(1, 1);
+  /* eucalipto: tronco claro inclinado, galhos ascendentes e cachos de folhas em cartões */
+  function eucalyptus(x, z, hgt) {
+    const lean = (tr() - 0.5) * 0.08, lean2 = (tr() - 0.5) * 0.08;
+    const top = V(x + lean * hgt, hgt, z + lean2 * hgt), base = V(x, 0, z);
+    const trunk = new THREE.CylinderGeometry(0.12, 0.26 + tr() * 0.08, hgt, 7, 1);
+    const d = new THREE.Vector3().subVectors(top, base);
+    b.addM(trunk, M.bark, new THREE.Matrix4().compose(base.clone().addScaledVector(d, 0.5), new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), d.clone().normalize()), V(1, 1, 1)));
+    const mat = M.leaves[(tr() * M.leaves.length) | 0];
+    const cluster = (c, rad, n) => {
+      for (let k = 0; k < n; k++) {
+        const sz = 2.0 + tr() * 1.8;
+        b.add(leafPlane, mat, c.x + (tr() - .5) * rad, c.y + (tr() - .5) * rad * 0.8, c.z + (tr() - .5) * rad, (tr() - .5) * 1.2, tr() * Math.PI, (tr() - .5) * 0.6, sz, sz, 1);
+      }
+    };
+    const nb = 5 + ((tr() * 5) | 0);
+    for (let k = 0; k < nb; k++) {
+      const t = 0.5 + tr() * 0.42, p0 = base.clone().lerp(top, t);
+      const a = tr() * Math.PI * 2, L = 2 + tr() * 3.5;
+      const p1 = p0.clone().add(V(Math.cos(a) * L, L * (0.6 + tr() * 0.5), Math.sin(a) * L));
+      b.rod(p0, p1, 0.07 - t * 0.04, M.bark, 5);
+      cluster(p1, 2.4, 6 + ((tr() * 6) | 0));
+    }
+    cluster(top.clone().add(V(0, 0.8, 0)), 3.0, 10);
+  }
+  for (let i = 0; i < (q >= 1 ? 300 : 150); i++) {
+    const a = tr() * Math.PI * 2, d = 84 + tr() * 70;
     const x = Math.cos(a) * d, z = Math.sin(a) * d - 12;
     if (z > 40 && Math.abs(x) < 60) continue;
-    const hgt = 11 + tr() * 12;
-    b.add(cyl(0.16, 0.32, hgt * 0.75, 6), M.trunk, x, hgt * 0.37, z);
-    const crowns = 4 + ((tr() * 4) | 0), mat = M.tree[(tr() * M.tree.length) | 0];
-    for (let c = 0; c < crowns; c++) {
-      const cr2 = 1.6 + tr() * 1.8;
-      b.add(new THREE.IcosahedronGeometry(cr2, 1), mat, x + (tr() - .5) * 3, hgt * (0.62 + tr() * 0.38), z + (tr() - .5) * 3, tr(), tr(), 0, 1, 0.8 + tr() * 0.6, 1);
+    eucalyptus(x, z, 16 + tr() * 12);
+  }
+  // quebra-vento de eucaliptos atrás da cerca
+  for (let i = 0; i < (q >= 1 ? 46 : 26); i++) eucalyptus(-72 + i * (136 / (q >= 1 ? 46 : 26)) + (tr() - .5) * 2, -69 - tr() * 4, 18 + tr() * 8);
+
+  // tufos de capim: bordas do pátio, pé da cerca, base das construções e campo
+  const tuft = (x, z, sc) => { const s2 = (0.5 + tr() * 0.7) * sc, a0 = tr() * Math.PI; for (let k = 0; k < 2; k++) b.add(leafPlane, M.grassTuft, x, s2 * 0.45, z, 0, a0 + k * Math.PI / 2, 0, s2 * 1.2, s2 * 0.9, 1); };
+  const NT = q >= 1 ? 1 : 0.5;
+  for (let i = 0; i < 900 * NT; i++) {           // contorno do pátio de cascalho
+    const side = (tr() * 4) | 0, t = tr();
+    const x = side < 2 ? -74 + t * 140 : (side === 2 ? -74 : 66) + (tr() - .5) * 3;
+    const z = side < 2 ? (side ? -65 : 45) + (tr() - .5) * 3 : -65 + t * 110;
+    tuft(x, z, 1);
+  }
+  for (let i = 0; i < 260 * NT; i++) tuft(-74 + tr() * 140, -64 + (tr() - 0.6) * 1.5, 0.9);   // pé da cerca
+  for (let i = 0; i < 1500 * NT; i++) { const a = tr() * Math.PI * 2, d = 62 + tr() * 70; tuft(Math.cos(a) * d, Math.sin(a) * d - 10, 1.3); }
+  for (const [x0, z0, w, d] of [[-38, -26, 34, 20], [26, -26, 18, 6], [-31, 13, 7, 6]]) for (let i = 0; i < 40 * NT; i++) {
+    const t = tr(), side = (tr() * 4) | 0;
+    const x = x0 + (side < 2 ? (t - .5) * w : (side === 2 ? -w / 2 : w / 2)), z = z0 + (side < 2 ? (side ? d / 2 : -d / 2) : (t - .5) * d);
+    tuft(x + (tr() - .5) * 0.6, z + (tr() - .5) * 0.6, 0.6);
+  }
+  // marcas de pneu no cascalho (rota do caminhão e da pá carregadeira)
+  const rutGeo = new THREE.PlaneGeometry(0.45, 1).rotateX(-Math.PI / 2);
+  for (const [x0, z0, x1, z1] of [[-40, 11.6, 40, 11.2], [-40, 15.4, 40, 15.8], [6, 12, 15, 4], [8, 13, 17, 5.5], [20, -6, 28, -14], [21.5, -5.2, 29.5, -13.2]]) {
+    const n = 18;
+    for (let k = 0; k < n; k++) {
+      const t0 = k / n, t1 = (k + 1) / n, ax = x0 + (x1 - x0) * t0, az = z0 + (z1 - z0) * t0, bx2 = x0 + (x1 - x0) * t1, bz2 = z0 + (z1 - z0) * t1;
+      const L = Math.hypot(bx2 - ax, bz2 - az);
+      b.add(rutGeo, M.rut, (ax + bx2) / 2 + (tr() - .5) * 0.15, 0.03, (az + bz2) / 2 + (tr() - .5) * 0.15, 0, Math.atan2(bx2 - ax, bz2 - az), 0, 1, 1, L * 1.02);
     }
   }
   for (const [x, z, w, h, d] of [[48, -58, 34, 12, 16], [-6, -76, 26, 9, 14], [-68, -48, 20, 10, 18], [60, -18, 16, 8, 24]]) {

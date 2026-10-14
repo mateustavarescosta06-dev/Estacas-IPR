@@ -221,6 +221,50 @@ export function makeTextures(quality = 1) {
   dx.fillStyle = dg; dx.fillRect(0, 0, 64, 64);
   T.dust = toTex(dust);
 
+  // Ramo de eucalipto (alfa): galho fino com folhas lanceoladas pendentes
+  const leafCard = (seed, hue) => {
+    const c = mkCanvas(256, 256), x = c.getContext("2d"), r = rng(seed);
+    x.clearRect(0, 0, 256, 256);
+    x.strokeStyle = "rgba(92,70,50,1)"; x.lineWidth = 3;
+    const twigs = [];
+    for (let k = 0; k < 5; k++) {
+      const x0 = 128 + (r() - 0.5) * 30, y0 = 250, x1 = 20 + r() * 216, y1 = 20 + r() * 120;
+      x.beginPath(); x.moveTo(x0, y0); x.quadraticCurveTo((x0 + x1) / 2 + (r() - 0.5) * 60, (y0 + y1) / 2, x1, y1); x.stroke();
+      twigs.push([x0, y0, x1, y1]);
+    }
+    for (const [x0, y0, x1, y1] of twigs) for (let i = 0; i < 16; i++) {
+      const t = 0.25 + r() * 0.75, px = x0 + (x1 - x0) * t, py = y0 + (y1 - y0) * t;
+      const ang = Math.PI / 2 + (r() - 0.5) * 1.6, L = 26 + r() * 22, W = 4 + r() * 3.5;
+      const g = 95 + r() * 50, h = hue + (r() - 0.5) * 14;
+      x.save(); x.translate(px, py); x.rotate(ang);
+      x.fillStyle = `hsl(${h}, ${22 + r() * 18}%, ${28 + r() * 16}%)`;
+      x.beginPath(); x.moveTo(0, 0); x.quadraticCurveTo(W, L * 0.45, 0, L); x.quadraticCurveTo(-W, L * 0.45, 0, 0); x.fill();
+      x.strokeStyle = `rgba(${g},${g + 20},${g - 30},.35)`; x.lineWidth = 0.8; x.beginPath(); x.moveTo(0, 2); x.lineTo(0, L - 3); x.stroke();
+      x.restore();
+    }
+    return toTex(c);
+  };
+  T.leaves = [leafCard(3, 88), leafCard(17, 80), leafCard(29, 96)];
+
+  // Casca do eucalipto: tronco claro com placas descascando
+  T.bark = surface(256, (u, v, o) => {
+    const peel = fbm(u * 1.0, v * 0.25, 4, 6), f = fbm(u + 2, v * 0.3, 2, 40);
+    const dark = peel > 0.18 ? 1 : 0;
+    o.r = dark ? 122 + f * 10 : 178 + f * 12; o.g = dark ? 104 + f * 8 : 171 + f * 10; o.b = dark ? 80 : 156 + f * 8;
+    o.h = dark ? 0.4 : 0; o.rough = 0.85;
+  }, { strength: 2.5 });
+
+  // Tufo de capim seco (alfa)
+  const grassCard = mkCanvas(128, 128), gx = grassCard.getContext("2d"), gr = rng(61);
+  gx.clearRect(0, 0, 128, 128);
+  for (let i = 0; i < 70; i++) {
+    const x0 = 20 + gr() * 88, h = 50 + gr() * 75, lean = (gr() - 0.5) * 50;
+    const l = 30 + gr() * 30;
+    gx.strokeStyle = `hsl(${45 + gr() * 30}, ${25 + gr() * 25}%, ${l}%)`; gx.lineWidth = 1 + gr() * 1.6;
+    gx.beginPath(); gx.moveTo(x0, 128); gx.quadraticCurveTo(x0 + lean * 0.3, 128 - h * 0.6, x0 + lean, 128 - h); gx.stroke();
+  }
+  T.grassCard = toTex(grassCard);
+
   return T;
 }
 

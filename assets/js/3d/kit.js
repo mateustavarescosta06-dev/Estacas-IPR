@@ -108,59 +108,94 @@ export function strandOffsets(forma, d) {
   return out;
 }
 
-/* ---------- Figuras humanas (operários com EPI) ---------- */
-const SKIN = [0x8d5a3b, 0xc68863, 0x6b4127, 0xe0ac86, 0xa86f4c];
+/* ---------- Figuras humanas (operários com EPI, articulados) ---------- */
+/* Poses em radianos: ombro (frente/lado), cotovelo, quadril, joelho; L = esquerda, R = direita.
+   Rotação positiva em X leva o membro para trás; negativa, para a frente. */
+const POSES = {
+  stand:     { sL: [0.08, 0.1], eL: -0.15, sR: [0.08, -0.1], eR: -0.15, hL: 0, kL: 0, hR: 0, kR: 0, head: 0, spine: 0 },
+  point:     { sL: [0.05, 0.12], eL: -0.2, sR: [-1.45, -0.25], eR: -0.05, hL: 0, kL: 0, hR: -0.05, kR: 0.08, head: -0.15, spine: 0 },
+  signal:    { sL: [-2.75, 0.25], eL: -0.35, sR: [0.1, -0.12], eR: -0.25, hL: 0.05, kL: 0, hR: -0.08, kR: 0.1, head: -0.05, spine: 0 },
+  clipboard: { sL: [-0.55, 0.25], eL: -1.25, sR: [-0.35, -0.2], eR: -1.35, hL: 0, kL: 0, hR: 0, kR: 0, head: 0.35, spine: 0.06 },
+  measure:   { sL: [-0.7, 0.2], eL: -0.7, sR: [-0.95, -0.15], eR: -0.45, hL: -0.35, kL: 0.55, hR: -0.1, kR: 0.25, head: 0.4, spine: 0.32 },
+  walk:      { sL: [0.4, 0.08], eL: -0.35, sR: [-0.4, -0.08], eR: -0.35, hL: -0.42, kL: 0.15, hR: 0.32, kR: 0.55, head: 0, spine: 0.04 },
+  crouch:    { sL: [-0.8, 0.25], eL: -0.9, sR: [-0.9, -0.2], eR: -0.8, hL: -1.55, kL: 2.2, hR: -1.25, kR: 2.0, head: 0.25, spine: 0.35, drop: 0.42 },
+};
 export function person(b, M, x, z, ry, opts = {}) {
   const r = rng(opts.seed || ((x * 73 + z * 31) | 0));
   const skin = M.skin[(r() * M.skin.length) | 0];
   const vest = opts.vest || (r() < 0.6 ? M.vestOrange : M.vestLime);
   const helmet = opts.helmet || (r() < 0.55 ? M.helmetWhite : M.helmetYellow);
   const pants = r() < 0.5 ? M.pantsNavy : M.pantsKhaki;
-  const pose = opts.pose || "stand";
-  const s = 0.94 + r() * 0.1;
+  const P = POSES[opts.pose] || POSES.stand;
+  const s = 0.95 + r() * 0.09;
+  const thigh = 0.44, shin = 0.43, upper = 0.3, fore = 0.27, hipY = 0.93;
+
+  /* perna: quadril -> coxa -> joelho -> canela -> botina */
+  const leg = (sx, hip, knee) => {
+    b.at(sx, hipY - (P.drop || 0), 0, 0, () => {
+      b.add(cap(0.078, thigh - 0.1, 10), pants, 0, -thigh / 2, 0);
+      b.add(rbox(0.1, 0.12, 0.05, 0.02), pants, sx > 0 ? 0.075 : -0.075, -thigh * 0.55, 0.01); // bolso lateral
+      b.at(0, -thigh, 0, 0, () => {
+        b.add(sph(0.07, 10, 8), pants, 0, 0, 0);
+        b.add(cap(0.064, shin - 0.1, 10), pants, 0, -shin / 2, 0);
+        b.at(0, -shin, 0, 0, () => {
+          b.add(rbox(0.12, 0.13, 0.29, 0.04), M.boot, 0, -0.035, 0.055, -knee - hip);
+          b.add(rbox(0.125, 0.03, 0.3, 0.012), M.coneBase, 0, -0.095, 0.055, -knee - hip);
+        });
+      }, knee);
+    }, hip);
+  };
+  /* braço: ombro -> braço -> cotovelo -> antebraço -> mão (luva) */
+  const arm = (sx, [pitch, roll], elbow, holding) => {
+    b.at(sx, 0.36, 0, 0, () => {
+      b.add(sph(0.072, 10, 8), M.shirt, 0, 0, 0);
+      b.add(cap(0.06, upper - 0.08, 10), M.shirt, 0, -upper / 2, 0);
+      b.at(0, -upper, 0, 0, () => {
+        b.add(sph(0.055, 10, 8), M.shirt, 0, 0, 0);
+        b.add(cap(0.05, fore - 0.08, 10), M.shirt, 0, -fore / 2, 0);
+        b.add(cyl(0.055, 0.055, 0.04, 12), M.glove, 0, -fore + 0.03, 0);
+        b.add(rbox(0.07, 0.1, 0.045, 0.02), M.glove, 0, -fore - 0.04, 0.005);
+        b.add(rbox(0.025, 0.06, 0.025, 0.01), M.glove, sx > 0 ? -0.04 : 0.04, -fore - 0.02, 0.02, 0.3);
+        if (holding) holding();
+      }, elbow);
+    }, pitch, -roll);   // roll > 0 no braço esquerdo (< 0 no direito) abre o braço
+  };
+
   b.at(x, 0, z, ry, () => {
     b.push(new THREE.Matrix4().makeScale(s, s, s));
-    // botinas
-    for (const sx of [-0.1, 0.1]) b.add(rbox(0.12, 0.1, 0.27, 0.035), M.boot, sx, 0.05, 0.04);
-    // pernas (leve passada quando "walk")
-    const stride = pose === "walk" ? 0.28 : 0;
-    for (const [sx, sgn] of [[-0.1, 1], [0.1, -1]]) {
-      b.add(cap(0.072, 0.72), pants, sx, 0.5, 0, sgn * stride);
-    }
-    // quadril e tronco
-    b.add(rbox(0.36, 0.22, 0.22, 0.08), pants, 0, 0.92, 0);
-    b.add(cap(0.165, 0.36), M.shirt, 0, 1.22, 0, 0, 0, 0, 1.05, 1, 0.72);
-    // colete refletivo por cima, com faixas
-    b.add(cap(0.172, 0.3), vest, 0, 1.24, 0, 0, 0, 0, 1.06, 1, 0.76);
-    for (const yy of [1.12, 1.3]) b.add(cyl(0.18, 0.18, 0.035, 18), M.reflective, 0, yy, 0, 0, 0, 0, 1.06, 1, 0.77);
-    // braços: pose
-    const arms = {
-      stand: [[0.12, 0], [0.12, 0]],
-      point: [[0.1, 0], [-1.35, 0.3]],
-      signal: [[-2.6, 0.2], [0.15, 0]],
-      clipboard: [[-0.9, 0.5], [-0.9, -0.5]],
-      measure: [[-0.55, 0.3], [-0.75, -0.2]],
-      walk: [[0.4, 0], [-0.4, 0]],
-      crouch: [[-0.9, 0.2], [-0.9, -0.2]],
-    }[pose] || [[0.1, 0], [0.1, 0]];
-    [[-0.235, arms[0]], [0.235, arms[1]]].forEach(([sx, [pitch, yaw]]) => {
-      b.at(sx, 1.42, 0, yaw, () => {
-        b.at(0, 0, 0, 0, () => {
-          b.add(sph(0.075, 10, 8), M.shirt, 0, 0, 0);
-          b.add(cap(0.062, 0.46), M.shirt, 0, -0.28, 0);
-          b.add(sph(0.058, 10, 8), M.glove, 0, -0.58, 0);
-        }, pitch);
-      });
+    leg(-0.095, P.hL, P.kL);
+    leg(0.095, P.hR, P.kR);
+    // pelve, cinto e fivela
+    b.at(0, hipY - (P.drop || 0), 0, 0, () => {
+      b.add(rbox(0.34, 0.16, 0.21, 0.07), pants, 0, 0.03, 0);
+      b.add(cyl(0.175, 0.175, 0.045, 20), M.coneBase, 0, 0.1, 0, 0, 0, 0, 1, 1, 0.64);
+      b.add(rbox(0.05, 0.04, 0.02, 0.006), M.chrome, 0, 0.1, 0.112);
+      // tronco (inclina com spine)
+      b.at(0, 0.1, 0, 0, () => {
+        b.add(cap(0.155, 0.3, 14), M.shirt, 0, 0.24, 0, 0, 0, 0, 1.08, 1, 0.7);
+        // colete: frente e costas com faixas refletivas e zíper
+        b.add(cap(0.164, 0.24, 14), vest, 0, 0.27, 0, 0, 0, 0, 1.1, 1, 0.74);
+        for (const yy of [0.17, 0.33]) b.add(cyl(0.172, 0.172, 0.032, 22), M.reflective, 0, yy, 0, 0, 0, 0, 1.11, 1, 0.75);
+        for (const sx of [-0.07, 0.07]) b.add(box(0.03, 0.22, 0.012), M.reflective, sx, 0.47, 0.105, -0.12); // suspensório refletivo
+        b.add(box(0.008, 0.3, 0.008), M.coneBase, 0, 0.26, 0.124);
+        b.add(rbox(0.07, 0.05, 0.02, 0.008), M.coneBase, 0.07, 0.4, 0.118);  // rádio/caneta no bolso
+        b.add(rbox(0.07, 0.11, 0.035, 0.01), M.darkPaint, -0.16, 0.0, 0.0);  // rádio no cinto
+        arm(-0.215, P.sL, P.eL, opts.pose === "clipboard" ? () => b.add(box(0.22, 0.3, 0.012), M.clipboard, 0.09, -0.32, 0.04, -0.3) : null);
+        arm(0.215, P.sR, P.eR, opts.pose === "measure" ? () => b.add(box(0.026, 0.012, 0.8), M.yellow, 0, -0.33, 0.38, 0.5) : null);
+        // pescoço e cabeça
+        b.at(0, 0.5, 0, 0, () => {
+          b.add(cyl(0.05, 0.058, 0.09, 10), skin, 0, 0.0, 0);
+          b.add(sph(0.105, 18, 14), skin, 0, 0.13, 0.005, 0, 0, 0, 0.9, 1.07, 0.98);
+          b.add(rbox(0.03, 0.045, 0.04, 0.012), skin, 0, 0.12, 0.1);        // nariz
+          for (const ex of [-0.094, 0.094]) b.add(sph(0.025, 8, 6), skin, ex, 0.13, -0.005, 0, 0, 0, 0.5, 1, 0.8); // orelhas
+          b.add(rbox(0.14, 0.032, 0.03, 0.01), M.glasses, 0, 0.145, 0.088); // óculos
+          b.add(new THREE.SphereGeometry(0.124, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2), helmet, 0, 0.17, 0);
+          b.add(cyl(0.15, 0.15, 0.013, 24), helmet, 0, 0.172, 0.02, 0, 0, 0, 1, 1, 1.14);
+          b.add(rbox(0.028, 0.05, 0.22, 0.012), helmet, 0, 0.285, 0);
+          b.add(box(0.2, 0.012, 0.012), M.coneBase, 0, 0.1, -0.035, 0.6); // jugular
+        }, P.head);
+      }, P.spine);
     });
-    // pescoço, cabeça, capacete com aba e óculos
-    b.add(cyl(0.055, 0.06, 0.1, 10), skin, 0, 1.55, 0);
-    b.add(sph(0.11, 16, 12), skin, 0, 1.67, 0.005, 0, 0, 0, 0.92, 1.06, 0.98);
-    b.add(new THREE.SphereGeometry(0.128, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2), helmet, 0, 1.71, 0);
-    b.add(cyl(0.155, 0.155, 0.014, 22), helmet, 0, 1.712, 0.02, 0, 0, 0, 1, 1, 1.12);
-    b.add(rbox(0.03, 0.05, 0.22, 0.012), helmet, 0, 1.83, 0);
-    b.add(rbox(0.16, 0.035, 0.03, 0.01), M.glasses, 0, 1.68, 0.1);
-    if (pose === "clipboard") b.add(box(0.22, 0.3, 0.012), M.clipboard, 0, 1.12, 0.32, -0.9);
-    if (pose === "measure") b.add(box(0.025, 0.012, 0.75), M.yellow, 0.1, 1.0, 0.48, 0.35);
     b.pop();
   });
 }

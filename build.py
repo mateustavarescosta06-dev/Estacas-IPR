@@ -110,6 +110,10 @@ def build():
         }
         html = layout.replace("{{content}}", body.strip())
         html = render(render(html, ctx, icon_map), ctx, icon_map)
+        # renders da maquete: serve WebP com versão de 900 px para telas pequenas
+        html = re.sub(r'src="((?:\.\./)?)assets/img/3d/([\w-]+)\.jpg"',
+                      lambda m: f'src="{m[1]}assets/img/3d/{m[2]}.webp" '
+                                f'srcset="{m[1]}assets/img/3d/{m[2]}-900.webp 900w, {m[1]}assets/img/3d/{m[2]}.webp 1800w"', html)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding="utf-8")
         print("ok", out.relative_to(ROOT))
