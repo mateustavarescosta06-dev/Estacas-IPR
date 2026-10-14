@@ -647,8 +647,22 @@ export function createYard(canvas, opts = {}) {
   /* ---------- Loop ao vivo ---------- */
   const clock = new THREE.Clock(), pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   let running = false, raf = 0, tAll = 0;
+  // qualidade adaptativa: se a máquina não sustentar ~25 fps, simplifica a cena ao vivo
+  let perfN = 0, perfSum = 0, degraded = 0;
+  function adapt(raw) {
+    if (!live || degraded > 1) return;
+    perfN++; perfSum += raw;
+    if (perfN < 40) return;
+    const avg = perfSum / perfN; perfN = 0; perfSum = 0;
+    if (avg > 0.04) {
+      degraded++;
+      if (gtao && gtao.enabled) gtao.enabled = false;
+      else { renderer.setPixelRatio(Math.max(0.75, renderer.getPixelRatio() * 0.75)); const sz = renderer.getSize(new THREE.Vector2()); resize(sz.x, sz.y); sun.shadow.mapSize.set(1024, 1024); sun.shadow.map?.dispose(); sun.shadow.map = null; }
+    }
+  }
   function frame() {
-    const dt = Math.min(clock.getDelta(), 0.05); tAll += dt;
+    const raw = clock.getDelta(); adapt(raw);
+    const dt = Math.min(raw, 0.05); tAll += dt;
     state.phase += dt / state.period;
     if (pendingManual === 1) { pendingManual = 2; state.phase = Math.max(state.phase, 0.86); }
     if (state.phase >= 1) { state.phase -= 1; strike(pendingManual === 2); pendingManual = 0; }
