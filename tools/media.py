@@ -110,6 +110,18 @@ def ffmpeg(*args):
     subprocess.run([exe, "-y", "-loglevel", "error", *args], check=True)
 
 
+def fundo(name, entry):
+    """Fundo da cena 3D: o clipe desfocado e escurecido, leve, para ficar atrás da estaca (slot com "video": "fundo")."""
+    src = SRC / f"{name}.mp4"
+    out, poster = OUT / f"{name}-fundo.mp4", OUT / f"{name}-fundo-poster.webp"
+    if stale(src, [out, poster]):
+        ffmpeg("-i", str(src), "-vf", "scale=960:-2,gblur=sigma=4,eq=saturation=0.92", "-an", "-c:v", "libx264", "-preset", "slow",
+               "-pix_fmt", "yuv420p", "-crf", "30", "-g", "4", "-keyint_min", "4", "-sc_threshold", "0", "-movflags", "+faststart", str(out))
+        ffmpeg("-i", str(out), "-frames:v", "1", str(poster))
+        print("fundo", name)
+    entry["fundo"] = True
+
+
 def video(name, entry):
     src = SRC / f"{name}.mp4"
     if not src.exists():
@@ -138,7 +150,10 @@ def main():
             continue
         entry = {"pos": slot.get("pos", "50% 50%"), "alt": slot.get("alt", "")}
         images(name, slot, entry)
-        video(name, entry)
+        if slot.get("video") == "fundo":
+            fundo(name, entry)
+        else:
+            video(name, entry)
         manifest[name] = entry
     (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
     print("ok", len(manifest), "cenas")

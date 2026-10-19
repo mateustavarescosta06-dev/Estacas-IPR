@@ -149,26 +149,73 @@
     });
   });
 
-  /* ---------- A cravação (home): fotos reais por etapa e o registro que acompanha ---------- */
+  /* ---------- Simulador de cravação (home) ---------- */
   var drive = $("[data-drive]");
   if (drive) initDrive(drive);
 
   function initDrive(root) {
-    var fotos = $$(".drive__foto", root);
+    var viz = $("[data-drive-viz]", root);
     var steps = $$(".drive__step", root);
     var dots = $$(".drive__dots button", root);
     var track = $(".drive__track", root);
-    // perfil de solo típico do registro (simulação): aterro, argila, silte, areia e camada resistente
+    var fotos = $$(".drive__foto", root); // fotos reais de cada etapa, atrás da simulação
+    var G = 250, PX = 18, X = 196, PW = 22, SEG = 10; // terreno (y), px por metro, eixo, largura, segmento (m)
+    // perfil de solo típico: aterro, argila, silte, areia e camada resistente, em azuis cada vez mais fundos
     var layers = [
-      { nome: "Aterro", a: 0, b: 2, pen: 50 },
-      { nome: "Argila mole", a: 2, b: 7, pen: 35 },
-      { nome: "Silte argiloso", a: 7, b: 12, pen: 18 },
-      { nome: "Areia fina compacta", a: 12, b: 17, pen: 8 },
-      { nome: "Camada resistente", a: 17, b: 30, pen: 2.5 }
+      { nome: "Aterro", a: 0, b: 2, cor: "#1a3a66", pen: 50 },
+      { nome: "Argila mole", a: 2, b: 7, cor: "#15325b", pen: 35 },
+      { nome: "Silte argiloso", a: 7, b: 12, cor: "#112a4e", pen: 18 },
+      { nome: "Areia fina compacta", a: 12, b: 17, cor: "#0d2342", pen: 8 },
+      { nome: "Camada resistente", a: 17, b: 30, cor: "#081833", pen: 2.5 }
     ];
     var FINAL = 17.6;
-    var r = { prof: $('[data-r="prof"]', root), golpes: $('[data-r="golpes"]', root), nega: $('[data-r="nega"]', root), camada: $('[data-r="camada"]', root) };
-    var barra = $("[data-r-barra]", root);
+    var CREAM = "#f3f5f9", AMARELO = "#ffcd00", MAQ = "#0a1f3d", ACO = "#c9d2de";
+
+    var s = '<svg viewBox="0 0 420 760" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
+    s += '<defs><pattern id="pGraos" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".8" fill="rgba(240,230,218,.13)"/><circle cx="6.5" cy="7" r=".6" fill="rgba(0,0,0,.18)"/></pattern>';
+    s += '<pattern id="pCamadas" width="14" height="6" patternUnits="userSpaceOnUse"><path d="M0 5h7" stroke="rgba(0,0,0,.16)" stroke-width="1"/></pattern>';
+    s += '<pattern id="pTrelica" width="10" height="14" patternUnits="userSpaceOnUse"><path d="M0 0L10 14M10 0L0 14" stroke="' + AMARELO + '" stroke-width="1.1"/></pattern>';
+    s += '<linearGradient id="gPile" x1="0" x2="1"><stop offset="0" stop-color="#a39d92"/><stop offset=".45" stop-color="#e6e1d7"/><stop offset="1" stop-color="#9a948a"/></linearGradient></defs>';
+    layers.forEach(function (L, i) {
+      var y = G + L.a * PX, h = (Math.min(L.b, 28) - L.a) * PX;
+      s += '<rect x="40" y="' + y + '" width="380" height="' + h + '" fill="' + L.cor + '"/>';
+      s += '<rect x="40" y="' + y + '" width="380" height="' + h + '" fill="url(#' + (i % 2 ? "pCamadas" : "pGraos") + ')"/>';
+      s += '<line x1="40" x2="420" y1="' + y + '" y2="' + y + '" stroke="rgba(240,230,218,.16)"/>';
+      s += '<text x="412" y="' + (y + 16) + '" text-anchor="end" class="drive-layer" data-layer="' + i + '">' + L.nome.toUpperCase() + "</text>";
+    });
+    // régua de profundidade
+    for (var m = 0; m <= 27; m++) {
+      var yy = G + m * PX;
+      s += '<line x1="' + (m % 5 ? 32 : 24) + '" x2="40" y1="' + yy + '" y2="' + yy + '" stroke="currentColor" stroke-opacity=".4"/>';
+      if (m % 5 === 0) s += '<text x="20" y="' + (yy + 4) + '" text-anchor="end" class="drive-tick">' + m + "m</text>";
+    }
+    s += '<line x1="40" x2="40" y1="' + G + '" y2="760" stroke="currentColor" stroke-opacity=".4"/>';
+    // superfície e bate-estacas sobre esteiras
+    s += '<line x1="0" x2="420" y1="' + G + '" y2="' + G + '" stroke="' + CREAM + '" stroke-width="1.5"/>';
+    s += '<text x="412" y="' + (G - 8) + '" text-anchor="end" class="drive-tick">N.T. ±0,00</text>';
+    s += '<g class="rig"><rect x="' + (X + 14) + '" y="14" width="12" height="' + (G - 34) + '" fill="url(#pTrelica)" stroke="' + AMARELO + '" stroke-width="1.2"/>';
+    s += '<path d="M' + (X + 26) + " 120L" + (X + 92) + " " + (G - 30) + '" stroke="' + AMARELO + '" stroke-width="2.5"/>';
+    s += '<rect x="' + (X + 30) + '" y="' + (G - 40) + '" width="120" height="26" fill="' + MAQ + '" stroke="rgba(240,230,218,.22)"/>';
+    s += '<rect x="' + (X + 22) + '" y="' + (G - 16) + '" width="136" height="16" rx="8" fill="#1d1916" stroke="rgba(240,230,218,.22)"/>';
+    s += '<circle cx="' + (X + 32) + '" cy="' + (G - 8) + '" r="5" fill="#4a423c"/><circle cx="' + (X + 148) + '" cy="' + (G - 8) + '" r="5" fill="#4a423c"/>';
+    s += '<rect x="' + (X + 100) + '" y="' + (G - 62) + '" width="40" height="22" fill="' + MAQ + '" stroke="rgba(240,230,218,.22)"/>';
+    s += '<rect x="' + (X + 106) + '" y="' + (G - 58) + '" width="16" height="10" fill="rgba(255,205,0,.3)"/></g>';
+    s += '<line data-plumb x1="' + X + '" x2="' + X + '" y1="10" y2="' + (G + 40) + '" stroke="' + CREAM + '" stroke-dasharray="4 5" opacity=".0"/>';
+    s += '<g data-pile><g data-seg2><rect x="' + (X - PW / 2) + '" y="0" width="' + PW + '" height="' + SEG * PX + '" fill="url(#gPile)"/></g>';
+    s += '<g data-seg1><rect x="' + (X - PW / 2) + '" y="0" width="' + PW + '" height="' + SEG * PX + '" fill="url(#gPile)"/><path d="M' + (X - PW / 2) + " " + SEG * PX + "l" + PW / 2 + " 10l" + PW / 2 + ' -10z" fill="#9a948a"/></g>';
+    s += '<rect data-ring x="' + (X - PW / 2 - 3) + '" y="0" width="' + (PW + 6) + '" height="6" fill="' + ACO + '"/></g>';
+    s += '<g data-hammer><rect x="' + (X - 17) + '" y="0" width="34" height="44" fill="' + MAQ + '" stroke="rgba(240,230,218,.25)"/><rect x="' + (X - 17) + '" y="16" width="34" height="5" fill="' + AMARELO + '"/><rect x="' + (X - 13) + '" y="44" width="26" height="6" fill="#4a423c"/></g>';
+    s += '<circle data-impact cx="' + X + '" cy="0" r="0" fill="none" stroke="' + CREAM + '" stroke-width="1.5" opacity="0"/>';
+    s += "</svg>";
+    s += '<div class="readout" aria-live="off"><span class="readout__title">Registro de cravação · simulação</span>';
+    s += '<span>Profundidade</span><b data-r="prof">0,00 m</b><span>Golpes</span><b data-r="golpes">0</b>';
+    s += '<span>Nega (10 golpes)</span><b data-r="nega" class="y">aguardando</b><span>Camada</span><b data-r="camada">superfície</b></div>';
+    viz.innerHTML = s;
+
+    var pile = $("[data-pile]", viz), seg1 = $("[data-seg1]", viz), seg2 = $("[data-seg2]", viz), ring = $("[data-ring]", viz);
+    var hammer = $("[data-hammer]", viz), plumb = $("[data-plumb]", viz), impact = $("[data-impact]", viz);
+    var r = { prof: $('[data-r="prof"]', viz), golpes: $('[data-r="golpes"]', viz), nega: $('[data-r="nega"]', viz), camada: $('[data-r="camada"]', viz) };
+    var layerText = $$(".drive-layer", viz);
 
     function layerAt(d) { for (var i = layers.length - 1; i >= 0; i--) if (d >= layers[i].a) return i; return 0; }
     function blowsTo(d) {
@@ -177,18 +224,47 @@
       return n;
     }
     var ease = function (k) { return k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; };
-    var current = -1;
+    var current = -1, lastBlow = 0;
 
     function render(p) {
       var stepIdx = p < .15 ? 0 : p < .5 ? 1 : p < .64 ? 2 : 3;
-      var b = stepIdx === 0 ? 0 : stepIdx === 1 ? 9 * ease((p - .15) / .35) : stepIdx === 2 ? 9 : 9 + (FINAL - 9) * ease((p - .64) / .36);
+      var b = 0, tilt = 0, seg2Drop = 1, hasSeg2 = false, plumbOp = 0;
+      if (stepIdx === 0) { var k0 = ease(p / .15); tilt = 7 * (1 - k0); plumbOp = .9 * k0; }
+      else if (stepIdx === 1) { b = 9 * ease((p - .15) / .35); }
+      else if (stepIdx === 2) { b = 9; hasSeg2 = true; seg2Drop = 1 - ease((p - .5) / .14); }
+      else { b = 9 + (FINAL - 9) * ease((p - .64) / .36); hasSeg2 = true; seg2Drop = 0; }
+
+      var y1 = G + (b - SEG) * PX;              // topo do segmento 1
+      seg1.setAttribute("transform", "translate(0," + y1 + ")");
+      var y2 = y1 - SEG * PX - seg2Drop * 120;
+      seg2.setAttribute("transform", "translate(0," + y2 + ")");
+      seg2.style.opacity = hasSeg2 ? 1 - seg2Drop * .4 : 0;
+      ring.setAttribute("transform", "translate(0," + (y1 - 3) + ")");
+      ring.style.opacity = hasSeg2 && seg2Drop < .05 ? 1 : 0;
+      pile.setAttribute("transform", "rotate(" + tilt + " " + X + " " + G + ")");
+      plumb.setAttribute("opacity", stepIdx === 0 ? plumbOp : 0);
+
+      var blows = blowsTo(b);
+      var frac = blows - Math.floor(blows);
+      var drivingNow = stepIdx === 1 || stepIdx === 3;
+      var lift = drivingNow ? (1 - frac) * 26 : 10;
+      var top = (hasSeg2 ? y2 : y1) - 50 - lift;
+      hammer.setAttribute("transform", "translate(0," + top + ")" + (stepIdx === 0 ? " rotate(" + tilt + " " + X + " " + (G - top) + ")" : ""));
+      if (drivingNow && Math.floor(blows) !== lastBlow && !reduceMotion) {
+        impact.setAttribute("cy", hasSeg2 ? y2 : y1);
+        impact.animate ? impact.animate([{ r: 4, opacity: .9 }, { r: 26, opacity: 0 }], { duration: 380, easing: "ease-out" }) : null;
+      }
+      lastBlow = Math.floor(blows);
+
       var li = layerAt(Math.max(0, b - .001));
+      root.style.setProperty("--k", p.toFixed(4));
+      root.setAttribute("data-sc-verify-state", stepIdx + ":" + b.toFixed(2));
       r.prof.textContent = fmt(b, 2) + " m";
-      r.golpes.textContent = fmt(Math.floor(blowsTo(b)));
+      r.golpes.textContent = fmt(Math.floor(blows));
       r.nega.textContent = b > 0 ? fmt(layers[li].pen * 10, 0) + " mm" : "aguardando";
       r.camada.textContent = b > 0 ? layers[li].nome : "superfície";
-      if (barra) barra.style.setProperty("--d", (b / 20).toFixed(4));
-      root.style.setProperty("--k", p.toFixed(4));
+      layerText.forEach(function (t, i) { t.classList.toggle("is-on", b > 0 && i === li); });
+
       if (stepIdx !== current) {
         current = stepIdx;
         steps.forEach(function (st, i) { st.classList.toggle("is-active", i === stepIdx); });
@@ -203,9 +279,12 @@
       var rect = track.getBoundingClientRect();
       var total = rect.height - window.innerHeight;
       render(clamp(-rect.top / (total > 0 ? total : 1), 0, 1));
+      // estado do palco para o verificador scroll-craft, só enquanto o palco está na tela
+      if (rect.bottom < 0 || rect.top > window.innerHeight) root.removeAttribute("data-sc-verify-state");
     }
     if (reduceMotion) {
       render(1);
+      root.removeAttribute("data-sc-verify-state"); // movimento reduzido: quadro final fixo, sem palco animado
       steps.forEach(function (st) { st.classList.add("is-active"); st.style.position = "relative"; });
     } else {
       window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });

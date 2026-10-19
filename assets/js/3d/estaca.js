@@ -39,6 +39,26 @@ function textures(q) {
   return (CACHE = { concrete, slab, steel });
 }
 
+/* Texturas fotográficas (geradas no Higgsfield a partir das fotos da fábrica: concreto curado,
+   concreto fresco, chapa da fôrma e piso da pista). Entram por cima das procedurais assim que
+   carregam; sem elas, a cena segue com as procedurais. */
+let REAL = null;
+function realTextures() {
+  if (REAL) return REAL;
+  const base = new URL("../../img/tex/", import.meta.url).href;
+  const loader = new THREE.TextureLoader();
+  const load = (file, srgb) => new Promise((ok) => loader.load(base + file, (t) => {
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8;
+    if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+    ok(t);
+  }, undefined, () => ok(null)));
+  const set = (n) => Promise.all([load(n + ".jpg", true), load(n + "-normal.jpg", false), load(n + "-rough.jpg", false)])
+    .then(([map, normalMap, roughnessMap]) => ({ map, normalMap, roughnessMap }));
+  REAL = Promise.all(["concreto", "fresco", "aco", "pista"].map(set))
+    .then(([concreto, fresco, aco, pista]) => ({ concreto, fresco, aco, pista }));
+  return REAL;
+}
+
 /* Ambiente para reflexos: uma sala escura com painéis de luz (o aço precisa de algo para refletir). */
 function environment(renderer) {
   const s = new THREE.Scene();
@@ -131,6 +151,23 @@ export function createEstaca(canvas, opts = {}) {
   const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 1);
   M.concrete.clippingPlanes = [clip]; M.concrete.clipShadows = true;
   M.wet.clippingPlanes = [];
+
+  // as fotos de material substituem as procedurais quando chegam (cada cena com a sua escala)
+  realTextures().then((R) => {
+    const use = (mat, t, rep, color) => {
+      if (!t || !t.map) return;
+      const own = (x) => { if (!x) return null; const c = x.clone(); c.repeat.set(rep[0], rep[1]); c.needsUpdate = true; return c; };
+      mat.map = own(t.map); mat.normalMap = own(t.normalMap); mat.roughnessMap = own(t.roughnessMap);
+      if (color != null) mat.color.set(color);
+      mat.needsUpdate = true;
+    };
+    use(M.concrete, R.concreto, [3, 3]);           // a cor segue a cura a cada quadro
+    use(M.cp, R.concreto, [1, 1], 0xf2f0ea);
+    use(M.wet, R.fresco, [3, 3], 0xffffff);
+    use(M.slab, R.pista, [1, 9], 0xd9dee6);
+    use(M.form, R.aco, [1, 1], 0xffffff);
+    request();
+  });
 
   /* ---------- Luzes ---------- */
   const hemi = new THREE.HemisphereLight(0x3a5f9a, 0x060c18, 0.5);
@@ -339,7 +376,7 @@ export function createEstaca(canvas, opts = {}) {
     cap.scale.set(Math.max(0.001, hi - lo), 1, 1);
     cap.position.set((lo + hi) / 2, h, -L / 2);
     // cura: o concreto úmido e escuro vira claro e fosco
-    M.concrete.color.copy(tmpC.setRGB(lerp(0.42, 1, cure), lerp(0.43, 1, cure), lerp(0.45, 0.99, cure)));
+    M.concrete.color.copy(tmpC.setRGB(lerp(0.42, 0.93, cure), lerp(0.43, 0.95, cure), lerp(0.45, 1, cure))); // a foto do concreto já é quente
     M.concrete.roughness = lerp(0.36, 1, cure);
     M.concrete.normalScale.setScalar(lerp(0.3, 0.55, cure));
 

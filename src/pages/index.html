@@ -1,88 +1,88 @@
 <!--
 title: IPR Estacas, fabricação e cravação de estacas pré-fabricadas de concreto
-desc: Em 24 horas, uma estaca nasce. Role a página e acompanhe um dia inteiro na pista da IPR, da protensão dos fios ao nascer do dia em que a peça é liberada, e veja a cravação golpe a golpe.
+desc: Em 24 horas, uma estaca nasce. Acompanhe um dia na fábrica da IPR, da protensão dos fios ao ensaio que libera a peça, e monte a sua estaca em corte.
 nav: home
 -->
 <section class="dia" data-dia aria-label="24 horas na fábrica IPR">
   <div class="dia__pista">
     <div class="dia__palco">
-      <div class="filme">
-        {{filme:filme-24h}}
-        <figure class="quadro" data-quadro data-de="0.9" data-ate="2">{{img:tl-0600d2|(max-aspect-ratio: 16/9) 178vh, 100vw}}</figure>
-        <figure class="quadro" data-quadro data-de="0.66" data-ate="0.74">{{img:tl-1730|(max-aspect-ratio: 16/9) 178vh, 100vw}}</figure>
-        <figure class="quadro" data-quadro data-de="0.4" data-ate="0.5">{{img:tl-0900|(max-aspect-ratio: 16/9) 178vh, 100vw}}</figure>
-        <figure class="quadro" data-quadro data-de="-1" data-ate="0.22">{{img!:tl-0600|(max-aspect-ratio: 16/9) 178vh, 100vw}}</figure>
-        <figure class="quadro" data-quadro data-de="-1" data-ate="0.07" data-f="0.05">{{img!:hora-0540|(max-aspect-ratio: 16/9) 178vh, 100vw}}</figure>
-      </div>
+      {{fundo:filme-24h}}
+      <div class="dia__veu" aria-hidden="true"></div>
+      <figure class="intervalo intervalo--abertura" data-de="-1" data-ate="0.055">
+        <div class="intervalo__cena">{{img!:hora-0540|(max-aspect-ratio: 16/9) 178vh, 100vw}}{{loop:hora-0540}}</div>
+      </figure>
+      <figure class="intervalo" data-de="0.195" data-ate="0.275">
+        <div class="intervalo__cena">{{img:hora-0730|(max-aspect-ratio: 16/9) 178vh, 100vw}}</div>
+      </figure>
+      <figure class="intervalo" data-de="0.415" data-ate="0.515">
+        <div class="intervalo__cena">{{img:hora-1000|(max-aspect-ratio: 16/9) 178vh, 100vw}}</div>
+      </figure>
+      <figure class="intervalo" data-de="0.615" data-ate="0.715">
+        <div class="intervalo__cena">{{img:hora-2200|(max-aspect-ratio: 16/9) 178vh, 100vw}}</div>
+      </figure>
 
-      <div class="marcas" aria-hidden="true">
-        <div class="marca" data-marca data-u="0.5" data-v="0.83" data-de="0.125" data-ate="0.215"><i></i><span>Fios de aço CP-175 RB, tracionados de cabeceira a cabeceira</span></div>
-        <div class="marca" data-marca data-u="0.548" data-v="0.27" data-de="0.27" data-ate="0.35"><i></i><span>Silos da central própria</span></div>
-        <div class="marca" data-marca data-u="0.42" data-v="0.84" data-de="0.405" data-ate="0.495"><i></i><span>Concreto C40 lançado sobre os fios tensos</span></div>
-        <div class="marca" data-marca data-u="0.5" data-v="0.52" data-de="0.415" data-ate="0.495"><i></i><span>Trecho ainda aberto: os fios à vista</span></div>
-        <div class="marca" data-marca data-u="0.47" data-v="0.82" data-de="0.665" data-ate="0.735"><i></i><span>Úmido e escuro de manhã, claro e fosco agora</span></div>
-        <div class="marca" data-marca data-u="0.5" data-v="0.8" data-de="0.905" data-ate="1.2"><i></i><span>Estacas prontas, liberadas pelo ensaio de 24 horas</span></div>
-      </div>
+      <canvas class="dia__3d" data-estaca aria-hidden="true"></canvas>
 
       <nav class="etapas" data-etapas aria-label="Etapas da fabricação">
         <ol>
-          <li><button type="button" data-ir="0.16">Protensão</button></li>
-          <li><button type="button" data-ir="0.44">Concretagem</button></li>
-          <li><button type="button" data-ir="0.69">Cura</button></li>
-          <li><button type="button" data-ir="0.85">Ensaio</button></li>
-          <li><button type="button" data-ir="0.95">Liberação</button></li>
+          <li><button type="button" data-ir="0.085">Protensão</button></li>
+          <li><button type="button" data-ir="0.31">Concretagem</button></li>
+          <li><button type="button" data-ir="0.545">Cura</button></li>
+          <li><button type="button" data-ir="0.745">Ensaio</button></li>
+          <li><button type="button" data-ir="0.94">Liberação</button></li>
         </ol>
       </nav>
 
+      <div class="rotulos" data-rotulos aria-hidden="true"></div>
+
       <div class="dia__textos">
-        <article class="capitulo capitulo--abertura" data-de="-1" data-ate="0.06">
-          <p class="capitulo__hora">05:40 · Pista de protensão IPR</p>
+        <article class="capitulo capitulo--abertura" data-de="-1" data-ate="0.05">
           <h1 class="capitulo__titulo">Em 24 horas,<br>uma estaca nasce.</h1>
-          <p>Role a página e acompanhe um dia inteiro nesta pista da fábrica: da madrugada antes do sol ao nascer do dia em que a peça é liberada.</p>
+          <p>Role a página e acompanhe um dia inteiro na fábrica da IPR: da pista vazia antes do sol ao ensaio que libera a peça na manhã seguinte.</p>
           <div class="btn-row">
             <a class="btn btn--primary" href="{{root}}contato/">Solicitar orçamento {{icon:arrow}}</a>
-            <a class="btn" href="#cravacao">Ver a cravação</a>
+            <a class="btn" href="#corte">Montar uma estaca</a>
           </div>
         </article>
-        <article class="capitulo" data-de="0.12" data-ate="0.22">
+        <article class="capitulo" data-de="0.06" data-ate="0.19">
           <p class="capitulo__hora">06:00</p>
           <h2 class="capitulo__titulo">Protensão</h2>
           <p>Os fios de aço CP-175 são esticados de uma cabeceira à outra da pista: seis por seção, oito na quadrada. A força que vai proteger a estaca nasce antes do concreto.</p>
         </article>
-        <article class="capitulo" data-de="0.27" data-ate="0.35">
+        <article class="capitulo intervalo-texto" data-de="0.2" data-ate="0.27">
           <p class="capitulo__hora">07:30</p>
           <h2 class="capitulo__titulo">A central</h2>
-          <p>Na central própria, ao fundo, cimento, areia e brita são pesados em balanças calibradas. Cada metro cúbico fica registrado.</p>
+          <p>Na central própria, cimento, areia e brita são pesados em balanças calibradas. Cada metro cúbico fica registrado.</p>
         </article>
-        <article class="capitulo" data-de="0.4" data-ate="0.5">
-          <p class="capitulo__hora">09:00</p>
+        <article class="capitulo" data-de="0.28" data-ate="0.41">
+          <p class="capitulo__hora">08:30</p>
           <h2 class="capitulo__titulo">Concretagem</h2>
-          <p>O concreto C40 é lançado sobre os fios tensos e adensado na fôrma metálica, trecho a trecho. Do mesmo lote saem os corpos de prova que vão contar a história desta peça.</p>
+          <p>O concreto C40 é lançado sobre os fios tensos e adensado na fôrma metálica. Do mesmo lote saem os corpos de prova que vão contar a história desta peça.</p>
         </article>
-        <article class="capitulo" data-de="0.54" data-ate="0.62">
-          <p class="capitulo__hora">12:00</p>
+        <article class="capitulo intervalo-texto" data-de="0.42" data-ate="0.51">
+          <p class="capitulo__hora">10:00</p>
           <h2 class="capitulo__titulo">O dia passa</h2>
-          <p>A peça descansa na pista. O sol cruza o pátio e, hora a hora, o concreto ganha resistência.</p>
+          <p>A peça descansa na pista. Hora a hora, o concreto ganha resistência.</p>
         </article>
-        <article class="capitulo" data-de="0.66" data-ate="0.74">
+        <article class="capitulo" data-de="0.52" data-ate="0.61">
           <p class="capitulo__hora">17:30</p>
           <h2 class="capitulo__titulo">Cura</h2>
-          <p>No fim da tarde a superfície já mudou: o concreto úmido e escuro ficou claro e fosco. É a cura acontecendo.</p>
+          <p>No fim da tarde a superfície já mudou: o concreto úmido e escuro fica claro e fosco. É a cura acontecendo.</p>
         </article>
-        <article class="capitulo" data-de="0.755" data-ate="0.8">
+        <article class="capitulo intervalo-texto" data-de="0.62" data-ate="0.71">
           <p class="capitulo__hora">22:00</p>
           <h2 class="capitulo__titulo">Noite</h2>
-          <p>O sol se põe atrás do pátio e a pista atravessa a noite. A resistência do concreto continua subindo.</p>
+          <p>O pátio escurece. A resistência do concreto continua subindo.</p>
         </article>
-        <article class="capitulo" data-de="0.815" data-ate="0.885">
+        <article class="capitulo" data-de="0.72" data-ate="0.835">
           <p class="capitulo__hora">05:30 · 24 horas</p>
           <h2 class="capitulo__titulo">O ensaio</h2>
           <p>Um corpo de prova do lote vai à prensa. É o resultado dele que libera a desmoldagem e o manuseio da peça. Outros serão rompidos com 3, 7 e 28 dias.</p>
         </article>
-        <article class="capitulo capitulo--fim" data-de="0.9" data-ate="2">
+        <article class="capitulo capitulo--fim" data-de="0.84" data-ate="2">
           <p class="capitulo__hora">06:00 · Dia 2</p>
           <h2 class="capitulo__titulo">Uma estaca nasceu.</h2>
-          <p>Os fios são liberados nas cabeceiras e a força passa para o concreto. As peças saem da pista prontas para a obra.</p>
+          <p>Os fios são liberados nas cabeceiras e a força passa para o concreto. A fôrma abre.</p>
           <p class="capitulo__ficha">Hexagonal Ø 33 · 6 fios Ø 6 mm CP-175 RB · segmentos de 6, 8 e 10 m</p>
         </article>
       </div>
@@ -91,12 +91,11 @@ nav: home
   </div>
 </section>
 
-<section class="corte" id="corte" data-corte data-tone="noite" aria-label="A estaca em corte">
+<section class="corte" id="corte" data-corte data-tone="noite" aria-label="Monte uma estaca em corte">
   <div class="wrap corte__grid">
     <div class="corte__txt">
-      <p class="capitulo__hora">A peça pronta</p>
-      <h2 class="h-lg">A estaca em corte.</h2>
-      <p class="lead">Escolha a geometria e a bitola. No topo da peça, os fios aparecem exatamente onde estão nos ábacos da IPR.</p>
+      <h2 class="h-lg">Monte a sua estaca.</h2>
+      <p class="lead">Escolha a geometria e a bitola. A estaca se monta de novo, da fôrma ao concreto curado, com os fios exatamente onde estão nos ábacos da IPR.</p>
       <div class="corte__formas" role="group" aria-label="Geometria">
         <button type="button" data-forma="circular" aria-pressed="false">Circular</button>
         <button type="button" data-forma="hexagonal" aria-pressed="true">Hexagonal</button>
@@ -104,19 +103,27 @@ nav: home
       </div>
       <ul class="corte__bitolas" data-bitolas aria-label="Bitola"></ul>
       <dl class="corte__ficha" data-ficha></dl>
+      <label class="corte__montagem">
+        <span>Montagem <b data-etapa>Fôrma</b></span>
+        <input type="range" min="0" max="100" value="0" data-montagem aria-label="Etapa da montagem">
+      </label>
       <a class="btn btn--primary" href="{{root}}estacas/#catalogo">Ábaco e ficha completa {{icon:arrow}}</a>
     </div>
     <div class="corte__palco">
-      <figure class="corte__foto" data-foto="circular">{{img:secao-circular|(max-width: 820px) 100vw, 56vw}}</figure>
-      <figure class="corte__foto is-on" data-foto="hexagonal">{{img:secao-hexagonal|(max-width: 820px) 100vw, 56vw}}</figure>
-      <figure class="corte__foto" data-foto="quadrada">{{img:secao-quadrada|(max-width: 820px) 100vw, 56vw}}</figure>
-      <div class="corte__desenho"><p class="rotulo">Desenho do ábaco</p><div class="corte__svg" data-corte-svg></div></div>
-      <p class="corte__legenda" data-legenda></p>
+      <canvas aria-label="Estaca em 3D montando-se em corte"></canvas>
+      <div class="corte__real" aria-hidden="true">
+        <p class="rotulo">Topo da peça real</p>
+        <figure data-foto="hexagonal" class="is-on">{{img:secao-hexagonal|176px}}</figure>
+        <figure data-foto="circular">{{img:secao-circular|176px}}</figure>
+        <figure data-foto="quadrada">{{img:secao-quadrada|176px}}</figure>
+      </div>
+      <p class="corte__dica">Arraste para girar · toque duplo volta</p>
+      <div class="corte__svg" data-corte-svg></div>
     </div>
   </div>
 </section>
 
-<section class="drive" id="cravacao" data-drive data-tone="aco" aria-label="Depois das 24 horas: a cravação">
+<section class="drive" data-drive data-tone="aco" aria-label="Depois das 24 horas: a cravação">
   <div class="drive__track">
     <div class="drive__sticky">
       <div class="drive__fotos" aria-hidden="true">
@@ -126,9 +133,9 @@ nav: home
         <figure class="drive__foto">{{img:cravacao-4|(max-aspect-ratio: 16/9) 178vh, 100vw}}</figure>
       </div>
       <div class="wrap drive__layout">
-        <div class="drive__texto">
+        <div>
           <div class="drive__intro">
-            <p class="capitulo__hora">Depois das 24 horas · na obra</p>
+            <p class="capitulo__hora">Depois das 24 horas</p>
             <h2 class="h-lg">Golpe a golpe, até a nega.</h2>
           </div>
           <div class="drive__steps">
@@ -156,18 +163,7 @@ nav: home
             <button type="button" aria-label="Nega"></button>
           </div>
         </div>
-        <div class="registro-cravacao" aria-live="off">
-          <p class="registro-cravacao__titulo">Registro de cravação · exemplo</p>
-          <div class="registro-cravacao__corpo">
-            <div class="registro-cravacao__perfil" aria-hidden="true"><i data-r-barra></i></div>
-            <dl>
-              <div><dt>Profundidade</dt><dd data-r="prof">0,00 m</dd></div>
-              <div><dt>Golpes</dt><dd data-r="golpes">0</dd></div>
-              <div><dt>Nega (10 golpes)</dt><dd data-r="nega" class="y">aguardando</dd></div>
-              <div><dt>Camada</dt><dd data-r="camada">superfície</dd></div>
-            </dl>
-          </div>
-        </div>
+        <div class="drive__viz" data-drive-viz></div>
       </div>
     </div>
   </div>

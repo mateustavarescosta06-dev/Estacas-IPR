@@ -148,13 +148,13 @@ def abertura_extra(root):
     return out
 
 
-def filme_tag(slot, root):
-    """O time-lapse da home: baixado inteiro pelo historia.js e conduzido pela rolagem (sem autoplay)."""
-    if not MEDIA.get(slot, {}).get("video"):
+def fundo_tag(slot, root):
+    """O pátio real atrás da estaca 3D: time-lapse desfocado, levado à hora da cena pelo historia.js."""
+    if not MEDIA.get(slot, {}).get("fundo"):
         return ""
-    base = f"{root}assets/media/{slot}"
-    return (f'<video class="filme__video" muted playsinline preload="none" data-filme data-src="{base}.mp4" '
-            f'data-src-m="{base}-m.mp4" poster="{base}-poster.webp" aria-hidden="true" tabindex="-1"></video>')
+    base = f"{root}assets/media/{slot}-fundo"
+    return (f'<video class="dia__fundo" muted playsinline preload="none" data-fundo data-src="{base}.mp4" '
+            f'poster="{base}-poster.webp" aria-hidden="true" tabindex="-1"></video>')
 
 
 def faixa(spec, root):
@@ -291,7 +291,7 @@ def render(text, ctx, icon_map):
     text = re.sub(r"\{\{loop:([\w-]+)\}\}",
                   lambda m: video_tag(m.group(1), root, "intervalo__video", scrub=False)
                   if MEDIA.get(m.group(1), {}).get("video") else "", text)
-    text = re.sub(r"\{\{filme:([\w-]+)\}\}", lambda m: filme_tag(m.group(1), root), text)
+    text = re.sub(r"\{\{fundo:([\w-]+)\}\}", lambda m: fundo_tag(m.group(1), root), text)
     text = re.sub(r"\{\{faixa:([^}]+)\}\}", lambda m: faixa(m.group(1), root), text)
     text = re.sub(r"\{\{tom:([\w-]+)\}\}", lambda m: scene_style(m.group(1)), text)
     text = re.sub(r"\{\{cor:(\w+)\}\}", lambda m: TONES[m.group(1)][3], text)
