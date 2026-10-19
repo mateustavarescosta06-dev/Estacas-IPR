@@ -3,58 +3,39 @@ title: Controle de Qualidade, rigor técnico e rastreabilidade | IPR Estacas
 desc: Homologação de insumos, central de concreto automatizada, ensaios de compressão em 24 h, 3, 7 e 28 dias e inspeção individual de 100% das estacas IPR.
 nav: qualidade
 -->
-<section class="phero" data-grid-area>
-  <div class="phero__media"><img src="{{root}}assets/img/3d/pilha-blueprint.jpg" alt=""></div>
-  <div class="grid-layer" data-grid="48"></div>
-  <div class="wrap phero__inner">
-    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Controle de Qualidade</span></nav>
-    {{station}}
-    <h1 class="h-xl phero__title">Rigor técnico em <span class="hl">cada lote.</span></h1>
-    <p class="lead">Excelência operacional fundamentada na conformidade técnica e na rastreabilidade total de cada etapa produtiva.</p>
+<section class="capa">
+  {{fios}}
+  <div class="wrap capa__grid">
+    <div class="capa__txt">
+      <nav class="crumbs" aria-label="Você está em"><a href="{{root}}">Início</a><span aria-hidden="true">/</span><span>Controle de Qualidade</span></nav>
+      {{amostra}}
+      <h1 class="h-xl">Rigor técnico <span class="hl">em cada lote.</span></h1>
+      <p class="lead">Durante a concretagem, cada lote deixa amostras para trás. Os corpos de prova vão à prensa em idades definidas, e é o resultado deles que libera a peça para o próximo passo.</p>
+      <ul class="capa__meta"><li>Ensaios em 24 h, 3, 7 e 28 dias</li><li>Inspeção de 100% das peças</li><li>Lote vinculado à estaca</li></ul>
+    </div>
+    {{capa}}
   </div>
 </section>
 
-<section class="section">
+<section class="bloco" data-tone="cura">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Matéria-prima com critério de aceitação.</h2>
-      </div>
-      <p class="lead">A cadeia de suprimentos da IPR é estritamente vinculada a fornecedores que apresentam certificações de conformidade.</p>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Matéria-prima com critério de aceitação.</h2>
+      <p class="lead">A cadeia de suprimentos da IPR é vinculada a fornecedores que apresentam certificação de conformidade.</p>
     </div>
-    <div class="segments reveal">
-      <article class="segment">{{icon:link}}<span class="segment__k">Insumo 01</span><h3>Aço</h3><p>Verificação de propriedades mecânicas e certificados de qualidade conforme normas técnicas.</p></article>
-      <article class="segment">{{icon:layers}}<span class="segment__k">Insumo 02</span><h3>Areia e pedra</h3><p>Controle de granulometria, índice de forma e pureza dos agregados.</p></article>
-      <article class="segment">{{icon:flask}}<span class="segment__k">Insumo 03</span><h3>Cimento</h3><p>Validação de procedência e conformidade com os requisitos de resistência e tempo de pega.</p></article>
-    </div>
+    <ul class="regua reveal" style="--cols:3">
+      <li><span class="rotulo">Insumo</span><h3>Aço</h3><p>Verificação das propriedades mecânicas e dos certificados de qualidade conforme as normas técnicas.</p></li>
+      <li><span class="rotulo">Insumo</span><h3>Areia e pedra</h3><p>Controle de granulometria, índice de forma e pureza dos agregados.</p></li>
+      <li><span class="rotulo">Insumo</span><h3>Cimento</h3><p>Validação de procedência e conformidade com os requisitos de resistência e tempo de pega.</p></li>
+    </ul>
   </div>
 </section>
 
-<section class="section dark">
-  <div class="wrap grid-2">
-    <div class="reveal">
-      <h2 class="h-md">Controle exato do traço.</h2>
-      <p class="lead">Central própria, com estabilidade das propriedades reológicas do material.</p>
-      <ul class="spec-list">
-        <li>{{icon:gauge}}<div><b>Padronização</b><span>Dosagem gravimétrica precisa dos componentes.</span></div></li>
-        <li>{{icon:shield}}<div><b>Durabilidade</b><span>Manutenção da relação água/cimento para mitigar a porosidade e proteger a armadura.</span></div></li>
-        <li>{{icon:clock}}<div><b>Eficiência operacional</b><span>Sincronia entre produção e aplicação, reduzindo o tempo de transporte e garantindo a trabalhabilidade.</span></div></li>
-      </ul>
-    </div>
-    <figure class="frame reveal" style="--d:.1s">
-      <img src="{{root}}assets/img/3d/central-blueprint.jpg" alt="Balanças de dosagem da central de concreto" loading="lazy">
-      <figcaption>Dosagem gravimétrica</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section class="section concrete blueprint-light" id="ensaios">
+<section class="bloco" id="ensaios" data-tone="papel">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Cronograma de rompimento.</h2>
-      </div>
-      <p class="lead">Durante a concretagem de cada estaca são extraídas amostras para moldagem de corpos de prova cilíndricos, ensaiados em períodos críticos.</p>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Cronograma de rompimento.</h2>
+      <p class="lead">Durante a concretagem de cada estaca são extraídas amostras para moldagem de corpos de prova cilíndricos, ensaiados em idades críticas.</p>
     </div>
     <div class="curing reveal" data-curing>
       <span class="caption">Selecione a idade do ensaio</span>
@@ -65,34 +46,42 @@ nav: qualidade
         <button type="button" role="tab" aria-selected="false"><b>7 dias</b><span>Idade intermediária</span></button>
         <button type="button" role="tab" aria-selected="false"><b>28 dias</b><span>Idade de referência</span></button>
       </div>
-      <div class="curing__panel" role="tabpanel"><h3>Ensaio de 24 horas</h3><p>Acompanha o ganho inicial de resistência do concreto protendido, informação essencial para as etapas de desmoldagem e manuseio das peças.</p></div>
-      <div class="curing__panel" role="tabpanel" hidden><h3>Ensaio de 3 dias</h3><p>Confirma a evolução da resistência nas primeiras idades e a consistência do traço produzido pela central automatizada.</p></div>
+      <div class="curing__panel" role="tabpanel"><h3>Ensaio de 24 horas</h3><p>Acompanha o ganho inicial de resistência do concreto protendido, a informação que libera a desmoldagem e o manuseio das peças.</p></div>
+      <div class="curing__panel" role="tabpanel" hidden><h3>Ensaio de 3 dias</h3><p>Confirma a evolução da resistência nas primeiras idades e a consistência do traço produzido pela central.</p></div>
       <div class="curing__panel" role="tabpanel" hidden><h3>Ensaio de 7 dias</h3><p>Verificação intermediária que permite antecipar desvios e garantir que o lote evolui conforme o projetado.</p></div>
-      <div class="curing__panel" role="tabpanel" hidden><h3>Ensaio de 28 dias</h3><p><b>Validação estrutural:</b> a conformidade do lote é condicionada ao alcance dos valores projetados de fck, assegurando a integridade da fundação.</p></div>
+      <div class="curing__panel" role="tabpanel" hidden><h3>Ensaio de 28 dias</h3><p><b>Validação estrutural:</b> a conformidade do lote depende de alcançar o fck projetado, assegurando a integridade da fundação.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section" id="inspecao">
-  <div class="wrap grid-2">
+<section class="bloco" data-tone="cura">
+  <div class="wrap par par--foto-esq">
+    <div class="reveal">
+      <h2 class="h-md">Controle exato do traço.</h2>
+      <p class="lead" style="margin-top: 22px">Central própria, com propriedades estáveis de um lote para o outro.</p>
+      <ul class="spec-list">
+        <li>{{icon:gauge}}<div><b>Padronização</b><span>Dosagem gravimétrica precisa dos componentes.</span></div></li>
+        <li>{{icon:shield}}<div><b>Durabilidade</b><span>Relação água/cimento mantida para reduzir a porosidade e proteger o aço.</span></div></li>
+        <li>{{icon:clock}}<div><b>Sincronia</b><span>Produção e lançamento no mesmo ritmo, sem perda de trabalhabilidade no trajeto.</span></div></li>
+      </ul>
+    </div>
+    {{foto:central-painel|4/5|Balanças da central · registro de cada ciclo|sangra-e}}
+  </div>
+</section>
+
+<section class="bloco" id="inspecao" data-tone="cura">
+  <div class="wrap par">
     <div class="reveal">
       <h2 class="h-md">100% das unidades inspecionadas.</h2>
-      <p class="muted">Após o período inicial de cura e desmoldagem, todas as unidades são submetidas à Inspeção Visual Individual. O protocolo visa identificar:</p>
+      <p class="muted" style="margin-top: 20px">Depois da cura inicial e da desmoldagem, todas as peças passam pela inspeção visual individual. O protocolo procura:</p>
       <ul class="checklist" data-checklist>
         <li><span><b>Descontinuidades superficiais</b> ou segregações do concreto</span></li>
         <li><span><b>Precisão dimensional</b> da seção e do comprimento</span></li>
         <li><span><b>Alinhamento</b> e retilineidade da peça</span></li>
         <li><span><b>Vínculo do lote</b> aos resultados laboratoriais</span></li>
       </ul>
+      <div class="nota" style="margin-top: 28px">{{icon:trace}}<p><b>Rastreabilidade:</b> cada processo é documentado e liga cada estaca aos resultados de laboratório do seu lote de concreto.</p></div>
     </div>
-    <figure class="frame reveal" style="--d:.1s">
-      <img src="{{root}}assets/img/3d/estacas-paper.jpg" alt="Profissional da IPR com capacete diante de estacas hexagonais" loading="lazy">
-      <figcaption>Inspeção visual individual</figcaption>
-    </figure>
-  </div>
-  <div class="wrap" style="margin-top: 48px">
-    <div class="note reveal">{{icon:trace}}<p><b>Nota técnica:</b> todos os processos são documentados, gerando um histórico de rastreabilidade que vincula cada estaca aos resultados laboratoriais de seu respectivo lote de concreto.</p></div>
+    {{foto:inspecao|4/5|Inspeção visual individual|sangra-d}}
   </div>
 </section>
-
-{{cta}}

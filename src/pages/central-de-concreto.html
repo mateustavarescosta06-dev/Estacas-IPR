@@ -1,81 +1,74 @@
 <!--
 title: Central de Concreto automatizada | IPR Estacas
-desc: A central de concreto própria da IPR opera com dosagem 100% automatizada, balanças calibradas conforme a NBR 7212 e rastreabilidade total de cada metro cúbico.
+desc: A central de concreto própria da IPR opera com dosagem automatizada, balanças calibradas conforme a NBR 7212 e rastreabilidade de cada metro cúbico.
 nav: central
 -->
-<section class="phero" data-grid-area>
-  <div class="phero__media"><img src="{{root}}assets/img/3d/central-blueprint.jpg" alt=""></div>
-  <div class="grid-layer" data-grid="48"></div>
-  <div class="wrap phero__inner">
-    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Central de Concreto</span></nav>
-    {{station}}
-    <h1 class="h-xl phero__title">O núcleo tecnológico <span class="hl">da operação.</span></h1>
-    <p class="lead">Engenharia de precisão em nossa central automatizada, projetada para operar sob regimes de alta exigência.</p>
-    <div class="phero__meta"><span>Dosagem 100% automatizada</span><span>Balanças NBR 7212</span><span>Rastreabilidade por m³</span></div>
+<section class="capa">
+  {{fios}}
+  <div class="wrap capa__grid">
+    <div class="capa__txt">
+      <nav class="crumbs" aria-label="Você está em"><a href="{{root}}">Início</a><span aria-hidden="true">/</span><span>Central de Concreto</span></nav>
+      {{amostra}}
+      <h1 class="h-xl">O núcleo <span class="hl">da operação.</span></h1>
+      <p class="lead">Antes da forma vem a matéria. Na central própria da IPR, cimento, areia e brita são pesados, misturados e registrados para que cada estaca receba o mesmo concreto.</p>
+      <ul class="capa__meta"><li>Dosagem automatizada</li><li>Balanças NBR 7212</li><li>Registro por m³</li></ul>
+    </div>
+    {{capa}}
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap grid-2">
+<section class="bloco" data-tone="materia">
+  <div class="wrap par">
     <div class="reveal">
-      <h2 class="h-lg">Insumos selecionados, <span class="hl--dark">material de performance superior.</span></h2>
+      <h2 class="h-lg">Insumos selecionados, <span class="hl">material de performance.</span></h2>
       <div class="prose">
-        <p class="lead">A Central de Concreto da IPR é responsável por converter insumos selecionados em um material de performance superior.</p>
-        <p>Nossa usina é a garantia do cumprimento integral dos requisitos normativos e das especificações de projeto, assegurando a <strong>confiabilidade estrutural de cada estaca</strong> produzida.</p>
+        <p class="lead">A central converte insumos selecionados num concreto C40 previsível, lote após lote.</p>
+        <p>É ela que garante o cumprimento dos requisitos normativos e das especificações de projeto, e com isso a <strong>confiabilidade estrutural de cada estaca</strong> que sai da pista.</p>
       </div>
     </div>
-    <figure class="frame reveal" style="--d:.1s">
-      <img src="{{root}}assets/img/3d/central-paper.jpg" alt="Painel de controle com indicadores das balanças de dosagem" loading="lazy">
-      <figcaption>Painel de dosagem eletrônica</figcaption>
-    </figure>
+    {{foto:central-painel|4/5|Painel de dosagem eletrônica|sangra-d}}
   </div>
 </section>
 
-<section class="section dark" data-grid-area>
-  <div class="grid-layer" data-grid="48"></div>
+<section class="bloco" data-tone="materia">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Do silo à estaca.</h2>
-      </div>
-      <p class="lead">Cada etapa é instrumentada e registrada, eliminando as variáveis e imprecisões do carregamento manual.</p>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Do silo à estaca.</h2>
+      <p class="lead">Cada etapa é instrumentada e registrada, sem as variáveis e imprecisões do carregamento manual.</p>
     </div>
     <div class="flow reveal">
       <div class="flow__line" aria-hidden="true"></div>
-      <div class="flow__step"><div class="flow__node">{{icon:layers}}</div><span class="mono">01</span><h3>Armazenagem</h3><p>Cimento em silos e agregados com granulometria controlada.</p></div>
-      <div class="flow__step"><div class="flow__node">{{icon:gauge}}</div><span class="mono">02</span><h3>Dosagem</h3><p>Pesagem gravimétrica em balanças calibradas: o traço de laboratório reproduzido em cada ciclo.</p></div>
-      <div class="flow__step"><div class="flow__node">{{icon:mixer}}</div><span class="mono">03</span><h3>Mistura</h3><p>Misturadores industriais distribuem cimento, agregados e aditivos de forma uniforme.</p></div>
-      <div class="flow__step"><div class="flow__node">{{icon:trace}}</div><span class="mono">04</span><h3>Registro</h3><p>Cada metro cúbico é registrado, da origem dos insumos ao elemento estrutural.</p></div>
+      <div class="flow__step"><div class="flow__node">{{icon:layers}}</div><span class="mono">Armazenagem</span><h3>Silos e baias</h3><p>Cimento em silos e agregados com granulometria controlada.</p></div>
+      <div class="flow__step"><div class="flow__node">{{icon:gauge}}</div><span class="mono">Dosagem</span><h3>Pesagem gravimétrica</h3><p>Balanças calibradas reproduzem o traço de laboratório em cada ciclo.</p></div>
+      <div class="flow__step"><div class="flow__node">{{icon:mixer}}</div><span class="mono">Mistura</span><h3>Massa homogênea</h3><p>Misturadores industriais distribuem cimento, agregados e aditivos de forma uniforme.</p></div>
+      <div class="flow__step"><div class="flow__node">{{icon:trace}}</div><span class="mono">Registro</span><h3>Cada metro cúbico</h3><p>Da origem dos insumos ao elemento estrutural, a carga fica documentada.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="section__head reveal">
-      <h2 class="h-lg">Quatro garantias de processo.</h2>
+<section class="bloco" data-tone="patio">
+  <div class="wrap par par--foto-esq">
+    <div class="reveal">
+      <h2 class="h-md">Quatro garantias de processo.</h2>
+      <ul class="spec-list">
+        <li>{{icon:gauge}}<div><b>Precisão digital na dosagem</b><span>Sistemas automatizados e balanças calibradas conforme a NBR 7212 reproduzem o traço com fidelidade.</span></div></li>
+        <li>{{icon:mixer}}<div><b>Homogeneidade</b><span>Consistência controlada e boa trabalhabilidade, sem segregação durante o adensamento na fôrma.</span></div></li>
+        <li>{{icon:chart}}<div><b>Controle do fck</b><span>Relação água/cimento sob controle, o fator que decide a durabilidade e a resistência à compressão projetada.</span></div></li>
+        <li>{{icon:trace}}<div><b>Rastreabilidade</b><span>Monitoramento da carga desde a origem dos insumos até a aplicação na estaca.</span></div></li>
+      </ul>
     </div>
-    <div class="cards-4 reveal">
-      <article class="card">{{icon:gauge}}<h3>Precisão digital na dosagem</h3><p>Sistemas 100% automatizados e balanças de alta precisão, calibradas conforme a NBR 7212. A dosagem eletrônica reproduz o traço com fidelidade absoluta.</p></article>
-      <article class="card">{{icon:mixer}}<h3>Homogeneidade reológica</h3><p>Massa com consistência controlada e excelente trabalhabilidade, evitando segregações e garantindo a integridade durante o adensamento.</p></article>
-      <article class="card">{{icon:chart}}<h3>Controle do fck</h3><p>Controle exato da relação água/cimento, fator determinante para a durabilidade e para a resistência à compressão projetada, com margens de segurança consistentes.</p></article>
-      <article class="card">{{icon:trace}}<h3>Rastreabilidade total</h3><p>Monitoramento completo da carga, desde a origem dos insumos até a aplicação final no elemento estrutural.</p></article>
-    </div>
+    {{foto:central-maquina|4/5|Misturador da central · operação IPR|sangra-e}}
   </div>
 </section>
 
-<section class="section concrete blueprint-light">
-  <div class="wrap grid-2">
-    <figure class="frame reveal">
-      <img src="{{root}}assets/img/3d/aerea-paper.jpg" alt="Silos de cimento da central de concreto" loading="lazy">
-      <figcaption>Silos de cimento</figcaption>
-    </figure>
+<section class="bloco bloco--justo" data-tone="patio">
+  <div class="wrap par">
+    <div class="reveal">
+      <h2 class="h-md">Por que a central própria importa para a fundação?</h2>
+    </div>
     <div class="reveal" style="--d:.1s">
-      <h2 class="h-md">Por que a Central IPR importa para a fundação?</h2>
-      <p class="muted">Ao centralizar a produção, a IPR mitiga riscos operacionais externos e garante que o concreto aplicado possua características físicas e químicas superiores às misturas de canteiro convencionais.</p>
-      <div class="note" style="margin-top: 24px">{{icon:shield}}<p><b>Resultado:</b> fundações com maior vida útil e resistência a agentes agressivos.</p></div>
+      <p class="lead" style="margin-bottom: 26px">Ao centralizar a produção, a IPR elimina riscos externos e garante um concreto com propriedades físicas e químicas superiores às das misturas de canteiro.</p>
+      <div class="nota">{{icon:shield}}<p><b>Resultado:</b> fundações com maior vida útil e resistência a agentes agressivos do solo.</p></div>
     </div>
   </div>
 </section>
-
-{{cta}}

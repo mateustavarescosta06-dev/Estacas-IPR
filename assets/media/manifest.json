@@ -1,0 +1,172 @@
+{
+ "patio-pistas": {
+  "pos": "50% 62%",
+  "alt": "Pistas de protensão da fábrica IPR em perspectiva, com os silos amarelos da central de concreto ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#97928a"
+ },
+ "patio-nublado": {
+  "pos": "50% 55%",
+  "alt": "Pátio de estocagem da IPR sob céu carregado, com pilhas de estacas e galpões ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#585551"
+ },
+ "patio-largo": {
+  "pos": "50% 70%",
+  "alt": "Pistas e fôrmas no pátio da IPR sobre solo vermelho, com pilhas de estacas ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#999996"
+ },
+ "patio-eucaliptos": {
+  "pos": "50% 60%",
+  "alt": "Pilhas de estacas no pátio da IPR, entre eucaliptos, com guindaste e carreta ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#758088"
+ },
+ "patio-vsco": {
+  "pos": "50% 60%",
+  "alt": "Pátio de estocagem da IPR com galpões e caminhão ao fundo",
+  "w": 1264,
+  "h": 843,
+  "widths": [
+   640,
+   1080,
+   1264
+  ],
+  "tone": "#8e8e8b"
+ },
+ "patio-retrato": {
+  "pos": "50% 65%",
+  "alt": "Pilhas de estacas prontas para expedição no pátio da IPR",
+  "w": 1000,
+  "h": 1500,
+  "widths": [
+   640,
+   1000
+  ],
+  "tone": "#71767b"
+ },
+ "silos": {
+  "pos": "45% 40%",
+  "alt": "Silos amarelos de cimento da central de concreto da IPR",
+  "w": 1023,
+  "h": 1537,
+  "widths": [
+   640,
+   1023
+  ],
+  "tone": "#99998e"
+ },
+ "central-painel": {
+  "pos": "50% 45%",
+  "alt": "Painel da central de concreto com os indicadores das balanças de dosagem",
+  "w": 1000,
+  "h": 1500,
+  "widths": [
+   640,
+   1000
+  ],
+  "tone": "#c4c2c1"
+ },
+ "central-maquina": {
+  "pos": "55% 45%",
+  "alt": "Operadores junto ao misturador da central de concreto da IPR",
+  "w": 667,
+  "h": 1000,
+  "widths": [
+   640,
+   667
+  ],
+  "tone": "#767b77"
+ },
+ "aco-rolo": {
+  "pos": "50% 50%",
+  "alt": "Rolo de aço de protensão no galpão da IPR",
+  "w": 1000,
+  "h": 1500,
+  "widths": [
+   640,
+   1000
+  ],
+  "tone": "#40474c"
+ },
+ "aco-insumos": {
+  "pos": "50% 70%",
+  "alt": "Rolos de aço de protensão e barras de aço no galpão",
+  "w": 800,
+  "h": 1200,
+  "widths": [
+   640,
+   800
+  ],
+  "tone": "#677579"
+ },
+ "topos": {
+  "pos": "50% 50%",
+  "alt": "Topos de estacas circulares empilhadas, com a textura do concreto curado",
+  "w": 800,
+  "h": 1422,
+  "widths": [
+   640,
+   800
+  ],
+  "tone": "#a09f9d"
+ },
+ "corpos-de-prova": {
+  "pos": "50% 50%",
+  "alt": "Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão",
+  "w": 667,
+  "h": 1000,
+  "widths": [
+   640,
+   667
+  ],
+  "tone": "#686d70"
+ },
+ "inspecao": {
+  "pos": "50% 60%",
+  "alt": "Profissional da IPR de capacete diante de estacas hexagonais",
+  "w": 800,
+  "h": 1200,
+  "widths": [
+   640,
+   800
+  ],
+  "tone": "#80898d"
+ },
+ "transporte": {
+  "pos": "50% 55%",
+  "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano",
+  "w": 1023,
+  "h": 1537,
+  "widths": [
+   640,
+   1023
+  ],
+  "tone": "#777d82"
+ }
+}

@@ -3,42 +3,48 @@ title: Estacas pré-fabricadas protendidas, catálogo técnico | IPR Estacas
 desc: Estacas pré-fabricadas de concreto protendido circulares, hexagonais e quadradas. Consulte cargas, características geométricas e ábacos de cada seção.
 nav: estacas
 -->
-<section class="phero" data-grid-area>
-  <div class="phero__media"><img src="{{root}}assets/img/3d/estacas-blueprint.jpg" alt=""></div>
-  <div class="grid-layer" data-grid="48"></div>
-  <div class="wrap phero__inner">
-    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Estacas</span></nav>
-    {{station}}
-    <h1 class="h-xl phero__title">Estacas pré-fabricadas <span class="hl">com precisão.</span></h1>
-    <p class="lead">Elementos estruturais para fundações profundas, fabricados em ambiente industrial controlado, com monitoramento laboratorial contínuo e inspeção individual de 100% das peças.</p>
-    <div class="phero__meta"><span>Concreto C40</span><span>Cordoalhas CP-175</span><span>6, 8 e 10 m</span><span>Anéis de emenda</span></div>
+<section class="capa">
+  {{fios}}
+  <div class="wrap capa__grid">
+    <div class="capa__txt">
+      <nav class="crumbs" aria-label="Você está em"><a href="{{root}}">Início</a><span aria-hidden="true">/</span><span>Estacas</span></nav>
+      {{amostra}}
+      <h1 class="h-xl">A força guardada <span class="hl">dentro do concreto.</span></h1>
+      <p class="lead">Na pista de protensão, os fios de aço são tracionados antes do concreto. Quando a peça ganha resistência, os fios são liberados e a força passa para a estaca. É ela que a protege no transporte, no içamento e no golpe do martelo.</p>
+      <ul class="capa__meta"><li>Concreto C40</li><li>Fios CP-175 RB</li><li>6, 8 e 10 m</li><li>Anéis de emenda</li></ul>
+    </div>
+    {{capa}}
   </div>
 </section>
 
-<section class="section geo-bg">
+<section class="bloco" data-tone="aco">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Produção industrial, desempenho previsível.</h2>
-      </div>
-      <p class="lead">Vantagens significativas em relação às soluções moldadas in loco: controle de qualidade rigoroso, rapidez de execução e rastreabilidade total.</p>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Produção industrial, <span class="hl">desempenho previsível.</span></h2>
+      <p class="lead">Fabricada em ambiente controlado, a estaca chega à obra com resistência verificada, geometria exata e histórico rastreável.</p>
     </div>
-    <div class="cards-4 reveal">
-      <article class="card">{{icon:factory}}<h3>Produção industrial</h3><p>Moldes metálicos de alta precisão em ambiente controlado garantem padronização dimensional e qualidade superior em cada peça.</p></article>
-      <article class="card">{{icon:ruler}}<h3>Dimensões sob projeto</h3><p>Seções quadrada, circular e hexagonal em comprimentos variados, atendendo às especificações de cada fundação.</p></article>
-      <article class="card">{{icon:layers}}<h3>Concreto protendido</h3><p>Cordoalhas protendidas conferem maior resistência à flexão no transporte, içamento e cravação, e reduzem a porosidade.</p></article>
-      <article class="card">{{icon:link}}<h3>Anéis de emenda</h3><p>Emendas metálicas de alta precisão permitem a união soldada de segmentos, com continuidade estrutural em grandes profundidades.</p></article>
+    <ul class="regua reveal">
+      <li>{{icon:factory}}<h3>Fôrmas metálicas</h3><p>Moldes de alta precisão em ambiente controlado garantem a mesma seção do topo à ponta.</p></li>
+      <li>{{icon:ruler}}<h3>Dimensões sob projeto</h3><p>Seções quadrada, circular e hexagonal em comprimentos de 6, 8 e 10 m.</p></li>
+      <li>{{icon:layers}}<h3>Concreto protendido</h3><p>Os fios tracionados dão resistência à flexão no transporte, no içamento e na cravação, e reduzem a porosidade.</p></li>
+      <li>{{icon:link}}<h3>Anéis de emenda</h3><p>Emendas metálicas soldadas unem segmentos com continuidade estrutural em grandes profundidades.</p></li>
+    </ul>
+  </div>
+  <div class="wrap par par--foto-esq" style="margin-top: clamp(80px, 10vw, 150px)">
+    <div class="reveal">
+      <h2 class="h-md">Fios finos, tensão alta.</h2>
+      <p class="lead" style="margin-top: 22px">Cada seção leva seis fios de 4 a 6 mm (oito na quadrada), esticados ao longo de toda a pista como cordas de um instrumento. O concreto é lançado sobre eles, cura, e só então a tensão é liberada nas cabeceiras.</p>
+      <a class="link" href="#catalogo">Ver o aço de cada seção {{icon:arrow}}</a>
     </div>
+    {{foto:aco-insumos|4/5|Rolos de aço de protensão no galpão|sangra-e}}
   </div>
 </section>
 
-<section class="section concrete blueprint-light" id="catalogo">
+<section class="bloco" id="catalogo" data-tone="papel">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Catálogo técnico.</h2>
-      </div>
-      <p class="lead">Selecione a geometria e a bitola para ver a seção em escala, as características geométricas, a capacidade de carga estrutural e baixar o ábaco de interação.</p>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Catálogo técnico.</h2>
+      <p class="lead">Escolha a geometria e a bitola para ver a seção em escala, as características geométricas, a capacidade de carga estrutural e baixar o ábaco de interação.</p>
     </div>
     <div class="catalog reveal" data-catalog>
       <div class="catalog__side">
@@ -50,20 +56,17 @@ nav: estacas
         <ul class="catalog__items" aria-label="Bitolas"></ul>
       </div>
       <div class="catalog__main" aria-live="polite">
-        <div class="catalog__drawing blueprint-light" data-drawing></div>
+        <div class="catalog__drawing" data-drawing></div>
         <div class="catalog__data" data-specs></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section dark" id="seletor" data-grid-area>
-  <div class="grid-layer" data-grid="48" data-grid-label="CARGA"></div>
+<section class="bloco" id="seletor" data-tone="aco">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Qual seção atende a sua carga?</h2>
-      </div>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Qual seção atende a sua carga?</h2>
       <p class="lead">Informe a carga de compressão por estaca e veja quais seções atendem pelo limite estrutural da NBR 6118, e qual é a mais leve entre elas.</p>
     </div>
     <div class="selector reveal" data-selector>
@@ -82,20 +85,18 @@ nav: estacas
       </div>
       <div class="selector__chart">
         <h3>Compressão máxima pela NBR 6118</h3>
-        <span class="caption">kN por estaca · clique em uma seção para abrir a ficha</span>
+        <span class="caption">kN por estaca · toque numa seção para abrir a ficha</span>
         <div class="bars"></div>
         <div class="legend">
-          <span><i style="background:#ffcc00"></i>Mais leve que atende</span>
-          <span><i style="background:#dfe7f1"></i>Atende</span>
-          <span><i style="background:rgba(111,125,140,.45)"></i>Não atende</span>
+          <span><i style="background: var(--ipr)"></i>Mais leve que atende</span>
+          <span><i style="background: color-mix(in oklab, var(--ink) 62%, var(--ground))"></i>Atende</span>
+          <span><i style="background: var(--line-2)"></i>Não atende</span>
         </div>
       </div>
     </div>
-    <div class="note reveal" style="margin-top: 24px">
+    <div class="nota reveal" style="margin-top: 28px">
       {{icon:gauge}}
-      <p><b>Ferramenta de referência.</b> Os valores representam a capacidade estrutural da seção, conforme os ábacos IPR. A carga admissível final depende também da capacidade geotécnica, definida a partir do relatório de sondagem (SPT) e do projeto de fundações. Consulte nossa engenharia.</p>
+      <p><b>Ferramenta de referência.</b> Os valores representam a capacidade estrutural da seção, conforme os ábacos IPR. A carga admissível final depende também da capacidade geotécnica, definida a partir do relatório de sondagem (SPT) e do projeto de fundações. Consulte a nossa engenharia.</p>
     </div>
   </div>
 </section>
-
-{{cta}}

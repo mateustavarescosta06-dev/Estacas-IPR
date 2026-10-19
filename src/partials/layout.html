@@ -2,115 +2,110 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{title}}</title>
 <meta name="description" content="{{desc}}">
-<meta name="theme-color" content="#0A1A2B">
+<meta name="theme-color" content="{{ground}}">
 <meta property="og:title" content="{{title}}">
 <meta property="og:description" content="{{desc}}">
-<meta property="og:image" content="{{root}}assets/img/3d/og.jpg">
+<meta property="og:image" content="{{root}}assets/media/patio-pistas-1280.webp">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" href="{{root}}assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>{{tones}}</style>
 <link rel="stylesheet" href="{{root}}assets/css/style.css">
-<script type="importmap">{"imports":{"three":"./{{root}}assets/vendor/three/three.module.min.js","three/addons/":"./{{root}}assets/vendor/three/addons/"}}</script>
+<script>
+/* Antes da primeira pintura: estado de movimento e chegada pela passagem (fios a soltar).
+   Em página pré-renderizada, a checagem se repete na ativação, quando o clique já aconteceu. */
+(function () {
+  var d = document.documentElement;
+  d.className = "js" + (matchMedia("(prefers-reduced-motion: reduce)").matches ? " reduz" : "");
+  function chegada() {
+    try { if (sessionStorage.getItem("ipr-fios") === "1") { d.classList.add("chegou"); sessionStorage.removeItem("ipr-fios"); } } catch (e) {}
+  }
+  function pronto() { chegada(); requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.add("pronto"); }); }); }
+  if (document.prerendering) document.addEventListener("prerenderingchange", pronto, { once: true });
+  else if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", pronto, { once: true });
+  else pronto();
+  addEventListener("pagereveal", chegada);
+})();
+</script>
+{{speculation}}
 </head>
-<body data-page="{{page}}">
+<body data-page="{{page}}" data-tone="{{tone}}" data-tone-base="{{tone}}">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <!-- traço trêmulo de rascunho, usado nas ilustrações técnicas -->
-  <filter id="rascunho" x="-5%" y="-5%" width="110%" height="110%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-</svg>
 
-<div class="topbar">
-  <div class="wrap topbar__inner">
-    <span class="mono">Fabricação e cravação de estacas pré-fabricadas de concreto</span>
-    <span class="topbar__links">
-      <a href="tel:+551138314181">{{icon:phone}} (11) 3831-4181</a>
-      <a href="mailto:comercial@estacasipr.com.br">{{icon:mail}} comercial@estacasipr.com.br</a>
-    </span>
-  </div>
-</div>
-
-<header class="header" data-header>
-  <div class="wrap header__inner">
+<header class="hd" data-header>
+  <div class="wrap hd__inner">
     <a class="brand" href="{{root}}" aria-label="IPR Estacas, página inicial">
-      <img src="{{root}}assets/img/logo.png" alt="IPR Estacas" width="72" height="54">
-      <span class="brand__text"><b>IPR</b><small>Estacas pré-fabricadas</small></span>
+      <img src="{{root}}assets/img/logo.png" alt="" width="1080" height="814">
+      <span class="brand__text"><b>IPR Estacas</b><small>Fábrica e cravação</small></span>
     </a>
     <nav class="nav" aria-label="Principal" data-nav>
       <ul>
 {{nav}}
       </ul>
-      <a class="btn btn--primary nav__cta" href="{{root}}contato/">Orçamento {{icon:arrow}}</a>
+      <a class="nav__tel" href="tel:+551138314181">(11) 3831-4181</a>
+      <a class="btn btn--primary btn--sm" href="{{root}}contato/">Orçamento {{icon:arrow}}</a>
     </nav>
     <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>
       <span class="nav-toggle__open">{{icon:menu}}</span><span class="nav-toggle__close">{{icon:close}}</span>
     </button>
   </div>
-  <div class="header__progress" data-progress></div>
+  {{linha}}
 </header>
-
-{{route}}
 
 <main id="conteudo">
 {{content}}
-{{handoff}}
+{{passagem}}
 </main>
 
-<footer class="footer">
-  <div class="hazard" aria-hidden="true"></div>
-  <div class="wrap footer__grid">
-    <div class="footer__brand">
-      <img src="{{root}}assets/img/logo.png" alt="IPR Estacas" width="96" height="72" loading="lazy">
-      <p>35 anos de experiência em fabricação e cravação de estacas pré-fabricadas de concreto.</p>
-      <p class="mono muted">Concreto C40 · Protensão CP-175 · NBR 6118</p>
+<footer class="ft">
+  <div class="wrap ft__grid">
+    <div class="ft__brand">
+      <img src="{{root}}assets/img/logo.png" alt="IPR Estacas" width="1080" height="814" loading="lazy">
+      <p>35 anos fabricando e cravando estacas pré-fabricadas protendidas de concreto, com central própria, laboratório e frota própria.</p>
     </div>
     <div>
-      <h3 class="footer__title">Navegação</h3>
-      <ul class="footer__list">
-        <li><a href="{{root}}">Home</a></li>
-        <li><a href="{{root}}estacas/">Estacas</a></li>
-        <li><a href="{{root}}fundacao/">Fundação</a></li>
+      <h2 class="ft__title">A fábrica</h2>
+      <ul class="ft__list">
+        <li><a href="{{root}}">Início</a></li>
         <li><a href="{{root}}central-de-concreto/">Central de Concreto</a></li>
+        <li><a href="{{root}}estacas/">Estacas</a></li>
         <li><a href="{{root}}controle-de-qualidade/">Controle de Qualidade</a></li>
+        <li><a href="{{root}}fundacao/">Fundação</a></li>
         <li><a href="{{root}}clientes/">Clientes</a></li>
         <li><a href="{{root}}perguntas-frequentes/">Perguntas Frequentes</a></li>
-        <li><a href="{{root}}contato/">Contato</a></li>
       </ul>
     </div>
     <div>
-      <h3 class="footer__title">Contato</h3>
-      <ul class="footer__list footer__list--contact">
+      <h2 class="ft__title">Contato</h2>
+      <ul class="ft__list">
+        <li><a href="https://wa.me/5511984472267" target="_blank" rel="noopener">{{icon:whatsapp}} (11) 98447-2267</a></li>
         <li><a href="tel:+551138314181">{{icon:phone}} (11) 3831-4181</a></li>
         <li><a href="tel:+551138322372">{{icon:phone}} (11) 3832-2372</a></li>
-        <li><a href="https://wa.me/5511984472267" target="_blank" rel="noopener">{{icon:whatsapp}} (11) 98447-2267</a></li>
         <li><a href="tel:+551934961074">{{icon:phone}} (19) 3496-1074</a></li>
         <li><a href="mailto:comercial@estacasipr.com.br">{{icon:mail}} comercial@estacasipr.com.br</a></li>
       </ul>
     </div>
     <div>
-      <h3 class="footer__title">Fichas técnicas</h3>
-      <p class="muted">Ábacos de interação, cargas admissíveis e características geométricas de cada seção.</p>
-      <a class="btn btn--ghost" href="{{root}}estacas/#catalogo">Ver catálogo técnico {{icon:arrow}}</a>
+      <h2 class="ft__title">Fichas técnicas</h2>
+      <p class="muted">Ábacos de interação, cargas e características geométricas de cada seção.</p>
+      <a class="link" href="{{root}}estacas/#catalogo">Abrir o catálogo técnico {{icon:arrow}}</a>
     </div>
   </div>
-  <div class="wrap footer__bottom mono">
+  <div class="wrap ft__bottom">
     <span>© <span data-year>2026</span> IPR Estacas</span>
-    <span>Todos os direitos reservados</span>
+    <span>Concreto C40 · Protensão CP-175 RB</span>
   </div>
 </footer>
 
-<a class="whats-float" href="https://wa.me/5511984472267?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento%20de%20estacas." target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">{{icon:whatsapp}}<span>Fale conosco</span></a>
+<a class="whats" href="https://wa.me/5511984472267?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento%20de%20estacas." target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">{{icon:whatsapp}}<span>Fale conosco</span></a>
 
 <script src="{{root}}assets/js/estacas-data.js"></script>
-<script src="{{root}}assets/js/grid.js"></script>
-<script src="{{root}}assets/js/route.js"></script>
+<script src="{{root}}assets/js/jornada.js"></script>
 <script src="{{root}}assets/js/main.js"></script>
 </body>
 </html>
