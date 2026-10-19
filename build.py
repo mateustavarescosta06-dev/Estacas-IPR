@@ -148,6 +148,23 @@ def abertura_extra(root):
     return out
 
 
+def filme_tag(slot, root):
+    """O time-lapse da home: baixado inteiro pelo historia.js e conduzido pela rolagem (sem autoplay)."""
+    if not MEDIA.get(slot, {}).get("video"):
+        return ""
+    base = f"{root}assets/media/{slot}"
+    return (f'<video class="filme__video" muted playsinline preload="none" data-filme data-src="{base}.mp4" '
+            f'data-src-m="{base}-m.mp4" poster="{base}-poster.webp" aria-hidden="true" tabindex="-1"></video>')
+
+
+def faixa(spec, root):
+    """Imagem de ponta a ponta entre dois trechos: {{faixa:cena|legenda}}."""
+    slot, _, caption = spec.partition("|")
+    cap = f'<figcaption class="wrap"><span>{caption}</span></figcaption>' if caption else ""
+    return (f'<figure class="faixa"><div class="cena grao faixa__cena" data-par style="{scene_style(slot)}">'
+            f'{picture(slot, root, "(max-aspect-ratio: 16/9) 178vh, 100vw")}</div>{cap}</figure>')
+
+
 def scene_style(slot):
     return f'--tone-img:{MEDIA[slot]["tone"]}'
 
@@ -228,7 +245,7 @@ def passagem_html(slug, root):
             f'<span class="passagem__teaser">{teaser}</span>'
             f'<span class="btn btn--ink passagem__ir">Seguir para {label} {{{{icon:arrow}}}}</span></span>'
             f'<span class="cena grao passagem__cena" data-par style="{scene_style(scene)}">'
-            f'{picture(scene, root, "(max-width: 820px) 100vw, 48vw", alt="")}'
+            f'{picture(scene, root, "(max-aspect-ratio: 16/9) 178vh, 100vw", alt="")}'
             f'{video_tag(scene, root, "passagem__video", scrub=True) if MEDIA[scene].get("video") else ""}'
             f'</span></a></section>')
 
@@ -274,6 +291,8 @@ def render(text, ctx, icon_map):
     text = re.sub(r"\{\{loop:([\w-]+)\}\}",
                   lambda m: video_tag(m.group(1), root, "intervalo__video", scrub=False)
                   if MEDIA.get(m.group(1), {}).get("video") else "", text)
+    text = re.sub(r"\{\{filme:([\w-]+)\}\}", lambda m: filme_tag(m.group(1), root), text)
+    text = re.sub(r"\{\{faixa:([^}]+)\}\}", lambda m: faixa(m.group(1), root), text)
     text = re.sub(r"\{\{tom:([\w-]+)\}\}", lambda m: scene_style(m.group(1)), text)
     text = re.sub(r"\{\{cor:(\w+)\}\}", lambda m: TONES[m.group(1)][3], text)
     text = re.sub(r"\{\{icon:([\w-]+)\}\}", lambda m: icon_map[m.group(1)], text)
@@ -322,7 +341,7 @@ def build():
             "linha": linha_html(slug, root),
             "amostra": amostra(tone, material),
             "capa": (f'<div class="cena grao capa__cena" data-par style="{scene_style(scene)}">'
-                     f'{picture(scene, root, "(max-width: 820px) 100vw, 48vw", eager=True)}</div>'),
+                     f'{picture(scene, root, "(max-aspect-ratio: 16/9) 178vh, 100vw", eager=True)}</div>'),
             "fios": fios("soltar"),
             "abertura-extra": abertura_extra(root),
             "passagem": passagem_html(slug, root),

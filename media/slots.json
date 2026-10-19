@@ -57,7 +57,7 @@
     "alt": "Profissional da IPR de capacete diante de estacas hexagonais"
   },
   "transporte": {
-    "src": "transporte-hf.jpg", "grade": "original", "pos": "50% 55%",
+    "src": "transporte-hf.jpg", "grade": "original", "pos": "50% 26%",
     "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano"
   },
   "patio-pistas-frente": {
@@ -79,5 +79,53 @@
   "hora-2200": {
     "src": "hora-2200.jpg", "grade": "original", "pos": "50% 60%",
     "alt": "O pátio de estocagem da IPR à noite"
+  },
+  "filme-24h": {
+    "src": "tl-0600.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "Time-lapse de 24 horas na pista de protensão da IPR"
+  },
+  "tl-0600": {
+    "src": "tl-0600.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "06:00, hora azul: os fios de protensão tracionados na pista da IPR, com os silos acesos ao fundo"
+  },
+  "tl-0900": {
+    "src": "tl-0900.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "09:00: a pista de protensão sendo concretada, metade cheia de concreto fresco e metade ainda aberta"
+  },
+  "tl-1730": {
+    "src": "tl-1730.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "17:30: a pista inteira concretada, com o concreto já claro e fosco sob o sol baixo"
+  },
+  "tl-0600d2": {
+    "src": "tl-0600d2.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "06:00 do dia seguinte: as estacas prontas na pista ao nascer do sol atrás dos silos"
+  },
+  "cravacao-1": {
+    "src": "cravacao-1.jpg", "grade": "original", "pos": "62% 50%",
+    "alt": "Bate-estacas posicionado na obra, com a estaca içada na torre-guia e um operário conferindo o prumo"
+  },
+  "cravacao-2": {
+    "src": "cravacao-2.jpg", "grade": "original", "pos": "58% 50%",
+    "alt": "O martelo golpeia o topo da estaca, já meio cravada no solo vermelho"
+  },
+  "cravacao-3": {
+    "src": "cravacao-3.jpg", "grade": "original", "pos": "62% 50%",
+    "alt": "Soldador unindo os anéis metálicos da emenda entre dois segmentos de estaca"
+  },
+  "cravacao-4": {
+    "src": "cravacao-4.jpg", "grade": "original", "pos": "55% 50%",
+    "alt": "Engenheiro registrando a nega numa folha presa à estaca cravada, com o bate-estacas ao fundo"
+  },
+  "secao-circular": {
+    "src": "secao-circular.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Topo de uma estaca circular de concreto com seis fios de protensão"
+  },
+  "secao-hexagonal": {
+    "src": "secao-hexagonal.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Topo de uma estaca hexagonal de concreto com seis fios de protensão, um junto a cada canto"
+  },
+  "secao-quadrada": {
+    "src": "secao-quadrada.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Topo de uma estaca quadrada de concreto com oito fios de protensão"
   }
 }

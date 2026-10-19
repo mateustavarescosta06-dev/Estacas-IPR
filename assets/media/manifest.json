@@ -162,7 +162,7 @@
   "tone": "#80898d"
  },
  "transporte": {
-  "pos": "50% 55%",
+  "pos": "50% 26%",
   "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano",
   "w": 1856,
   "h": 2304,
@@ -220,5 +220,150 @@
    1600
   ],
   "tone": "#3a3233"
+ },
+ "filme-24h": {
+  "pos": "52% 55%",
+  "alt": "Time-lapse de 24 horas na pista de protensão da IPR",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#484a63",
+  "video": true
+ },
+ "tl-0600": {
+  "pos": "52% 55%",
+  "alt": "06:00, hora azul: os fios de protensão tracionados na pista da IPR, com os silos acesos ao fundo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#484a63"
+ },
+ "tl-0900": {
+  "pos": "52% 55%",
+  "alt": "09:00: a pista de protensão sendo concretada, metade cheia de concreto fresco e metade ainda aberta",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#5d6e7b"
+ },
+ "tl-1730": {
+  "pos": "52% 55%",
+  "alt": "17:30: a pista inteira concretada, com o concreto já claro e fosco sob o sol baixo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#706665"
+ },
+ "tl-0600d2": {
+  "pos": "52% 55%",
+  "alt": "06:00 do dia seguinte: as estacas prontas na pista ao nascer do sol atrás dos silos",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#665c5c"
+ },
+ "cravacao-1": {
+  "pos": "62% 50%",
+  "alt": "Bate-estacas posicionado na obra, com a estaca içada na torre-guia e um operário conferindo o prumo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#49464d"
+ },
+ "cravacao-2": {
+  "pos": "58% 50%",
+  "alt": "O martelo golpeia o topo da estaca, já meio cravada no solo vermelho",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#3b4860"
+ },
+ "cravacao-3": {
+  "pos": "62% 50%",
+  "alt": "Soldador unindo os anéis metálicos da emenda entre dois segmentos de estaca",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#49404c"
+ },
+ "cravacao-4": {
+  "pos": "55% 50%",
+  "alt": "Engenheiro registrando a nega numa folha presa à estaca cravada, com o bate-estacas ao fundo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#4f4a4e"
+ },
+ "secao-circular": {
+  "pos": "50% 50%",
+  "alt": "Topo de uma estaca circular de concreto com seis fios de protensão",
+  "w": 2048,
+  "h": 2048,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#515661"
+ },
+ "secao-hexagonal": {
+  "pos": "50% 50%",
+  "alt": "Topo de uma estaca hexagonal de concreto com seis fios de protensão, um junto a cada canto",
+  "w": 2048,
+  "h": 2048,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#59606c"
+ },
+ "secao-quadrada": {
+  "pos": "50% 50%",
+  "alt": "Topo de uma estaca quadrada de concreto com oito fios de protensão",
+  "w": 2048,
+  "h": 2048,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#56585f"
  }
 }

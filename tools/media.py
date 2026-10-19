@@ -7,7 +7,7 @@ gera AVIF e WebP em até três larguras em assets/media e grava assets/media/man
 que o build.py usa para montar os <picture>.
 
 Se existir media/src/<cena>.mp4, ele vira clipe de rolagem: H.264 com quadro-chave a cada
-2 quadros (busca rápida ao rolar), sem áudio, versão de 1080 px e de 720 px, e um pôster.
+4 quadros (busca rápida ao rolar), sem áudio, em até 1280 px (CRF 23 e, no celular, CRF 28) e um pôster.
 
     python tools/media.py            # processa só o que mudou
     python tools/media.py --force    # refaz tudo
@@ -116,10 +116,12 @@ def video(name, entry):
         return
     big, small, poster = OUT / f"{name}.mp4", OUT / f"{name}-m.mp4", OUT / f"{name}-poster.webp"
     if stale(src, [big, small, poster]):
+        # quadro-chave a cada 4 quadros: a rolagem busca qualquer instante sem travar.
+        # O celular usa a mesma largura (a tela em pé mostra só o miolo do quadro) com mais compressão.
         common = ["-an", "-c:v", "libx264", "-preset", "slow", "-pix_fmt", "yuv420p",
-                  "-g", "2", "-keyint_min", "2", "-sc_threshold", "0", "-movflags", "+faststart"]
-        ffmpeg("-i", str(src), "-vf", "scale='min(1080,iw)':-2", "-crf", "27", *common, str(big))
-        ffmpeg("-i", str(src), "-vf", "scale='min(720,iw)':-2", "-crf", "29", *common, str(small))
+                  "-g", "4", "-keyint_min", "4", "-sc_threshold", "0", "-movflags", "+faststart"]
+        ffmpeg("-i", str(src), "-vf", "scale='min(1280,iw)':-2", "-crf", "23", *common, str(big))
+        ffmpeg("-i", str(src), "-vf", "scale='min(1280,iw)':-2", "-crf", "28", *common, str(small))
         ffmpeg("-i", str(src), "-frames:v", "1", "-vf", "scale='min(1600,iw)':-2", str(poster))
         print("vid", name)
     entry["video"] = True
