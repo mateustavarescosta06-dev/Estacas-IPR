@@ -47,17 +47,55 @@ const mixLight = (a, b, k) => {
 const minutes = (p) => { const [a, b, k] = between(RELOGIO, p); return a + (b - a) * k; };
 const r = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
 
+/* ---------- Rótulos que acompanham a estaca ---------- */
+// Cada rótulo aponta para um ponto da peça (âncora do 3D) e só aparece no seu trecho da história.
+function rotulos(layer, defs) {
+  const items = defs.map((d) => {
+    const el = document.createElement("div");
+    el.className = "rotulo3d" + (d.lado === "e" ? " rotulo3d--e" : "");
+    el.innerHTML = "<i></i><span></span>";
+    el.querySelector("span").textContent = d.texto;
+    layer.appendChild(el);
+    return Object.assign({ el, o: 0 }, d);
+  });
+  return {
+    items,
+    place(anchors, k) {
+      items.forEach((it) => {
+        const a = anchors[it.ancora], f = 0.012;
+        const want = a && a.on ? clamp(Math.min((k - it.de) / f + 1, (it.ate - k) / f + 1), 0, 1) : 0;
+        it.el.style.opacity = want.toFixed(3);
+        if (a && want > 0) {
+          it.el.style.transform = "translate3d(" + a.x.toFixed(1) + "px," + a.y.toFixed(1) + "px,0)";
+          // perto da borda direita o texto vai para a esquerda do ponto (e vice-versa), para nunca ser cortado
+          const w = layer.clientWidth, esq = a.x > w * 0.6 ? true : a.x < w * 0.4 ? false : it.lado === "e";
+          it.el.classList.toggle("rotulo3d--e", esq);
+        }
+      });
+    },
+  };
+}
+
 /* ---------- O dia ---------- */
 const dia = $("[data-dia]");
 if (dia) {
   const pista = $(".dia__pista", dia), palco = $(".dia__palco", dia);
-  const hh = $("[data-hh]", dia), mm = $("[data-mm]", dia), dd = $("[data-dd]", dia), relogio = $("[data-relogio]", dia);
-  const regua = $("[data-regua]", dia);
   const caps = $$("[data-de]", dia).map((el) => ({ el, de: +el.dataset.de, ate: +el.dataset.ate, cobre: el.classList.contains("intervalo") }));
-  const canvas = $("[data-estaca]", dia);
-  let estaca = null;
+  const etapas = $$("[data-etapas] button", dia);
+  const canvas = $("[data-estaca]", dia), camada = $("[data-rotulos]", dia);
+  const labels = rotulos(camada, [
+    { ancora: "forma", texto: "Fôrma metálica com nervuras", de: 0.055, ate: 0.11 },
+    { ancora: "fio", texto: "Fios de aço CP-175 RB, tracionados", de: 0.115, ate: 0.195 },
+    { ancora: "cabeceira", texto: "Cabeceira: onde os fios são ancorados", de: 0.125, ate: 0.195, lado: "e" },
+    { ancora: "concreto", texto: "Concreto C40 lançado sobre os fios", de: 0.3, ate: 0.41 },
+    { ancora: "cp", texto: "Corpos de prova do mesmo lote", de: 0.36, ate: 0.41, lado: "e" },
+    { ancora: "concreto", texto: "Úmido e escuro, depois claro e fosco", de: 0.53, ate: 0.61 },
+    { ancora: "prensa", texto: "Prensa: o ensaio de 24 horas", de: 0.735, ate: 0.83, lado: "e" },
+    { ancora: "fioface", texto: "Os fios ficam presos no concreto", de: 0.955, ate: 1.2 },
+  ]);
+  let estaca = null, pAtual = 0;
   if (webgl && canvas) {
-    try { estaca = createEstaca(canvas, { shiftX: 0.1 }); } catch (e) { estaca = null; }
+    try { estaca = createEstaca(canvas, { shiftX: 0.1, onRender: () => labels.place(estaca.anchors(), pAtual) }); } catch (e) { estaca = null; }
   }
   if (!estaca && canvas) canvas.hidden = true;
   dia.classList.toggle("sem-3d", !estaca);
@@ -70,21 +108,28 @@ if (dia) {
     };
   }
 
+  // índice das etapas: marca a atual e leva direto a ela
+  const MARCOS = etapas.map((b) => +b.dataset.ir);
+  const irPara = (p) => {
+    const total = pista.offsetHeight - innerHeight;
+    scrollTo({ top: pista.getBoundingClientRect().top + scrollY + p * total, behavior: reduce ? "auto" : "smooth" });
+  };
+  etapas.forEach((b) => b.addEventListener("click", () => irPara(+b.dataset.ir)));
+
   let last = -1;
   function frame() {
     ticking = false;
     const rect = pista.getBoundingClientRect(), total = rect.height - innerHeight;
     const p = reduce ? 1 : clamp(-rect.top / (total > 0 ? total : 1), 0, 1);
     if (Math.abs(p - last) < 0.0002) return;
-    last = p;
-    const m = minutes(p), mod = ((m % 1440) + 1440) % 1440;
-    hh.textContent = String(Math.floor(mod / 60)).padStart(2, "0");
-    mm.textContent = String(Math.floor(mod % 60)).padStart(2, "0");
-    dd.textContent = m >= 1440 ? "Dia 2" : "Dia 1";
-    if (regua) regua.style.setProperty("--p", ((m - 340) / (1800 - 340)).toFixed(4));
-    const [a, b, k] = between(LUZ, m), luz = mixLight(a, b, k);
+    last = p; pAtual = p;
+    const [a, b, k] = between(LUZ, minutes(p)), luz = mixLight(a, b, k);
     palco.style.setProperty("--bg", luz.fog);
-    relogio.classList.toggle("is-noite", luz.sodium > 1.2);
+
+    let atual = -1;
+    MARCOS.forEach((v, i) => { if (p >= v - 0.035) atual = i; });
+    etapas.forEach((el, i) => { el.classList.toggle("is-on", i === atual); el.classList.toggle("is-past", i < atual); });
+    dia.classList.toggle("is-inicio", p < 0.05);
 
     // capítulos e interlúdios: entram e saem com margens curtas
     let cobre = 0;
@@ -96,7 +141,7 @@ if (dia) {
       if (c.cobre) cobre = Math.max(cobre, o);
     });
     if (estaca) {
-      canvas.style.opacity = (1 - cobre).toFixed(3);
+      canvas.style.opacity = camada.style.opacity = (1 - cobre).toFixed(3);
       if (cobre < 0.999) estaca.set(Object.assign(estado(p), { light: luz }));
     }
   }
@@ -115,6 +160,16 @@ if (corte) {
   const formas = $$("[data-forma]", corte), lista = $("[data-bitolas]", corte), ficha = $("[data-ficha]", corte);
   const fmt = (n, d) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
   let estaca = null, atual = DATA.find((e) => e.id === "H33") || DATA[0], anim = 0;
+  let kAtual = 0, yaw = 0, pitch = 0;
+  const camada = document.createElement("div"); camada.className = "rotulos"; camada.setAttribute("aria-hidden", "true");
+  $(".corte__palco", corte).appendChild(camada);
+  const labels = rotulos(camada, [
+    { ancora: "forma", texto: "Fôrma", de: 0.02, ate: 0.3, lado: "e" },
+    { ancora: "fio", texto: "Fios tracionados", de: 0.2, ate: 0.4 },
+    { ancora: "concreto", texto: "Concreto C40", de: 0.4, ate: 0.74 },
+    { ancora: "fioface", texto: "", de: 0.93, ate: 1.2 },
+    { ancora: "secao", texto: "", de: 0.93, ate: 1.2, lado: "e" },
+  ]);
   const ETAPAS = [[0, "Fôrma"], [0.14, "Fios"], [0.35, "Concreto"], [0.6, "Cura"], [0.75, "Liberação"], [0.9, "Seção"]];
 
   function estado(k) {
@@ -124,13 +179,18 @@ if (corte) {
       light: { sun: "#fff3e0", sunI: 2.4, elev: 26, azim: -55, sky: "#9db6dc", ground: "#0a1426", hemiI: 1.0, sodium: 0, exposure: 1.04, env: 0.85, fog: "#071428" },
     };
   }
+  function textosSecao() {
+    labels.items[3].el.querySelector("span").textContent = atual.consulta ? "Linha vazada" : atual.aco;
+    labels.items[4].el.querySelector("span").textContent = atual.nome;
+  }
   function montar(k) {
+    kAtual = k;
     range.value = Math.round(k * 100);
     range.style.setProperty("--p", k * 100 + "%");
     let nome = ETAPAS[0][1];
     ETAPAS.forEach(([v, n]) => { if (k >= v) nome = n; });
     etapa.textContent = nome;
-    if (estaca) estaca.set(estado(k));
+    if (estaca) estaca.set(Object.assign(estado(k), { yaw, pitch }));
   }
   function play() {
     if (reduce) { montar(1); return; }
@@ -156,6 +216,7 @@ if (corte) {
     formas.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.forma === e.forma)));
     lista_(e.forma);
     renderFicha(e);
+    textosSecao();
     if (estaca) estaca.setSection(e);
     if (animar) play(); else montar(+range.value / 100);
   }
@@ -168,10 +229,23 @@ if (corte) {
     if (b) escolher(DATA.find((e) => e.id === b.dataset.id), true);
   });
   range.addEventListener("input", () => { cancelAnimationFrame(anim); montar(+range.value / 100); });
+  // arrastar para girar: o visitante comanda a câmera; nada segue o ponteiro sozinho
+  let arrasto = null;
+  canvas.addEventListener("pointerdown", (ev) => { arrasto = { x: ev.clientX, y: ev.clientY, yaw, pitch }; canvas.setPointerCapture(ev.pointerId); corte.classList.add("is-girando"); });
+  canvas.addEventListener("pointermove", (ev) => {
+    if (!arrasto) return;
+    yaw = arrasto.yaw - (ev.clientX - arrasto.x) * 0.008;
+    pitch = clamp(arrasto.pitch + (ev.clientY - arrasto.y) * 0.006, -0.7, 0.7);
+    if (estaca) estaca.set({ yaw, pitch });
+  });
+  const solta = () => { arrasto = null; corte.classList.remove("is-girando"); };
+  canvas.addEventListener("pointerup", solta);
+  canvas.addEventListener("pointercancel", solta);
+  canvas.addEventListener("dblclick", () => { yaw = 0; pitch = 0; if (estaca) estaca.set({ yaw, pitch }); });
 
   function iniciar() {
     if (webgl && canvas && !estaca) {
-      try { estaca = createEstaca(canvas, { estaca: atual }); } catch (e) { estaca = null; }
+      try { estaca = createEstaca(canvas, { estaca: atual, onRender: () => labels.place(estaca.anchors(), kAtual) }); } catch (e) { estaca = null; }
     }
     if (!estaca) {
       corte.classList.add("sem-3d");

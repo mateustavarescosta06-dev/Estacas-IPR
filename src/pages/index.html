@@ -7,24 +7,31 @@ nav: home
   <div class="dia__pista">
     <div class="dia__palco">
       <figure class="intervalo intervalo--abertura" data-de="-1" data-ate="0.055">
-        <div class="intervalo__cena">{{img!:hora-0540|100vw}}</div>
+        <div class="intervalo__cena">{{img!:hora-0540|(max-aspect-ratio: 16/9) 178vh, 100vw}}{{loop:hora-0540}}</div>
       </figure>
       <figure class="intervalo" data-de="0.195" data-ate="0.275">
-        <div class="intervalo__cena">{{img:hora-0730|100vw}}</div>
+        <div class="intervalo__cena">{{img:hora-0730|(max-aspect-ratio: 16/9) 178vh, 100vw}}</div>
       </figure>
       <figure class="intervalo" data-de="0.415" data-ate="0.515">
-        <div class="intervalo__cena">{{img:hora-1000|100vw}}</div>
+        <div class="intervalo__cena">{{img:hora-1000|(max-aspect-ratio: 16/9) 178vh, 100vw}}</div>
       </figure>
       <figure class="intervalo" data-de="0.615" data-ate="0.715">
-        <div class="intervalo__cena">{{img:hora-2200|100vw}}</div>
+        <div class="intervalo__cena">{{img:hora-2200|(max-aspect-ratio: 16/9) 178vh, 100vw}}</div>
       </figure>
 
       <canvas class="dia__3d" data-estaca aria-hidden="true"></canvas>
 
-      <div class="relogio" data-relogio aria-hidden="true">
-        <span class="relogio__dia" data-dd>Dia 1</span>
-        <span class="relogio__hora"><span data-hh>05</span><i>:</i><span data-mm>40</span></span>
-      </div>
+      <nav class="etapas" data-etapas aria-label="Etapas da fabricação">
+        <ol>
+          <li><button type="button" data-ir="0.085">Protensão</button></li>
+          <li><button type="button" data-ir="0.31">Concretagem</button></li>
+          <li><button type="button" data-ir="0.545">Cura</button></li>
+          <li><button type="button" data-ir="0.745">Ensaio</button></li>
+          <li><button type="button" data-ir="0.94">Liberação</button></li>
+        </ol>
+      </nav>
+
+      <div class="rotulos" data-rotulos aria-hidden="true"></div>
 
       <div class="dia__textos">
         <article class="capitulo capitulo--abertura" data-de="-1" data-ate="0.05">
@@ -78,10 +85,6 @@ nav: home
         </article>
       </div>
 
-      <div class="regua24" data-regua aria-hidden="true">
-        <span class="regua24__fill"></span>
-        <ol><li style="--x:1.37%">06</li><li style="--x:13.70%">09</li><li style="--x:26.03%">12</li><li style="--x:38.36%">15</li><li style="--x:50.68%">18</li><li style="--x:63.01%">21</li><li style="--x:75.34%">00</li><li style="--x:87.67%">03</li><li style="--x:100.00%">06</li></ol>
-      </div>
     </div>
   </div>
 </section>
@@ -106,6 +109,7 @@ nav: home
     </div>
     <div class="corte__palco">
       <canvas aria-label="Estaca em 3D montando-se em corte"></canvas>
+      <p class="corte__dica">Arraste para girar · toque duplo volta</p>
       <div class="corte__svg" data-corte-svg></div>
     </div>
   </div>

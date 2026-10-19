@@ -270,6 +270,10 @@ def render(text, ctx, icon_map):
     # {{img!:...}} carrega com prioridade (a imagem da abertura); {{img:...}} espera a rolagem
     text = re.sub(r"\{\{img(!?):([\w-]+)(?:\|([^}]*))?\}\}",
                   lambda m: picture(m.group(2), root, m.group(3) or "(max-width: 820px) 100vw, 50vw", eager=bool(m.group(1))), text)
+    # {{loop:cena}}: loop ambiente de câmera parada sobre a foto, só se existir media/src/<cena>.mp4
+    text = re.sub(r"\{\{loop:([\w-]+)\}\}",
+                  lambda m: video_tag(m.group(1), root, "intervalo__video", scrub=False)
+                  if MEDIA.get(m.group(1), {}).get("video") else "", text)
     text = re.sub(r"\{\{tom:([\w-]+)\}\}", lambda m: scene_style(m.group(1)), text)
     text = re.sub(r"\{\{cor:(\w+)\}\}", lambda m: TONES[m.group(1)][3], text)
     text = re.sub(r"\{\{icon:([\w-]+)\}\}", lambda m: icon_map[m.group(1)], text)

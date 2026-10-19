@@ -25,7 +25,7 @@
     "alt": "Pilhas de estacas prontas para expedição no pátio da IPR"
   },
   "silos": {
-    "src": "silos.jpg", "grade": "dia", "pos": "45% 40%",
+    "src": "silos-hf.jpg", "grade": "original", "pos": "45% 40%",
     "alt": "Silos amarelos de cimento da central de concreto da IPR"
   },
   "central-painel": {
@@ -37,7 +37,7 @@
     "alt": "Operadores junto ao misturador da central de concreto da IPR"
   },
   "aco-rolo": {
-    "src": "cordoalha-rolo.jpg", "grade": "aco", "pos": "50% 50%",
+    "src": "aco-rolo-hf.jpg", "grade": "original", "pos": "50% 50%",
     "alt": "Rolo de aço de protensão no galpão da IPR"
   },
   "aco-insumos": {
@@ -49,7 +49,7 @@
     "alt": "Topos de estacas circulares empilhadas, com a textura do concreto curado"
   },
   "corpos-de-prova": {
-    "src": "corpos-de-prova.jpg", "grade": "dia", "pos": "50% 50%",
+    "src": "corpos-de-prova-hf.jpg", "grade": "original", "pos": "50% 50%",
     "alt": "Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão"
   },
   "inspecao": {
@@ -57,7 +57,7 @@
     "alt": "Profissional da IPR de capacete diante de estacas hexagonais"
   },
   "transporte": {
-    "src": "transporte.jpg", "grade": "dia", "pos": "50% 55%",
+    "src": "transporte-hf.jpg", "grade": "original", "pos": "50% 55%",
     "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano"
   },
   "patio-pistas-frente": {
@@ -65,19 +65,19 @@
     "alt": ""
   },
   "hora-0540": {
-    "src": "pistas-silos.jpg", "grade": "noite", "pos": "50% 62%",
+    "src": "hora-0540.jpg", "grade": "original", "pos": "50% 55%",
     "alt": "A pista de protensão da IPR antes do amanhecer, com os silos da central ao fundo"
   },
   "hora-0730": {
-    "src": "silos.jpg", "grade": "amanhecer", "pos": "45% 40%",
+    "src": "hora-0730.jpg", "grade": "original", "pos": "50% 45%",
     "alt": "Os silos de cimento da central de concreto na primeira luz da manhã"
   },
   "hora-1000": {
-    "src": "patio-largo.jpg", "grade": "dia", "pos": "50% 70%",
+    "src": "hora-1000.jpg", "grade": "original", "pos": "50% 65%",
     "alt": "Pistas e fôrmas da fábrica IPR sob a luz do dia"
   },
   "hora-2200": {
-    "src": "patio-nublado.jpg", "grade": "noite", "pos": "50% 55%",
+    "src": "hora-2200.jpg", "grade": "original", "pos": "50% 60%",
     "alt": "O pátio de estocagem da IPR à noite"
   }
 }

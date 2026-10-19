@@ -73,13 +73,14 @@
  "silos": {
   "pos": "45% 40%",
   "alt": "Silos amarelos de cimento da central de concreto da IPR",
-  "w": 1023,
-  "h": 1537,
+  "w": 1856,
+  "h": 2304,
   "widths": [
    640,
-   1023
+   1080,
+   1600
   ],
-  "tone": "#99998e"
+  "tone": "#666250"
  },
  "central-painel": {
   "pos": "50% 45%",
@@ -106,13 +107,14 @@
  "aco-rolo": {
   "pos": "50% 50%",
   "alt": "Rolo de aço de protensão no galpão da IPR",
-  "w": 1000,
-  "h": 1500,
+  "w": 1856,
+  "h": 2304,
   "widths": [
    640,
-   1000
+   1080,
+   1600
   ],
-  "tone": "#40474c"
+  "tone": "#4d5863"
  },
  "aco-insumos": {
   "pos": "50% 70%",
@@ -139,13 +141,14 @@
  "corpos-de-prova": {
   "pos": "50% 50%",
   "alt": "Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão",
-  "w": 667,
-  "h": 1000,
+  "w": 1856,
+  "h": 2304,
   "widths": [
    640,
-   667
+   1080,
+   1600
   ],
-  "tone": "#686d70"
+  "tone": "#96a0a6"
  },
  "inspecao": {
   "pos": "50% 60%",
@@ -161,59 +164,61 @@
  "transporte": {
   "pos": "50% 55%",
   "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano",
-  "w": 1023,
-  "h": 1537,
+  "w": 1856,
+  "h": 2304,
   "widths": [
    640,
-   1023
+   1080,
+   1600
   ],
-  "tone": "#777d82"
+  "tone": "#60768e"
  },
  "hora-0540": {
-  "pos": "50% 62%",
+  "pos": "50% 55%",
   "alt": "A pista de protensão da IPR antes do amanhecer, com os silos da central ao fundo",
-  "w": 1280,
-  "h": 960,
+  "w": 2752,
+  "h": 1536,
   "widths": [
    640,
    1080,
-   1280
+   1600
   ],
-  "tone": "#1f222c"
+  "tone": "#4d444c"
  },
  "hora-0730": {
-  "pos": "45% 40%",
+  "pos": "50% 45%",
   "alt": "Os silos de cimento da central de concreto na primeira luz da manhã",
-  "w": 1023,
-  "h": 1537,
+  "w": 2752,
+  "h": 1536,
   "widths": [
    640,
-   1023
+   1080,
+   1600
   ],
-  "tone": "#777770"
+  "tone": "#3c515e"
  },
  "hora-1000": {
-  "pos": "50% 70%",
+  "pos": "50% 65%",
   "alt": "Pistas e fôrmas da fábrica IPR sob a luz do dia",
-  "w": 1280,
-  "h": 960,
+  "w": 2752,
+  "h": 1536,
   "widths": [
    640,
    1080,
-   1280
+   1600
   ],
-  "tone": "#999996"
+  "tone": "#727981"
  },
  "hora-2200": {
-  "pos": "50% 55%",
+  "pos": "50% 60%",
   "alt": "O pátio de estocagem da IPR à noite",
-  "w": 1280,
-  "h": 960,
+  "w": 2752,
+  "h": 1536,
   "widths": [
    640,
    1080,
-   1280
+   1600
   ],
-  "tone": "#1a1d27"
+  "tone": "#3a3233"
  }
 }

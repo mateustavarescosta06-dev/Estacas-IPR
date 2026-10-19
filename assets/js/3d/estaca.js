@@ -124,6 +124,8 @@ export function createEstaca(canvas, opts = {}) {
     cp: new THREE.MeshStandardMaterial({ map: T.concrete.map, normalMap: T.concrete.normalMap, color: 0xd9d6cf, roughness: 0.85, transparent: true, emissive: 0xffcd00, emissiveIntensity: 0 }),
     press: new THREE.MeshStandardMaterial({ color: 0x2a3340, metalness: 0.8, roughness: 0.35, transparent: true }),
     pulse: new THREE.MeshBasicMaterial({ color: 0xffcd00, transparent: true, opacity: 0, toneMapped: false, depthWrite: false }),
+    bucket: new THREE.MeshStandardMaterial({ color: 0xe0a800, metalness: 0.35, roughness: 0.5, side: THREE.DoubleSide }),
+    chuck: new THREE.MeshStandardMaterial({ color: 0x9aa4ae, metalness: 0.8, roughness: 0.3, transparent: true }),
   };
   T.concrete.map.repeat.set(3, 3); T.concrete.roughnessMap.repeat.set(3, 3); T.concrete.normalMap.repeat.set(3, 3);
   const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 1);
@@ -162,8 +164,17 @@ export function createEstaca(canvas, opts = {}) {
   fixed.add(bed, ...heads);
   scene.add(fixed);
 
+  const bucket = new THREE.Group();
+  const cone = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.09, 0.42, 28, 1, true), M.bucket); cone.castShadow = true;
+  const rimRing = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.012, 8, 32), M.bucket); rimRing.rotation.x = Math.PI / 2; rimRing.position.y = 0.21;
+  const bail = new THREE.Mesh(new THREE.TorusGeometry(0.31, 0.01, 8, 24, Math.PI), M.head); bail.position.y = 0.21;
+  const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 4, 6), M.wire); cable.position.y = 0.52 + 2;
+  const stream = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.02, 1, 12), M.wet); stream.geometry.translate(0, -0.5, 0);
+  bucket.add(cone, rimRing, bail, cable); scene.add(bucket, stream);
+
+
   /* ---------- Partes que dependem da seção ---------- */
-  let sec, y0, pile, cap, formL, formR, formB, wires = [], cps = [], press, pulses = [];
+  let sec, y0, pile, cap, formL, formR, formB, wires = [], cps = [], press, pulses = [], chucks = [];
   const pileGroup = new THREE.Group(), formGroup = new THREE.Group(), wireGroup = new THREE.Group(), cpGroup = new THREE.Group();
   scene.add(pileGroup, formGroup, wireGroup, cpGroup);
 
@@ -184,6 +195,7 @@ export function createEstaca(canvas, opts = {}) {
 
   function build(e) {
     [pileGroup, formGroup, wireGroup, cpGroup].forEach(disposeGroup);
+    chucks = [];
     sec = section(e);
     y0 = -sec.ymin + FORM_T;
 
@@ -210,8 +222,13 @@ export function createEstaca(canvas, opts = {}) {
       const strip = edgeStrip(a, b, L + 0.04);
       strip.position.z = -L / 2;
       const mx = (a.x + b.x) / 2;
-      if (Math.abs(mx) < sec.R * 0.2 && mid < 0) base.add(strip);
-      else (mx < 0 ? left : right).add(strip);
+      const side = Math.abs(mx) < sec.R * 0.2 && mid < 0 ? base : mx < 0 ? left : right;
+      side.add(strip);
+      if (e.forma !== "circular" || i % 4 === 0) for (let k = 0; k <= 8; k++) {
+        const rib = edgeStrip(a, b, 0.022); rib.scale.y = 3.2; rib.position.z = -k * L / 8;
+        rib.position.x += (strip.position.x - (a.x + b.x) / 2) * 2.4; rib.position.y += (strip.position.y - (a.y + b.y) / 2) * 2.4;
+        side.add(rib);
+      }
       if (mid < sec.ymin + 0.02) { bl.x = Math.min(bl.x, a.x, b.x); br.x = Math.max(br.x, a.x, b.x); }
     }
     if (!isFinite(bl.x)) { bl.x = -sec.R * 0.5; br.x = sec.R * 0.5; }
@@ -231,6 +248,8 @@ export function createEstaca(canvas, opts = {}) {
       w.near = cyl(outer); w.near.geometry.translate(0, -outer / 2, 0); w.near.position.set(x, w.y, outer);   // escala a partir da cabeceira
       w.far = cyl(outer); w.far.geometry.translate(0, outer / 2, 0); w.far.position.set(x, w.y, -L - outer);
       wireGroup.add(w.inner, w.near, w.far);
+      const ch = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.022, 0.06, 12), M.chuck);
+      ch.rotation.x = Math.PI / 2; ch.position.set(x, w.y, -L - ABUT + 0.15); wireGroup.add(ch); chucks.push(ch);
       return w;
     });
 
@@ -270,7 +289,7 @@ export function createEstaca(canvas, opts = {}) {
 
   /* ---------- Estado ---------- */
   const state = {
-    form: 1, wireIn: 1, tension: 1, fill: 1, cure: 1, cps: 0, test: 0, release: 0, open: 0, lift: 0, turn: 0, view: 0,
+    form: 1, wireIn: 1, tension: 1, fill: 1, cure: 1, cps: 0, test: 0, release: 0, open: 0, lift: 0, turn: 0, view: 0, yaw: 0, pitch: 0,
     light: { sun: 0xffffff, sunI: 2.4, elev: 35, azim: -30, sky: 0x8fb0dd, ground: 0x0a1426, hemiI: 0.7, sodium: 0, exposure: 1, env: 0.6, fog: 0x0b1f3d },
   };
   let last = null;
@@ -324,6 +343,17 @@ export function createEstaca(canvas, opts = {}) {
     M.concrete.roughness = lerp(0.36, 1, cure);
     M.concrete.normalScale.setScalar(lerp(0.3, 0.55, cure));
 
+    // caçamba: percorre a pista despejando enquanto a fôrma enche
+    const pouring = fill > 0.004 && fill < 0.985;
+    bucket.visible = stream.visible = pouring;
+    if (pouring) {
+      const bz = -L / 2 + Math.sin(fill * Math.PI * 2.6) * (L / 2 - 0.5), by = yTop + 0.75;
+      bucket.position.set(0, by, bz); bucket.rotation.z = Math.sin(fill * 40) * 0.015;
+      stream.position.set(0, by - 0.2, bz); stream.scale.y = Math.max(0.02, by - 0.2 - h);
+    }
+    chucks.forEach((c) => { c.visible = lay > 0.5 && lift < 0.01; });
+    M.chuck.opacity = ground;
+
     // corpos de prova e ensaio
     const cpIn = ease(s.cps), test = s.test;
     cps.forEach((m, i) => { const k = ease(cpIn * 1.6 - i * 0.3); m.visible = k > 0.002; m.scale.set(1, Math.max(0.001, k), 1); m.position.y = 0.1 * m.scale.y; });
@@ -369,6 +399,17 @@ export function createEstaca(canvas, opts = {}) {
     const v = ease(s.view), foc = Math.sin(Math.PI * Math.min(1, test * 1.1)) * (1 - rel);
     const P = [0, 1, 2].map((i) => lerp(lerp(lerp(A.p[i], B.p[i], v), D.p[i], foc), C.p[i], turn));
     const Tt = [0, 1, 2].map((i) => lerp(lerp(lerp(A.t[i], B.t[i], v), D.t[i], foc), C.t[i], turn));
+    if (s.yaw || s.pitch) {
+      // gira em torno do meio da peça e se afasta ao ver de lado, para a estaca inteira caber
+      const piv = [Tt[0], Tt[1], lerp(Tt[2], -L / 2, turn)];
+      const off = new THREE.Vector3(P[0] - piv[0], P[1] - piv[1], P[2] - piv[2]);
+      const sph = new THREE.Spherical().setFromVector3(off);
+      sph.theta += s.yaw; sph.phi = Math.min(2.6, Math.max(0.35, sph.phi - s.pitch));
+      sph.radius *= 1 + 0.9 * Math.abs(Math.sin(s.yaw)) * turn;
+      off.setFromSpherical(sph);
+      P[0] = piv[0] + off.x; P[1] = piv[1] + off.y; P[2] = piv[2] + off.z;
+      Tt[0] = piv[0]; Tt[1] = piv[1]; Tt[2] = piv[2];
+    }
     camera.position.set(...P);
     camera.lookAt(...Tt);
     camera.fov = lerp(30, 26, turn);
@@ -394,6 +435,7 @@ export function createEstaca(canvas, opts = {}) {
     dirty = false;
     apply(state);
     renderer.render(scene, camera);
+    if (opts.onRender) opts.onRender(); // rótulos HTML acompanham a câmera do quadro que acabou de ser desenhado
   }
   function request() { dirty = true; if (!raf) raf = requestAnimationFrame(loop); }
 
@@ -409,5 +451,25 @@ export function createEstaca(canvas, opts = {}) {
     // posição da seção na tela, para alinhar o desenho cotado por cima no fim da montagem
     project(x, y) { const v = new THREE.Vector3(x, y + y0 + pileGroup.position.y, 0).project(camera); return [(v.x + 1) / 2, (1 - v.y) / 2]; },
     get radius() { return sec ? sec.R : 0; },
+    anchors() {
+      if (!sec) return {};
+      const up = pileGroup.position.y, w0 = wires[0] || { x: 0, y: y0 };
+      const pts = {
+        fio: [w0.x, w0.y + up, -L * 0.28],
+        cabeceira: [0, 0.66, -L - ABUT],
+        forma: [sec.out.reduce((m, q) => Math.min(m, q.x), 0) - 0.02, y0, -L * 0.62],
+        concreto: [0, y0 + sec.ymax + up, -L * 0.42],
+        cp: [-0.56, 0.24, -0.55],
+        prensa: [-0.52, 0.42, 0.42],
+        secao: [0, y0 + up + sec.ymax * 0.55, 0.02],
+        fioface: [w0.x, w0.y + up, 0.03],
+      };
+      const w = canvas.clientWidth, h = canvas.clientHeight, out = {}, v = new THREE.Vector3();
+      for (const k in pts) {
+        v.set(...pts[k]).project(camera);
+        out[k] = { x: (v.x + 1) / 2 * w, y: (1 - v.y) / 2 * h, on: v.z < 1 && Math.abs(v.x) < 0.98 && Math.abs(v.y) < 0.98 };
+      }
+      return out;
+    },
   };
 }
