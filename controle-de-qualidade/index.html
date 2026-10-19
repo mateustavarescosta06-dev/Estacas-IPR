@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Controle de Qualidade, rigor técnico e rastreabilidade | IPR Estacas</title>
 <meta name="description" content="Homologação de insumos, central de concreto automatizada, ensaios de compressão em 24 h, 3, 7 e 28 dias e inspeção individual de 100% das estacas IPR.">
-<meta name="theme-color" content="#cdcac1">
+<meta name="theme-color" content="#e7ecf3">
 <meta property="og:title" content="Controle de Qualidade, rigor técnico e rastreabilidade | IPR Estacas">
 <meta property="og:description" content="Homologação de insumos, central de concreto automatizada, ensaios de compressão em 24 h, 3, 7 e 28 dias e inspeção individual de 100% das estacas IPR.">
 <meta property="og:image" content="../assets/media/patio-pistas-1280.webp">
@@ -14,8 +14,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
-<style>html{background:#cdcac1}body[data-tone="patio"]{--ground:#e8e4da;--ink:#1c1d1a;--ink-2:#5f5c54;--mark:#c9c1ae}body[data-tone="materia"]{--ground:#d9d2c4;--ink:#201e1a;--ink-2:#5e5850;--mark:#b9ab92}body[data-tone="aco"]{--ground:#202427;--ink:#e9e7e1;--ink-2:#9aa1a5;--mark:#8f999f}body[data-tone="cura"]{--ground:#cdcac1;--ink:#1c1d1a;--ink-2:#55534d;--mark:#a9a69c}body[data-tone="terra"]{--ground:#3a2219;--ink:#f0e6da;--ink-2:#c7ab96;--mark:#a65e2f}body[data-tone="obra"]{--ground:#b9b5ab;--ink:#1c1d1a;--ink-2:#46443f;--mark:#818479}body[data-tone="papel"]{--ground:#f0ede5;--ink:#1c1d1a;--ink-2:#66635b;--mark:#dddcd2}body[data-tone="noite"]{--ground:#151617;--ink:#ece8df;--ink-2:#9a968c;--mark:#ffa04b}</style>
+<style>html{background:#e7ecf3}body[data-tone="patio"]{--ground:#0a1f3d;--ink:#f3f5f9;--ink-2:#a9b8cc;--mark:#ffcd00}body[data-tone="materia"]{--ground:#f4f6f9;--ink:#0a1f3d;--ink-2:#4b5d78;--mark:#ffcd00}body[data-tone="aco"]{--ground:#071428;--ink:#f3f5f9;--ink-2:#9fb0c8;--mark:#ffcd00}body[data-tone="cura"]{--ground:#e7ecf3;--ink:#0a1f3d;--ink-2:#46597a;--mark:#ffcd00}body[data-tone="terra"]{--ground:#0f2c55;--ink:#f3f5f9;--ink-2:#b0c0d6;--mark:#ffcd00}body[data-tone="obra"]{--ground:#0a1f3d;--ink:#f3f5f9;--ink-2:#a9b8cc;--mark:#ffcd00}body[data-tone="papel"]{--ground:#f4f6f9;--ink:#0a1f3d;--ink-2:#4b5d78;--mark:#ffcd00}body[data-tone="noite"]{--ground:#061020;--ink:#f3f5f9;--ink-2:#9aa9c0;--mark:#ffcd00}</style>
 <link rel="stylesheet" href="../assets/css/style.css">
+<script type="importmap">{"imports":{"three":"./../assets/vendor/three/three.module.min.js","three/addons/":"./../assets/vendor/three/addons/"}}</script>
 <script>
 /* Antes da primeira pintura: estado de movimento e chegada pela passagem (fios a soltar).
    Em página pré-renderizada, a checagem se repete na ativação, quando o clique já aconteceu. */
@@ -45,13 +46,13 @@
     </a>
     <nav class="nav" aria-label="Principal" data-nav>
       <ul>
-<li><a href="../" style="--c:#c9c1ae">Início</a></li>
-<li><a href="../central-de-concreto/" style="--c:#b9ab92">Central</a></li>
-<li><a href="../estacas/" style="--c:#8f999f">Estacas</a></li>
-<li><a href="../controle-de-qualidade/" style="--c:#a9a69c" aria-current="page">Qualidade</a></li>
-<li><a href="../fundacao/" style="--c:#a65e2f">Fundação</a></li>
-<li><a href="../clientes/" style="--c:#818479">Clientes</a></li>
-<li><a href="../perguntas-frequentes/" style="--c:#dddcd2">Dúvidas</a></li>
+<li><a href="../" style="--c:#ffcd00">Início</a></li>
+<li><a href="../central-de-concreto/" style="--c:#ffcd00">Central</a></li>
+<li><a href="../estacas/" style="--c:#ffcd00">Estacas</a></li>
+<li><a href="../controle-de-qualidade/" style="--c:#ffcd00" aria-current="page">Qualidade</a></li>
+<li><a href="../fundacao/" style="--c:#ffcd00">Fundação</a></li>
+<li><a href="../clientes/" style="--c:#ffcd00">Clientes</a></li>
+<li><a href="../perguntas-frequentes/" style="--c:#ffcd00">Dúvidas</a></li>
       </ul>
       <a class="nav__tel" href="tel:+551138314181">(11) 3831-4181</a>
       <a class="btn btn--primary btn--sm" href="../contato/">Orçamento <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
@@ -69,12 +70,12 @@
   <div class="wrap capa__grid">
     <div class="capa__txt">
       <nav class="crumbs" aria-label="Você está em"><a href="../">Início</a><span aria-hidden="true">/</span><span>Controle de Qualidade</span></nav>
-      <span class="amostra" style="--c:#a9a69c"><i></i>A cura e o ensaio</span>
+      <span class="amostra" style="--c:#ffcd00"><i></i>A cura e o ensaio</span>
       <h1 class="h-xl">Rigor técnico <span class="hl">em cada lote.</span></h1>
       <p class="lead">Durante a concretagem, cada lote deixa amostras para trás. Os corpos de prova vão à prensa em idades definidas, e é o resultado deles que libera a peça para o próximo passo.</p>
       <ul class="capa__meta"><li>Ensaios em 24 h, 3, 7 e 28 dias</li><li>Inspeção de 100% das peças</li><li>Lote vinculado à estaca</li></ul>
     </div>
-    <div class="cena grao capa__cena" data-par style="--tone-img:#686e6f"><picture><source type="image/avif" srcset="../assets/media/corpos-de-prova-640.avif 640w, ../assets/media/corpos-de-prova-667.avif 667w" sizes="(max-width: 820px) 100vw, 48vw"><img src="../assets/media/corpos-de-prova-667.webp" srcset="../assets/media/corpos-de-prova-640.webp 640w, ../assets/media/corpos-de-prova-667.webp 667w" sizes="(max-width: 820px) 100vw, 48vw" width="667" height="1000" alt="Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão" fetchpriority="high" decoding="async" style="--pos:50% 50%"></picture></div>
+    <div class="cena grao capa__cena" data-par style="--tone-img:#686d70"><picture><source type="image/avif" srcset="../assets/media/corpos-de-prova-640.avif 640w, ../assets/media/corpos-de-prova-667.avif 667w" sizes="(max-width: 820px) 100vw, 48vw"><img src="../assets/media/corpos-de-prova-667.webp" srcset="../assets/media/corpos-de-prova-640.webp 640w, ../assets/media/corpos-de-prova-667.webp 667w" sizes="(max-width: 820px) 100vw, 48vw" width="667" height="1000" alt="Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão" fetchpriority="high" decoding="async" style="--pos:50% 50%"></picture></div>
   </div>
 </section>
 
@@ -146,7 +147,7 @@
     <figure class="foto reveal sangra-d" style="--ar:4/5"><div class="cena grao" data-par style="--tone-img:#80898d"><picture><source type="image/avif" srcset="../assets/media/inspecao-640.avif 640w, ../assets/media/inspecao-800.avif 800w" sizes="(max-width: 820px) 100vw, 50vw"><img src="../assets/media/inspecao-800.webp" srcset="../assets/media/inspecao-640.webp 640w, ../assets/media/inspecao-800.webp 800w" sizes="(max-width: 820px) 100vw, 50vw" width="800" height="1200" alt="Profissional da IPR de capacete diante de estacas hexagonais" loading="lazy" decoding="async" style="--pos:50% 60%"></picture></div><figcaption><span>Inspeção visual individual</span></figcaption></figure>
   </div>
 </section>
-<section class="passagem" data-tone="terra" aria-label="Próxima etapa: Fundação"><div class="fios" data-fios aria-hidden="true"><svg viewBox="0 0 1000 84" preserveAspectRatio="none"><path data-fio d="M0 12 Q500 46 1000 12"/><path data-fio d="M0 24 Q500 58 1000 24"/><path data-fio d="M0 36 Q500 70 1000 36"/><path data-fio d="M0 48 Q500 82 1000 48"/><path data-fio d="M0 60 Q500 94 1000 60"/><path data-fio d="M0 72 Q500 106 1000 72"/><path class="brilho" pathLength="1000" style="--i:0" d="M0 12 L1000 12"/><path class="brilho" pathLength="1000" style="--i:1" d="M0 24 L1000 24"/><path class="brilho" pathLength="1000" style="--i:2" d="M0 36 L1000 36"/><path class="brilho" pathLength="1000" style="--i:3" d="M0 48 L1000 48"/><path class="brilho" pathLength="1000" style="--i:4" d="M0 60 L1000 60"/><path class="brilho" pathLength="1000" style="--i:5" d="M0 72 L1000 72"/></svg><span class="fios__leitura">Protensão aplicada</span></div><a class="wrap passagem__link" href="../fundacao/" data-passagem><span class="passagem__txt"><span class="passagem__de rotulo">Próxima etapa · Fundação</span><span class="amostra" style="--c:#a65e2f"><i></i>O solo</span><span class="passagem__titulo">A estaca sai do pátio <span class="hl">e encontra o solo.</span></span><span class="passagem__teaser">A estaca deixa o pátio na frota própria e é cravada, emendada e verificada golpe a golpe.</span><span class="btn btn--ink passagem__ir">Seguir para Fundação <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span></span><span class="cena grao passagem__cena" data-par style="--tone-img:#777d82"><picture><source type="image/avif" srcset="../assets/media/transporte-640.avif 640w, ../assets/media/transporte-1023.avif 1023w" sizes="(max-width: 820px) 100vw, 48vw"><img src="../assets/media/transporte-1023.webp" srcset="../assets/media/transporte-640.webp 640w, ../assets/media/transporte-1023.webp 1023w" sizes="(max-width: 820px) 100vw, 48vw" width="1023" height="1537" alt="" loading="lazy" decoding="async" style="--pos:50% 55%"></picture></span></a></section>
+<section class="passagem" data-tone="terra" aria-label="Próxima etapa: Fundação"><div class="fios" data-fios aria-hidden="true"><svg viewBox="0 0 1000 84" preserveAspectRatio="none"><path data-fio d="M0 12 Q500 46 1000 12"/><path data-fio d="M0 24 Q500 58 1000 24"/><path data-fio d="M0 36 Q500 70 1000 36"/><path data-fio d="M0 48 Q500 82 1000 48"/><path data-fio d="M0 60 Q500 94 1000 60"/><path data-fio d="M0 72 Q500 106 1000 72"/><path class="brilho" pathLength="1000" style="--i:0" d="M0 12 L1000 12"/><path class="brilho" pathLength="1000" style="--i:1" d="M0 24 L1000 24"/><path class="brilho" pathLength="1000" style="--i:2" d="M0 36 L1000 36"/><path class="brilho" pathLength="1000" style="--i:3" d="M0 48 L1000 48"/><path class="brilho" pathLength="1000" style="--i:4" d="M0 60 L1000 60"/><path class="brilho" pathLength="1000" style="--i:5" d="M0 72 L1000 72"/></svg><span class="fios__leitura">Protensão aplicada</span></div><a class="wrap passagem__link" href="../fundacao/" data-passagem><span class="passagem__txt"><span class="passagem__de rotulo">Próxima etapa · Fundação</span><span class="amostra" style="--c:#ffcd00"><i></i>O solo</span><span class="passagem__titulo">A estaca sai do pátio <span class="hl">e encontra o solo.</span></span><span class="passagem__teaser">A estaca deixa o pátio na frota própria e é cravada, emendada e verificada golpe a golpe.</span><span class="btn btn--ink passagem__ir">Seguir para Fundação <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span></span><span class="cena grao passagem__cena" data-par style="--tone-img:#777d82"><picture><source type="image/avif" srcset="../assets/media/transporte-640.avif 640w, ../assets/media/transporte-1023.avif 1023w" sizes="(max-width: 820px) 100vw, 48vw"><img src="../assets/media/transporte-1023.webp" srcset="../assets/media/transporte-640.webp 640w, ../assets/media/transporte-1023.webp 1023w" sizes="(max-width: 820px) 100vw, 48vw" width="1023" height="1537" alt="" loading="lazy" decoding="async" style="--pos:50% 55%"></picture></span></a></section>
 </main>
 
 <footer class="ft">

@@ -168,5 +168,52 @@
    1023
   ],
   "tone": "#777d82"
+ },
+ "hora-0540": {
+  "pos": "50% 62%",
+  "alt": "A pista de protensão da IPR antes do amanhecer, com os silos da central ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#1f222c"
+ },
+ "hora-0730": {
+  "pos": "45% 40%",
+  "alt": "Os silos de cimento da central de concreto na primeira luz da manhã",
+  "w": 1023,
+  "h": 1537,
+  "widths": [
+   640,
+   1023
+  ],
+  "tone": "#777770"
+ },
+ "hora-1000": {
+  "pos": "50% 70%",
+  "alt": "Pistas e fôrmas da fábrica IPR sob a luz do dia",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#999996"
+ },
+ "hora-2200": {
+  "pos": "50% 55%",
+  "alt": "O pátio de estocagem da IPR à noite",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#1a1d27"
  }
 }

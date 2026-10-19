@@ -38,6 +38,12 @@ LOOKS = {
                 shadow=(-.004, .004, .016), high=(.004, .006, .008)),
     "crepusculo": dict(exp=.72, sat=.7, sky=.45, contrast=.3, black=.03, white=.93,
                        shadow=(0, .006, .022), high=(.055, .024, -.028)),
+    # "noite americana" do cinema: subexposição, céu escurecido em gradação de filtro, sombras azuis
+    "noite": dict(exp=.46, sat=.42, sky=.2, contrast=.28, black=.012, white=.6,
+                  shadow=(0, .014, .06), high=(-.02, .004, .07), ceu=.75),
+    # primeira luz: sombras ainda azuis, altas luzes já quentes
+    "amanhecer": dict(exp=.82, sat=.74, sky=.42, contrast=.24, black=.025, white=.92,
+                      shadow=(0, .01, .05), high=(.07, .04, -.025), ceu=.25),
 }
 
 
@@ -56,6 +62,10 @@ def grade(im, look):
     a = p["black"] + a * (p["white"] - p["black"])
     y = a @ LUMA
     a = a + (1 - y)[..., None] * np.array(p["shadow"], np.float32) + y[..., None] * np.array(p["high"], np.float32)
+    if p.get("ceu"):
+        # filtro degradê de câmera: escurece a parte de cima do quadro (o céu), não a cena inteira
+        rows = np.linspace(0, 1, a.shape[0], dtype=np.float32)[:, None, None]
+        a = a * (1 - p["ceu"] * np.clip(1 - rows / 0.55, 0, 1) ** 1.6)
     return Image.fromarray((np.clip(a, 0, 1) * 255 + .5).astype(np.uint8))
 
 

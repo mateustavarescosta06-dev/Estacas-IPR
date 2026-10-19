@@ -284,3 +284,6 @@ export function stencilTexture(lines) {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
   return t;
 }
+
+/* reaproveitado pela estaca 3D da home (assets/js/3d/estaca.js) */
+export { surface, fbm, craters, craterAt };

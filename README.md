@@ -4,18 +4,20 @@ Site estático (HTML + CSS + JS puro, sem dependências) para **estacasipr.com.b
 
 ## A ideia
 
-O site segue a vida de uma estaca, na ordem em que ela é feita: a matéria (Central de Concreto),
-o aço e a forma (Estacas), a cura e o ensaio (Controle de Qualidade), o solo (Fundação), a obra de pé
-(Clientes), as dúvidas e, no fim, a nega (Contato).
+**Home: 24 horas na fábrica.** A rolagem é o relógio da fábrica, de 05:40 às 06:00 do dia seguinte: o
+ciclo real em que uma estaca nasce (a IPR rompe um corpo de prova com 24 horas para liberar a peça).
 
-- **Cor = material.** Cada trecho declara um tom (`data-tone`): cimento, agregado, aço, concreto curado,
-  latossolo, concreto aparente, prancheta, noite. O fundo interpola devagar entre eles, como luz.
-- **O fim de uma página é a capa da próxima.** A passagem no pé de cada página monta exatamente a
-  abertura da página seguinte (mesmo título, mesma foto no mesmo lugar, mesmo tom). Com view
-  transitions, o clique vira um só movimento.
-- **Fios de protensão.** Seis linhas finas se tensionam quando a passagem chega e, na página seguinte,
-  são liberadas a partir do centro, como na desprotensão.
-- **Nada reage ao ponteiro.** O movimento vem da rolagem e do próprio processo.
+- **Paleta da marca.** O azul-marinho domina (a noite, a madrugada e o dia são tons de azul), o branco é
+  respiro e o amarelo é luz: o relógio, o sol baixo do fim de tarde, as lâmpadas de sódio, as ações.
+- **A estaca 3D que se monta** (`assets/js/3d/estaca.js`): pista, cabeceiras, fôrma metálica, os fios de
+  protensão esticando, o concreto enchendo a fôrma, a cura mudando a cor, o ensaio na prensa, a
+  liberação e a peça girando para mostrar a seção. As seções e os fios vêm dos ábacos (`estacas-data.js`).
+- **Monte a sua estaca.** O visitante escolhe a geometria e a bitola e a estaca se monta de novo
+  naquela seção, com a ficha técnica ao lado e um controle para percorrer a montagem.
+- **Interlúdios por hora** (05:40, 07:30, 10:00, 22:00): hoje fotos reais gradadas para a hora do dia;
+  amanhã os clipes do Higgsfield, com os mesmos nomes de cena (`scrollcraft/builds/ipr-24h/ROTEIRO.md`).
+- Nas páginas internas, o fim de cada página monta a capa da seguinte e a troca é costurada por view
+  transitions; os fios de protensão se tensionam ao fim e são liberados no começo da próxima.
 
 ## Estrutura
 
@@ -30,7 +32,9 @@ media/
   HIGGSFIELD.md          kit de produção: prompts, câmeras, quadros de início e fim, custos
 assets/
   css/style.css          sistema visual (tons, tipografia, componentes)
-  js/jornada.js          tom por trecho, profundidade das fotos, linha de produção, fios, passagens, clipes
+  js/historia.js         home: relógio das 24 horas, luz por hora, capítulos e a estaca em corte
+  js/3d/estaca.js        a estaca 3D que se monta (three.js, sem dependências externas)
+  js/jornada.js          tom por trecho, profundidade das fotos, fios, passagens, clipes
   js/main.js             menu, simulador de cravação, catálogo, seletor, ensaios, FAQ, formulário
   js/estacas-data.js     dados técnicos das estacas (extraídos dos ábacos em assets/docs)
   media/                 imagens e clipes gerados por tools/media.py (não editar à mão)
@@ -68,5 +72,5 @@ Higgsfield, siga `media/HIGGSFIELD.md`. O site já aceita esses arquivos: basta 
 - O simulador de cravação da home é ilustrativo (camadas, golpes e nega fictícios).
 - Com "reduzir movimento" ativo, não há rolagem conduzida nem vídeo: as seções viram blocos
   estáticos e as fotos ficam no lugar dos clipes.
-- A maquete 3D anterior (`assets/js/3d`, `assets/vendor/three`, `tools/render.*`) não é mais
-  carregada por nenhuma página e pode ser removida.
+- Da maquete 3D anterior, só `assets/js/3d/tex.js` (texturas procedurais) e `assets/vendor/three`
+  continuam em uso; `yard.js`, `kit.js`, `sketch.js` e `tools/render.*` podem ser removidos.

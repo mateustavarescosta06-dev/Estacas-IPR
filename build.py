@@ -39,15 +39,17 @@ SRC = ROOT / "src"
 MEDIA = json.loads((ROOT / "assets" / "media" / "manifest.json").read_text(encoding="utf-8"))
 
 # Tons de material: fundo, tinta, tinta secundária, amostra (a cor do material na etiqueta).
+# Paleta da marca: o azul-marinho domina, o branco é respiro, o amarelo é luz e ação.
+# fundo, tinta, tinta secundária, marca (o chip de etapa)
 TONES = {
-    "patio":   ("#e8e4da", "#1c1d1a", "#5f5c54", "#c9c1ae"),   # cimento ao sol da manhã
-    "materia": ("#d9d2c4", "#201e1a", "#5e5850", "#b9ab92"),   # areia e brita
-    "aco":     ("#202427", "#e9e7e1", "#9aa1a5", "#8f999f"),   # fio de protensão, fôrma oleada
-    "cura":    ("#cdcac1", "#1c1d1a", "#55534d", "#a9a69c"),   # concreto curado, fosco
-    "terra":   ("#3a2219", "#f0e6da", "#c7ab96", "#a65e2f"),   # latossolo vermelho
-    "obra":    ("#b9b5ab", "#1c1d1a", "#46443f", "#818479"),   # concreto aparente
-    "papel":   ("#f0ede5", "#1c1d1a", "#66635b", "#dddcd2"),   # prancheta do engenheiro
-    "noite":   ("#151617", "#ece8df", "#9a968c", "#ffa04b"),   # pátio à noite, luz de sódio
+    "patio":   ("#0a1f3d", "#f3f5f9", "#a9b8cc", "#ffcd00"),   # azul-marinho IPR
+    "materia": ("#f4f6f9", "#0a1f3d", "#4b5d78", "#ffcd00"),   # branco
+    "aco":     ("#071428", "#f3f5f9", "#9fb0c8", "#ffcd00"),   # noite
+    "cura":    ("#e7ecf3", "#0a1f3d", "#46597a", "#ffcd00"),   # névoa clara
+    "terra":   ("#0f2c55", "#f3f5f9", "#b0c0d6", "#ffcd00"),   # azul do dia
+    "obra":    ("#0a1f3d", "#f3f5f9", "#a9b8cc", "#ffcd00"),
+    "papel":   ("#f4f6f9", "#0a1f3d", "#4b5d78", "#ffcd00"),
+    "noite":   ("#061020", "#f3f5f9", "#9aa9c0", "#ffcd00"),
 }
 
 # A ordem das páginas é a vida de uma estaca: matéria, aço, cura, solo, obra.

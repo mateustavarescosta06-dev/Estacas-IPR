@@ -159,16 +159,16 @@
     var dots = $$(".drive__dots button", root);
     var track = $(".drive__track", root);
     var G = 250, PX = 18, X = 196, PW = 22, SEG = 10; // terreno (y), px por metro, eixo, largura, segmento (m)
-    // perfil de solo típico do interior paulista: aterro, argila vermelha (latossolo), silte, areia, camada resistente
+    // perfil de solo típico: aterro, argila, silte, areia e camada resistente, em azuis cada vez mais fundos
     var layers = [
-      { nome: "Aterro", a: 0, b: 2, cor: "#5a3a2a", pen: 50 },
-      { nome: "Argila mole", a: 2, b: 7, cor: "#7b3a24", pen: 35 },
-      { nome: "Silte argiloso", a: 7, b: 12, cor: "#8a5a3a", pen: 18 },
-      { nome: "Areia fina compacta", a: 12, b: 17, cor: "#a07a52", pen: 8 },
-      { nome: "Camada resistente", a: 17, b: 30, cor: "#4b3b31", pen: 2.5 }
+      { nome: "Aterro", a: 0, b: 2, cor: "#1a3a66", pen: 50 },
+      { nome: "Argila mole", a: 2, b: 7, cor: "#15325b", pen: 35 },
+      { nome: "Silte argiloso", a: 7, b: 12, cor: "#112a4e", pen: 18 },
+      { nome: "Areia fina compacta", a: 12, b: 17, cor: "#0d2342", pen: 8 },
+      { nome: "Camada resistente", a: 17, b: 30, cor: "#081833", pen: 2.5 }
     ];
     var FINAL = 17.6;
-    var CREAM = "#f0e6da", AMARELO = "#ffcd00", MAQ = "#2a2420", ACO = "#9aa1a5";
+    var CREAM = "#f3f5f9", AMARELO = "#ffcd00", MAQ = "#0a1f3d", ACO = "#c9d2de";
 
     var s = '<svg viewBox="0 0 420 760" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
     s += '<defs><pattern id="pGraos" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".8" fill="rgba(240,230,218,.13)"/><circle cx="6.5" cy="7" r=".6" fill="rgba(0,0,0,.18)"/></pattern>';

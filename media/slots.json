@@ -63,5 +63,21 @@
   "patio-pistas-frente": {
     "src": "patio-pistas-frente.png", "grade": "original", "pos": "50% 100%",
     "alt": ""
+  },
+  "hora-0540": {
+    "src": "pistas-silos.jpg", "grade": "noite", "pos": "50% 62%",
+    "alt": "A pista de protensão da IPR antes do amanhecer, com os silos da central ao fundo"
+  },
+  "hora-0730": {
+    "src": "silos.jpg", "grade": "amanhecer", "pos": "45% 40%",
+    "alt": "Os silos de cimento da central de concreto na primeira luz da manhã"
+  },
+  "hora-1000": {
+    "src": "patio-largo.jpg", "grade": "dia", "pos": "50% 70%",
+    "alt": "Pistas e fôrmas da fábrica IPR sob a luz do dia"
+  },
+  "hora-2200": {
+    "src": "patio-nublado.jpg", "grade": "noite", "pos": "50% 55%",
+    "alt": "O pátio de estocagem da IPR à noite"
   }
 }
