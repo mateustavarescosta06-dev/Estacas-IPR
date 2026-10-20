@@ -1417,3 +1417,123 @@ body:not([data-page="index"]) .medida { opacity: calc(.8 - var(--azul, 0) * .8);
 .drive-layer { font: 500 10px var(--f-mono); letter-spacing: .06em; fill: rgb(220 232 250 / .7); }
 .drive-layer--m { font-size: 9px; fill: rgb(220 232 250 / .4); letter-spacing: .02em; }
 .drive-layer.is-on { fill: var(--ipr); }
+
+/* =========================================================================
+   Refino 3 (rapidkert + metriccivil): barra superior fina com régua, botões
+   novos, título de concreto, palavras que sobem, revelações variadas e trena.
+   ========================================================================= */
+
+/* ---------- Barra superior: fina, caixa alta pequena, régua de leitura embaixo ---------- */
+:root { --hd: 68px; }
+.nav ul a { font: 600 .74rem/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; padding: 10px 12px; }
+.nav ul a[aria-current]::after { left: 12px; right: 12px; bottom: 0; height: 2px; }
+.nav__tel { font: 500 .78rem var(--f-mono); letter-spacing: 0; }
+.brand img { width: 40px; }
+.hd__regua { position: absolute; left: 0; right: 0; bottom: 0; height: 7px; pointer-events: none; overflow: visible; color: var(--ink);
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, currentColor 32%, transparent) 0 1px, transparent 1px 60px) 0 100% / 100% 7px no-repeat,
+    repeating-linear-gradient(90deg, color-mix(in srgb, currentColor 18%, transparent) 0 1px, transparent 1px 12px) 0 100% / 100% 3px no-repeat; }
+.hd__regua i { position: absolute; left: -1px; bottom: 0; width: 2px; height: 11px; background: var(--ipr); transition: transform .12s linear; }
+.hd__regua i span { position: absolute; left: 6px; bottom: -1px; font: 500 9px/1 var(--f-mono); color: var(--ipr); white-space: nowrap; }
+.hd::before { box-shadow: none !important; }
+@media (max-width: 900px) { .hd__regua i span { display: none; } }
+
+/* ---------- Botões: caixa alta, a seta mora num bloco próprio que troca de lugar no hover ---------- */
+.btn { min-height: 50px; padding: 0 0 0 20px; gap: 18px; border-radius: 0; font: 600 .8rem/1 var(--f-body); letter-spacing: .09em; text-transform: uppercase; overflow: hidden; }
+.btn .ico { width: 50px; height: 50px; padding: 16px; margin-left: auto; flex: none; background: rgb(0 0 0 / .1); transition: transform .5s var(--ease-out), background-color .3s; }
+.btn:hover .ico { transform: translateX(4px); background: rgb(0 0 0 / .16); }
+.btn--primary { --bg: var(--ipr); --fg: #0a1f3d; --bd: var(--ipr); }
+.btn--primary:hover { --bg: #ffd83d; --bd: #ffd83d; }
+.btn:not(:has(.ico)) { padding: 0 22px; }
+.btn--sm { min-height: 40px; padding-left: 14px; font-size: .72rem; }
+.btn--sm .ico { width: 40px; height: 40px; padding: 12px; }
+.btn--linha { --bg: transparent; --fg: #fff; --bd: rgb(255 255 255 / .38); position: relative; }
+.btn--linha::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--ipr); transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s var(--ease-out); }
+.btn--linha:hover::after { transform: scaleX(1); }
+.btn--linha:hover { --bd: rgb(255 255 255 / .7); }
+
+/* ---------- Título da home: a primeira linha em traço hachurado, a segunda feita de concreto ---------- */
+.abre-titulo { letter-spacing: -.01em; }
+.abre-l--vazada {
+  color: transparent; -webkit-text-stroke: 1.4px rgb(255 255 255 / .9);
+  background: repeating-linear-gradient(-55deg, rgb(255 205 0 / .5) 0 1px, transparent 1px 7px);
+  -webkit-background-clip: text; background-clip: text; }
+.abre-l:not(.abre-l--vazada) {
+  color: transparent;
+  background-image:
+    linear-gradient(100deg, transparent 0 38%, rgb(255 255 255 / .55) 46%, transparent 54% 100%),
+    linear-gradient(180deg, #ffffff 0%, #e4ebf5 42%, #bcc9db 70%, #ffcd00 100%),
+    url("../img/tex/concreto.jpg");
+  background-size: 250% 100%, 100% 100%, 420px auto;
+  background-blend-mode: screen, multiply, normal;
+  background-position: 160% 0, 0 0, 0 0;
+  -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 12px 30px rgb(0 0 0 / .45));
+  animation: concreto-brilho 7s var(--ease-mat) 1.3s infinite; }
+@keyframes concreto-brilho { 0% { background-position: 160% 0, 0 0, 0 0; } 45%, 100% { background-position: -60% 0, 0 0, -60px 0; } }
+.js:not(.reduz) .abre-titulo .abre-l:not(.abre-l--vazada) { animation: abre-sobe 1.1s var(--ease-out) .18s forwards, concreto-brilho 7s var(--ease-mat) 1.6s infinite; }
+
+/* dados da abertura (como os números do rapidkert, embaixo das chamadas) */
+.abre-dados { display: flex; gap: clamp(22px, 3vw, 44px); margin: 34px 0 0; padding-top: 20px; border-top: 1px solid rgb(255 255 255 / .16); }
+.abre-dados dt { font: 600 1.15rem/1.1 var(--f-display); font-stretch: 125%; text-transform: uppercase; color: #fff; }
+.abre-dados dd { margin: 6px 0 0; font: 500 .7rem/1.3 var(--f-mono); color: rgb(255 255 255 / .55); }
+.js:not(.reduz) .abre-dados { opacity: 0; animation: abre-aparece .9s var(--ease-mat) .8s forwards; }
+.capitulo--abertura .btn-row { gap: 12px; }
+
+/* ---------- Palavras que sobem de dentro da máscara ---------- */
+.pal { display: inline-block; overflow: clip; vertical-align: top; padding-bottom: .06em; margin-bottom: -.06em; }
+.pal > span { display: inline-block; transform: translateY(105%); transition: transform 1s var(--ease-out); transition-delay: calc(var(--i, 0) * 55ms); }
+.pal-in .pal > span { transform: none; }
+
+/* ---------- Revelações variadas das fotos ---------- */
+.js:not(.reduz) .placa[data-revela="esq"] .cena { clip-path: inset(0 100% 0 0); }
+.js:not(.reduz) .placa[data-revela="dir"] .cena { clip-path: inset(0 0 0 100%); }
+.js:not(.reduz) .placa[data-revela="baixo"] .cena { clip-path: inset(100% 0 0 0); }
+.js:not(.reduz) .placa[data-revela="centro"] .cena { clip-path: inset(0 50% 0 50%); }
+.js:not(.reduz) .placa[data-revela="abre"] .cena { clip-path: inset(10% 10% 10% 10%); }
+.js:not(.reduz) .placa[data-revela] .cena { transition: clip-path 1.5s cubic-bezier(.7, 0, .2, 1); }
+.js:not(.reduz) .placa[data-revela="esq"] .cena img, .js:not(.reduz) .placa[data-revela="dir"] .cena img { scale: 1.08; translate: 4% 0; transition: scale 2s var(--ease-out), translate 2s var(--ease-out); }
+.js:not(.reduz) .placa[data-revela="dir"] .cena img { translate: -4% 0; }
+.js :is(.foto, .faixa).is-in .placa .cena, .js .placa .cena.is-in { clip-path: inset(0 0 0 0) !important; }
+.js :is(.foto, .faixa).is-in .placa .cena img, .js .placa .cena.is-in img { scale: 1 !important; translate: 0 0 !important; }
+/* as marcas de corte chegam antes da foto, como a régua antes do traço */
+.js:not(.reduz) .placa::before { opacity: 0; transform: scale(1.04); transition: opacity .6s, transform .9s var(--ease-out); }
+.js :is(.foto, .faixa).is-in .placa::before, .js .placa:has(.cena.is-in)::before { opacity: 1; transform: none; }
+
+/* ---------- Trena das páginas internas ---------- */
+.trilha { width: 2px;
+  background-image: repeating-linear-gradient(180deg, color-mix(in srgb, var(--faixa, #0a1f3d) 30%, transparent) 0 1px, transparent 1px 12px); }
+.trilha::before { content: ""; position: absolute; left: -6px; top: 0; bottom: 0; width: 6px;
+  background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--faixa, #0a1f3d) 35%, transparent) 0 1px, transparent 1px 60px); }
+.trilha__leitura { position: absolute; left: 10px; translate: 0 -50%; font: 500 10px/1 var(--f-mono); color: var(--faixa, #0a1f3d); white-space: nowrap; background: var(--chao, #fbfaf7); padding: 3px 5px; }
+@media (max-width: 900px) { .trilha__leitura { display: none; } }
+
+/* com as palavras subindo, o título não precisa mais ficar apagado antes do marco */
+.js:not(.reduz) .bloco .trilha-titulo:not(.is-on), .js:not(.reduz) .capa--seguinte .trilha-titulo:not(.is-on) { transform: none; opacity: 1; }
+
+@media (max-width: 900px) {
+  .abre-dados { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 20px; padding-top: 14px; }
+  .abre-dados dt { font-size: .9rem; }
+  .abre-dados dd { font-size: .62rem; }
+  .capitulo--abertura .btn-row { gap: 8px; }
+  .btn { min-height: 44px; font-size: .72rem; }
+  .btn .ico { width: 44px; height: 44px; padding: 14px; }
+}
+
+/* título da home: gradiente limpo, metálico e frio, linha por linha (sem o dourado nem a textura) */
+.abre-l:not(.abre-l--vazada) {
+  display: inline; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  background-image:
+    linear-gradient(100deg, transparent 0 40%, rgb(255 255 255 / .9) 50%, transparent 60% 100%),
+    linear-gradient(180deg, #ffffff 0%, #ffffff 38%, #a9bfdf 100%);
+  background-size: 300% 100%, 100% 100%;
+  background-blend-mode: normal;
+  background-repeat: no-repeat;
+  background-position: 150% 0, 0 0;
+  filter: none; }
+@keyframes concreto-brilho { 0%, 55% { background-position: 150% 0, 0 0; } 100% { background-position: -50% 0, 0 0; } }
+.js:not(.reduz) .abre-titulo .abre-l:not(.abre-l--vazada) { display: inline-block; }
+
+/* título da home sem gradiente: branco chapado; o detalhe fica só no traço hachurado da primeira linha */
+.abre-l:not(.abre-l--vazada) { color: #fff !important; background: none !important; -webkit-background-clip: border-box; background-clip: border-box; }
+.js:not(.reduz) .abre-titulo .abre-l:not(.abre-l--vazada) { animation: abre-sobe 1.1s var(--ease-out) .18s forwards; }

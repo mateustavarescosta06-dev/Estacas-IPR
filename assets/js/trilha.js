@@ -11,9 +11,9 @@
   var alvos = [inicio].concat(Array.prototype.slice.call(main.querySelectorAll(".bloco h2, .capa--seguinte .capa__txt h2")));
   var trilha = document.createElement("div");
   trilha.className = "trilha"; trilha.setAttribute("aria-hidden", "true");
-  trilha.innerHTML = '<span class="trilha__fill"></span>';
+  trilha.innerHTML = '<span class="trilha__fill"></span><span class="trilha__leitura">0,00 m</span>';
   main.appendChild(trilha);
-  var fill = trilha.firstChild;
+  var fill = trilha.firstChild, leitura = trilha.querySelector(".trilha__leitura");
   var nos = alvos.map(function (h) {
     var n = document.createElement("span"); n.className = "trilha__no"; trilha.appendChild(n);
     h.classList.add("trilha-titulo");
@@ -37,6 +37,9 @@
     var ponta = window.scrollY + window.innerHeight * 0.62 - base - topo;
     var k = reduce ? 1 : Math.min(1, Math.max(0, ponta / altura));
     fill.style.transform = "scaleY(" + k.toFixed(4) + ")";
+    // a trena: a ponta mostra quantos metros da página já foram medidos
+    leitura.style.top = (k * altura).toFixed(1) + "px";
+    leitura.textContent = (k * altura / 120).toFixed(2).replace(".", ",") + " m";
     nos.forEach(function (o, i) {
       var on = reduce || i === 0 || ponta >= o.y;
       if (on !== o.on) { o.on = on; o.n.classList.toggle("is-on", on); o.h.classList.toggle("is-on", on); }

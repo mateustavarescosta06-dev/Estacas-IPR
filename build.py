@@ -75,13 +75,13 @@ ROUTE = [
 # A cor de cada página interna (referência carmofarm.com), dentro da paleta da marca: uma faixa
 # num tom do azul-marinho onde abre o título, o título em branco ou amarelo e o papel claro de chão.
 CORES = {
-    "central-de-concreto":   ("#0f2c55", "#ffffff", "#fbfaf7"),
-    "estacas":               ("#0a1f3d", "#ffcd00", "#fbfaf7"),
-    "controle-de-qualidade": ("#143a6b", "#ffffff", "#fbfaf7"),
-    "fundacao":              ("#0a1f3d", "#ffffff", "#fbfaf7"),
-    "clientes":              ("#0f2c55", "#ffcd00", "#fbfaf7"),
-    "perguntas-frequentes":  ("#071428", "#ffffff", "#fbfaf7"),
-    "contato":               ("#071428", "#ffcd00", "#fbfaf7"),
+    "central-de-concreto":   ("#0b1d3a", "#ffffff", "#fbfaf7"),
+    "estacas":               ("#071730", "#ffcd00", "#fbfaf7"),
+    "controle-de-qualidade": ("#0c2144", "#ffffff", "#fbfaf7"),
+    "fundacao":              ("#081a35", "#ffffff", "#fbfaf7"),
+    "clientes":              ("#0b1d3a", "#ffcd00", "#fbfaf7"),
+    "perguntas-frequentes":  ("#06132a", "#ffffff", "#fbfaf7"),
+    "contato":               ("#050f22", "#ffcd00", "#fbfaf7"),
 }
 
 

@@ -56,12 +56,13 @@
     var D = Math.max(W, H);
 
     // luz larga do alto, um pouco à direita (onde a peça está)
-    var g = ctx.createRadialGradient(W * 0.64, H * 0.3, 0, W * 0.64, H * 0.3, D * 0.75);
-    g.addColorStop(0, "rgba(58,104,170,0.42)"); g.addColorStop(0.5, "rgba(26,58,110,0.14)"); g.addColorStop(1, "rgba(0,0,0,0)");
+    // o fundo da cena (onde a pista some) fica num azul mais claro e saturado, nunca esbranquiçado
+    var g = ctx.createRadialGradient(W * 0.46, H * 0.22, 0, W * 0.46, H * 0.22, D * 0.7);
+    g.addColorStop(0, "rgba(24,78,160,0.5)"); g.addColorStop(0.42, "rgba(14,52,118,0.22)"); g.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     // vinheta: bordas e pé da tela mais escuros
     var v = ctx.createRadialGradient(W * 0.55, H * 0.42, D * 0.25, W * 0.55, H * 0.42, D * 0.85);
-    v.addColorStop(0, "rgba(2,8,20,0)"); v.addColorStop(1, "rgba(2,8,20,0.6)");
+    v.addColorStop(0, "rgba(1,5,14,0)"); v.addColorStop(1, "rgba(1,5,14,0.72)");
     ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
     // halo de sódio que segue o ponteiro
     var s = ctx.createRadialGradient(W * mx, H * my, 0, W * mx, H * my, Math.min(W, H) * 0.5);

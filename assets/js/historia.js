@@ -223,7 +223,7 @@ if (dia) {
     });
     if (estaca) {
       canvas.style.opacity = camada.style.opacity = (1 - cobre).toFixed(3);
-      if (cobre < 0.999) estaca.set(Object.assign(estado(p), { light: Object.assign({}, luz, { fog: "#0a1f3d" }) })); // a peça some no azul da própria página
+      if (cobre < 0.999) estaca.set(Object.assign(estado(p), { light: Object.assign({}, luz, { fog: "#0c2650" }) })); // a peça some no azul da própria página
     }
   }
   let ticking = false;

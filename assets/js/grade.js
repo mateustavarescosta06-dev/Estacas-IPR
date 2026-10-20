@@ -16,11 +16,12 @@
   var fonte = getComputedStyle(root).getPropertyValue("--f-mono").trim() || "monospace";
   // páginas internas: chão e faixa da própria página (definidos no body); a home usa papel e azul
   var bs = getComputedStyle(document.body);
-  var CHAO = bs.getPropertyValue("--chao").trim() || "#fbfaf7", FAIXA = bs.getPropertyValue("--faixa").trim() || "#0a1f3d";
+  var CHAO = bs.getPropertyValue("--chao").trim() || "#fbfaf7", FAIXA = bs.getPropertyValue("--faixa").trim() || "#06132a";
   var faixas = Array.prototype.slice.call(document.querySelectorAll("[data-faixa]")).map(function (sec) {
     return { sec: sec, el: sec.querySelector(".capa__faixa"), cor: getComputedStyle(sec).getPropertyValue("--faixa").trim() || FAIXA };
   });
   var hd = document.querySelector(".hd"), hdCor = "";
+  var ponta = document.querySelector("[data-hd-ponta]"), leitura = document.querySelector("[data-hd-leitura]");
 
   function medir() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -47,6 +48,12 @@
       bAtual = b;
       root.style.backgroundColor = "color-mix(in oklch, " + FAIXA + " " + (b * 100).toFixed(1) + "%, " + CHAO + ")";
       root.style.setProperty("--azul", b.toFixed(3));
+    }
+    // a régua do cabeçalho: a ponta amarela marca quanto da página já foi percorrido, em metros
+    if (ponta) {
+      var tot = Math.max(1, document.documentElement.scrollHeight - H), k = Math.min(1, window.scrollY / tot);
+      ponta.style.transform = "translateX(" + (k * 100).toFixed(2) + "vw)";
+      leitura.textContent = (window.scrollY / PX_M).toFixed(2).replace(".", ",") + " m";
     }
     // o cabeçalho toma a cor da faixa que estiver embaixo dele
     if (hd) {
