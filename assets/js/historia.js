@@ -95,7 +95,7 @@ if (dia) {
   ]);
   let estaca = null, pAtual = 0;
   if (webgl && canvas) {
-    try { estaca = createEstaca(canvas, { shiftX: 0, onRender: () => labels.place(estaca.anchors(), pAtual) }); } catch (e) { estaca = null; }
+    try { estaca = createEstaca(canvas, { shiftX: 0, onRender: () => { const a = estaca.anchors(); labels.place(a, pAtual); cotar(a); } }); } catch (e) { estaca = null; }
   }
   if (!estaca && canvas) canvas.hidden = true;
   dia.classList.toggle("sem-3d", !estaca);
@@ -117,11 +117,32 @@ if (dia) {
     document.addEventListener("touchstart", () => { const pr = fundo.play(); if (pr && pr.then) pr.then(() => fundo.pause()).catch(() => {}); }, { once: true, passive: true });
   }
 
+  /* Detalhes que dão profundidade: a cota de 6,00 m presa à peça, a régua das horas e a foto da face */
+  const cota = $("[data-cota]", dia), regua = $("[data-regua]", dia), agora = $("[data-agora]", dia), real = $(".dia__real", dia);
+  const notas = $$(".dia__nota", dia);
+  function cotar(a) {
+    if (!cota || !a.cotaA) return;
+    const o = Math.min(r(pAtual, 0.05, 0.09), 1 - r(pAtual, 0.86, 0.9));
+    cota.style.opacity = o.toFixed(3);
+    if (o <= 0) return;
+    const A = a.cotaA, B = a.cotaB, dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1, nx = -dy / L * 22, ny = dx / L * 22;
+    const set = (el, x1, y1, x2, y2) => { el.setAttribute("x1", x1.toFixed(1)); el.setAttribute("y1", y1.toFixed(1)); el.setAttribute("x2", x2.toFixed(1)); el.setAttribute("y2", y2.toFixed(1)); };
+    set(cota.querySelector(".l"), A.x + nx, A.y + ny, B.x + nx, B.y + ny);
+    set(cota.querySelector(".a"), A.x, A.y, A.x + nx * 1.35, A.y + ny * 1.35);
+    set(cota.querySelector(".b"), B.x, B.y, B.x + nx * 1.35, B.y + ny * 1.35);
+    const t = cota.querySelector("text"), mx = (A.x + B.x) / 2 + nx * 1.9, my = (A.y + B.y) / 2 + ny * 1.9;
+    t.setAttribute("x", mx.toFixed(1)); t.setAttribute("y", my.toFixed(1));
+    let ang = Math.atan2(dy, dx) * 180 / Math.PI;
+    if (ang > 90) ang -= 180; else if (ang < -90) ang += 180; // o texto da cota nunca fica de cabeça para baixo
+    t.setAttribute("transform", "rotate(" + ang.toFixed(1) + " " + mx.toFixed(1) + " " + my.toFixed(1) + ")");
+  }
+  const hhmm = (m) => { m = ((Math.round(m) % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); };
+
   function estado(p) {
     return {
       form: r(p, -0.04, 0.035), wireIn: r(p, 0.08, 0.12), tension: r(p, 0.12, 0.185), view: r(p, 0.07, 0.12) * (1 - r(p, 0.27, 0.3)),
       fill: r(p, 0.29, 0.37), cps: r(p, 0.34, 0.4), cure: r(p, 0.52, 0.6),
-      test: r(p, 0.72, 0.82), release: r(p, 0.84, 0.875), open: r(p, 0.87, 0.91), lift: r(p, 0.9, 0.95), turn: r(p, 0.93, 0.995),
+      test: r(p, 0.72, 0.82), release: r(p, 0.84, 0.875), open: r(p, 0.87, 0.91), lift: r(p, 0.9, 0.95), turn: r(p, 0.905, 0.95), dive: r(p, 0.955, 0.99),
     };
   }
 
@@ -145,6 +166,19 @@ if (dia) {
     if (fundoOk) {
       fundoAlvo = Math.min(fundoT(min), (fundo.duration || 15) - 0.05);
       if (!fundo.seeking && Math.abs(fundo.currentTime - fundoAlvo) > 0.02) fundo.currentTime = fundoAlvo;
+    }
+
+    const vis = Math.min(r(p, 0.03, 0.06), 1 - r(p, 0.94, 0.96));
+    if (regua) {
+      regua.style.opacity = vis.toFixed(3);
+      agora.style.setProperty("--h", clamp((min - 360) / 1440, 0, 1).toFixed(4));
+      agora.firstChild.textContent = hhmm(min);
+    }
+    notas.forEach((n) => { n.style.opacity = (vis * 0.7).toFixed(3); });
+    if (real) {
+      const k = r(p, 0.972, 0.995);
+      real.style.opacity = k.toFixed(3);
+      camada.style.visibility = p > 0.95 ? "hidden" : "";
     }
 
     let atual = -1;
@@ -287,4 +321,37 @@ if (corte) {
     const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { io.disconnect(); iniciar(); } }, { rootMargin: "0px 0px -25% 0px" });
     io.observe(corte);
   } else iniciar();
+}
+
+/* ---------- A peça de verdade: a foto da face encolhe para uma lâmina e vira a fábrica ---------- */
+const realSec = $(".real");
+if (realSec) {
+  const pistaR = $(".real__pista", realSec), palcoR = $(".real__palco", realSec);
+  const quadro = $("[data-real-quadro]", realSec), fabrica = $("[data-real-fabrica]", realSec), txt = $("[data-real-txt]", realSec);
+  const ease = (k) => k * k * (3 - 2 * k);
+  let tick = false;
+  function quadroReal() {
+    tick = false;
+    const rect = pistaR.getBoundingClientRect(), total = rect.height - innerHeight;
+    const q = reduce ? 1 : clamp(-rect.top / (total > 0 ? total : 1), 0, 1);
+    const W = palcoR.clientWidth, H = palcoR.clientHeight, S = Math.min(W, H), estreito = W < 900;
+    // de: o quadrado da face no centro da tela (como terminou a estaca) · para: a lâmina ao lado do texto
+    const a = { x: (W - S) / 2, y: (H - S) / 2, w: S, h: S };
+    const bw = estreito ? W - 36 : W * 0.4, bh = estreito ? H * 0.42 : H * 0.7;
+    const b = { x: estreito ? 18 : W * 0.53, y: estreito ? H * 0.1 + 20 : (H - bh) / 2 + 30, w: bw, h: bh };
+    const k = ease(r(q, 0.08, 0.55));
+    quadro.style.transform = "translate3d(" + (a.x + (b.x - a.x) * k).toFixed(1) + "px," + (a.y + (b.y - a.y) * k).toFixed(1) + "px,0)";
+    quadro.style.width = (a.w + (b.w - a.w) * k).toFixed(1) + "px";
+    quadro.style.height = (a.h + (b.h - a.h) * k).toFixed(1) + "px";
+    fabrica.style.opacity = ease(r(q, 0.32, 0.6)).toFixed(3);
+    quadro.style.setProperty("--m", ease(r(q, 0.05, 0.3)).toFixed(3));
+    palcoR.style.setProperty("--fundo", (1 - ease(r(q, 0.1, 0.5))).toFixed(3));
+    const t = ease(r(q, 0.42, 0.7));
+    txt.style.opacity = t.toFixed(3);
+    txt.style.transform = "translate3d(0," + ((1 - t) * 26).toFixed(1) + "px,0)";
+  }
+  const pedirR = () => { if (!tick) { tick = true; requestAnimationFrame(quadroReal); } };
+  addEventListener("scroll", pedirR, { passive: true });
+  addEventListener("resize", pedirR);
+  quadroReal();
 }

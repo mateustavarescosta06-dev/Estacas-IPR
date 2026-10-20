@@ -3,23 +3,6 @@ title: IPR Estacas, fabricação e cravação de estacas pré-fabricadas de conc
 desc: Em 24 horas, uma estaca nasce. Acompanhe um dia na fábrica da IPR, da protensão dos fios ao ensaio que libera a peça, e monte a sua estaca em corte.
 nav: home
 -->
-<section class="abre" aria-label="IPR Estacas">
-  <div class="wrap abre__grid">
-    <div class="abre__txt">
-      <h1 class="h-xxl">Em 24 horas, uma estaca nasce.</h1>
-      <p class="lead">Fabricamos e cravamos estacas pré-fabricadas de concreto protendido há 35 anos. Role a página e acompanhe a peça se formando na pista, passo a passo.</p>
-      <div class="btn-row">
-        <a class="btn btn--primary" href="{{root}}contato/">Solicitar orçamento {{icon:arrow}}</a>
-        <a class="abre__link" href="#corte">Ver as seções</a>
-      </div>
-    </div>
-    <div class="abre__peca">
-      <div class="desenho abre__desenho" data-desenho="H33" aria-hidden="true"></div>
-      <p class="abre__ficha">Hexagonal Ø 33 · 6 fios Ø 6 mm CP-175 RB</p>
-    </div>
-  </div>
-</section>
-
 <section class="dia" data-dia data-azul aria-label="24 horas na fábrica IPR">
   <div class="dia__pista">
     <div class="dia__palco">
@@ -27,8 +10,21 @@ nav: home
 
         <canvas class="dia__3d" data-estaca aria-hidden="true"></canvas>
         <div class="rotulos" data-rotulos aria-hidden="true"></div>
+        <svg class="dia__cota" data-cota aria-hidden="true"><line class="l"/><line class="a"/><line class="b"/><text>6,00 m · segmento</text></svg>
+        <div class="dia__regua" aria-hidden="true" data-regua>
+          <ol><li style="--h:0">06:00</li><li style="--h:.25">12:00</li><li style="--h:.5">18:00</li><li style="--h:.75">00:00</li><li style="--h:1">06:00</li></ol>
+          <span class="dia__agora" data-agora><b>05:40</b></span>
+        </div>
+        <p class="dia__nota dia__nota--a" aria-hidden="true">Pista de protensão · fábrica IPR</p>
+        <p class="dia__nota dia__nota--b" aria-hidden="true">Seção hexagonal Ø 33 · 6 fios Ø 6 mm CP-175 RB · concreto C40</p>
+        <figure class="dia__real" aria-hidden="true">{{img:secao-hexagonal|100vh}}</figure>
       </div>
       <div class="dia__textos">
+        <article class="capitulo capitulo--abertura" data-de="-1" data-ate="0.03">
+          <h1 class="capitulo__titulo">Em 24 horas,<br>uma estaca nasce.</h1>
+          <p>Fabricamos e cravamos estacas pré-fabricadas de concreto protendido há 35 anos. Role a página e acompanhe a peça se formando na pista.</p>
+          <div class="btn-row"><a class="btn btn--primary" href="{{root}}contato/">Solicitar orçamento {{icon:arrow}}</a></div>
+        </article>
         <div class="dia__cartao">
           <div class="dia__capitulos">
             <article class="capitulo" data-de="0.035" data-ate="0.19">
@@ -66,7 +62,7 @@ nav: home
               <h2 class="capitulo__titulo">O ensaio</h2>
               <p>Um corpo de prova do lote vai à prensa. É o resultado dele que libera a desmoldagem e o manuseio da peça. Outros serão rompidos com 3, 7 e 28 dias.</p>
             </article>
-            <article class="capitulo capitulo--fim" data-de="0.84" data-ate="2">
+            <article class="capitulo capitulo--fim" data-de="0.84" data-ate="0.945">
               <p class="capitulo__hora">06:00 · Dia 2</p>
               <h2 class="capitulo__titulo">Uma estaca nasceu.</h2>
               <p>Os fios são liberados nas cabeceiras e a força passa para o concreto. A fôrma abre.</p>
@@ -83,6 +79,24 @@ nav: home
             </ol>
           </nav>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="real" aria-label="A peça de verdade">
+  <div class="real__pista">
+    <div class="real__azul" data-azul aria-hidden="true"></div>
+    <div class="real__palco">
+      <div class="real__quadro" data-real-quadro>
+        <figure class="real__foto">{{img:secao-hexagonal|(max-width: 820px) 100vw, 60vw}}</figure>
+        <figure class="real__foto real__foto--fabrica" data-real-fabrica>{{img:topos|(max-width: 820px) 100vw, 60vw}}</figure>
+      </div>
+      <div class="wrap real__txt" data-real-txt>
+        <h2 class="h-xl">Não é simulação. É a estaca que sai da nossa pista.</h2>
+        <p class="lead">Cada peça que você viu nascer existe no pátio da IPR: concreto C40, fios CP-175 tracionados e o ensaio de 24 horas registrado no lote.</p>
+        <a class="abre__link" href="{{root}}central-de-concreto/">Conheça a fábrica {{icon:arrow}}</a>
+        <p class="real__legenda" data-real-legenda>Topos de estacas no pátio de estocagem da IPR</p>
       </div>
     </div>
   </div>

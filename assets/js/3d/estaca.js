@@ -326,7 +326,7 @@ export function createEstaca(canvas, opts = {}) {
 
   /* ---------- Estado ---------- */
   const state = {
-    form: 1, wireIn: 1, tension: 1, fill: 1, cure: 1, cps: 0, test: 0, release: 0, open: 0, lift: 0, turn: 0, view: 0, yaw: 0, pitch: 0,
+    form: 1, wireIn: 1, tension: 1, fill: 1, cure: 1, cps: 0, test: 0, release: 0, open: 0, lift: 0, turn: 0, view: 0, yaw: 0, pitch: 0, dive: 0,
     light: { sun: 0xffffff, sunI: 2.4, elev: 35, azim: -30, sky: 0x8fb0dd, ground: 0x0a1426, hemiI: 0.7, sodium: 0, exposure: 1, env: 0.6, fog: 0x0b1f3d },
   };
   let last = null;
@@ -432,7 +432,7 @@ export function createEstaca(canvas, opts = {}) {
     const B = { p: [-2.0, 0.72, 3.0], t: [0.1, 0.15, -2.6] };
     const D = { p: [-1.75, 0.9, 2.15], t: [-0.3, 0.14, 0.1] };
     const yc = y0 + up;
-    const C = { p: [0, yc + 0.02, 1.3], t: [0, yc, -1] };
+    const C = { p: [0, yc + 0.02, lerp(1.3, 0.93, ease(s.dive || 0))], t: [0, yc, -1] }; // no fim, a câmera avança sobre a face da seção
     const v = ease(s.view), foc = Math.sin(Math.PI * Math.min(1, test * 1.1)) * (1 - rel);
     const P = [0, 1, 2].map((i) => lerp(lerp(lerp(A.p[i], B.p[i], v), D.p[i], foc), C.p[i], turn));
     const Tt = [0, 1, 2].map((i) => lerp(lerp(lerp(A.t[i], B.t[i], v), D.t[i], foc), C.t[i], turn));
@@ -500,6 +500,8 @@ export function createEstaca(canvas, opts = {}) {
         prensa: [-0.52, 0.42, 0.42],
         secao: [0, y0 + up + sec.ymax * 0.55, 0.02],
         fioface: [w0.x, w0.y + up, 0.03],
+        cotaA: [BED_W / 2, 0, 0],
+        cotaB: [BED_W / 2, 0, -L],
       };
       const w = canvas.clientWidth, h = canvas.clientHeight, out = {}, v = new THREE.Vector3();
       for (const k in pts) {

@@ -1144,3 +1144,73 @@ main { position: relative; }
   .trilha__no { left: -5px; width: 10px; height: 10px; margin-top: -5px; }
   .trilha__no::after { display: none; }
 }
+
+/* ---------- Abertura no azul: o título sobre a cena e os detalhes técnicos ---------- */
+.capitulo--abertura { position: absolute; left: 0; bottom: 0; width: min(720px, 100vw - 2 * var(--gutter)); }
+.capitulo--abertura .capitulo__titulo { font-size: clamp(3rem, 6.4vw, 6rem); line-height: .96; letter-spacing: -.045em; margin-bottom: 22px; color: #fff; }
+.capitulo--abertura p:not([class]) { max-width: 44ch; margin-bottom: 30px; font-size: 1.125rem; color: #c3cedd; }
+.dia__textos { width: min(440px, 100% - 2 * var(--gutter)); }
+
+.dia__cota { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; opacity: 0; }
+.dia__cota line { stroke: rgb(255 255 255 / .55); stroke-width: 1; }
+.dia__cota .a, .dia__cota .b { stroke: rgb(255 255 255 / .35); }
+.dia__cota text { fill: rgb(255 255 255 / .75); font: 500 12px var(--f-body); text-anchor: middle; letter-spacing: .02em; }
+
+.dia__regua { position: absolute; z-index: 4; right: calc(var(--bleed) - 8px); top: calc(var(--hd) + 9vh); bottom: 12vh; width: 74px; opacity: 0; pointer-events: none; }
+.dia__regua::before { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 1px; background: rgb(255 255 255 / .22);
+ }
+.dia__regua ol { position: absolute; inset: 0; list-style: none; margin: 0; padding: 0; }
+.dia__regua li { position: absolute; right: 0; top: calc(var(--h) * 100%); translate: 0 -50%; display: flex; align-items: center; gap: 8px; font: 500 11px/1 var(--f-body); color: rgb(255 255 255 / .45); font-variant-numeric: tabular-nums; }
+.dia__regua li::after { content: ""; width: 10px; height: 1px; background: rgb(255 255 255 / .45); }
+.dia__agora { position: absolute; right: 0; top: calc(var(--h, 0) * 100%); translate: 0 -50%; display: flex; align-items: center; gap: 8px; }
+.dia__agora::after { content: ""; width: 22px; height: 2px; background: var(--ipr); }
+.dia__agora b { font: 700 13px/1 var(--f-body); color: var(--ipr); font-variant-numeric: tabular-nums; }
+
+.dia__nota { position: absolute; z-index: 4; margin: 0; font: 500 12px/1.4 var(--f-body); color: #fff; opacity: 0; pointer-events: none; letter-spacing: .01em; }
+.dia__nota--a { left: var(--bleed); top: calc(var(--hd) + 3.4vh); }
+.dia__nota--b { right: var(--bleed); bottom: 4vh; text-align: right; }
+
+/* a foto real da face: entra no mesmo enquadramento em que a câmera termina */
+.dia__real { position: absolute; z-index: 5; left: 50%; top: 50%; width: min(100vw, 100svh); aspect-ratio: 1 / 1; margin: 0; translate: -50% -50%; opacity: 0; pointer-events: none; }
+.dia__real picture, .dia__real img { display: block; width: 100%; height: 100%; }
+.dia__real img { object-fit: cover; }
+
+/* ---------- A peça de verdade: a face vira lâmina e a lâmina vira a fábrica ---------- */
+.real { position: relative; }
+.real__pista { height: 280vh; }
+.real__palco { position: sticky; top: 0; height: 100svh; overflow: clip; background-color: rgb(10 31 61 / var(--fundo, 1)); }
+.real__quadro { position: absolute; left: 0; top: 0; overflow: clip; will-change: transform, width, height; }
+.real__foto { position: absolute; inset: 0; margin: 0; }
+.real__foto picture, .real__foto img { display: block; width: 100%; height: 100%; }
+.real__foto img { object-fit: cover; }
+.real__foto--fabrica { opacity: 0; }
+.real__txt { position: absolute; left: 0; right: 0; top: 50%; translate: 0 -50%; opacity: 0; color: var(--navy); }
+.real__txt h2 { max-width: 11ch; color: var(--navy); }
+.real__txt .lead { margin-top: 24px; max-width: 40ch; }
+.real__txt .abre__link { display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; }
+.real__txt > * { max-width: 46%; }
+.real__legenda { margin-top: 48px; font: 500 .875rem var(--f-body); color: var(--texto); }
+
+@media (max-width: 900px) {
+  .capitulo--abertura .capitulo__titulo { font-size: clamp(2.4rem, 11vw, 3.2rem); }
+  .capitulo--abertura p:not([class]) { font-size: 1rem; margin-bottom: 18px; }
+  .dia__regua { width: 56px; right: 10px; top: calc(var(--hd) + 7vh); bottom: 46vh; }
+  .dia__regua li { font-size: 9px; }
+  .dia__nota--b { display: none; }
+  .dia__cota text { font-size: 10px; }
+  .real__txt { top: auto; bottom: 6vh; translate: none; }
+  .real__txt > * { max-width: none; }
+  .real__txt h2 { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .real__legenda { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dia__regua, .dia__nota, .dia__cota, .dia__real { display: none; }
+}
+
+/* a foto da face se dissolve nas bordas enquanto se funde com a peça 3D; vira lâmina inteira depois */
+.dia__real, .real__quadro { -webkit-mask-image: radial-gradient(closest-side, #000 calc(68% + var(--m, 0) * 32%), transparent calc(100% + var(--m, 0) * 1%)); mask-image: radial-gradient(closest-side, #000 calc(68% + var(--m, 0) * 32%), transparent calc(100% + var(--m, 0) * 1%)); }
+.real__quadro { -webkit-mask-image: radial-gradient(farthest-side, #000 calc(68% + var(--m, 0) * 60%), transparent calc(100% + var(--m, 0) * 60%)); mask-image: radial-gradient(farthest-side, #000 calc(68% + var(--m, 0) * 60%), transparent calc(100% + var(--m, 0) * 60%)); }
+
+/* trecho da passagem que ainda está no azul: o cabeçalho e a página acompanham */
+.real__pista { position: relative; }
+.real__azul { position: absolute; left: 0; top: 0; width: 1px; height: 82vh; pointer-events: none; }
