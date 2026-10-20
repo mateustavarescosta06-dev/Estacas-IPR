@@ -3,21 +3,25 @@ title: Contato e orçamento | IPR Estacas
 desc: Solicite um orçamento técnico de estacas pré-fabricadas. Fale com a IPR por WhatsApp, telefone ou e-mail.
 nav: contato
 -->
-<section class="phero" data-grid-area>
-  <div class="phero__media"><img src="{{root}}assets/img/3d/aerea-blueprint.jpg" alt=""></div>
-  <div class="grid-layer" data-grid="48"></div>
-  <div class="wrap phero__inner">
-    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Contato</span></nav>
-    {{station}}
-    <h1 class="h-xl phero__title">Vamos dimensionar <span class="hl">sua fundação.</span></h1>
-    <p class="lead">Obras industriais, comerciais, residenciais e de infraestrutura. Conte sobre o seu projeto e nossa equipe comercial retorna com um orçamento técnico.</p>
+<section class="capa">
+  {{fios}}
+  <div class="wrap capa__grid">
+    <div class="capa__txt">
+      <nav class="crumbs" aria-label="Você está em"><a href="{{root}}">Início</a><span aria-hidden="true">/</span><span>Contato</span></nav>
+      {{amostra}}
+      <h1 class="h-xl">Vamos dimensionar <span class="hl">a sua fundação.</span></h1>
+      <p class="lead">Obras industriais, comerciais, residenciais e de infraestrutura. Conte sobre o projeto e a equipe comercial retorna com um orçamento técnico.</p>
+      <ul class="capa__meta"><li>WhatsApp (11) 98447-2267</li><li>(11) 3831-4181</li></ul>
+    </div>
+    {{capa}}
   </div>
 </section>
 
-<section class="section concrete geo-bg">
+<section class="bloco" data-tone="noite">
   <div class="wrap contact">
     <form class="form reveal" data-quote novalidate>
       <h2 class="h-md">Dados da obra</h2>
+      <p class="muted">Campos com * são obrigatórios.</p>
       <div class="form__steps" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
       <div class="form__row">
         <div class="field"><label for="f-nome">Nome *</label><input id="f-nome" name="nome" autocomplete="name" required><span class="field__err">Informe seu nome.</span></div>
@@ -43,7 +47,7 @@ nav: contato
         <button class="btn btn--primary" type="submit" value="whatsapp">{{icon:whatsapp}} Enviar pelo WhatsApp</button>
         <button class="btn btn--line" type="submit" value="email">{{icon:mail}} Enviar por e-mail</button>
       </div>
-      <p class="form__hint">Se possível, tenha em mãos o relatório de sondagem (SPT), ele agiliza a análise técnica.</p>
+      <p class="form__hint">Se possível, tenha em mãos o relatório de sondagem (SPT): ele agiliza a análise técnica.</p>
       <div class="form__ok" role="status">Mensagem preparada! Conclua o envio no aplicativo que foi aberto. Se nada abriu, fale conosco pelos canais ao lado.</div>
     </form>
 
@@ -59,3 +63,5 @@ nav: contato
     </aside>
   </div>
 </section>
+
+{{faixa:cravacao-1|O próximo prumo pode ser o da sua obra}}

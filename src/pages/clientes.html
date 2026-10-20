@@ -3,37 +3,38 @@ title: Clientes, segurança e confiança em sua obra | IPR Estacas
 desc: A IPR atende clientes públicos e privados em diversos segmentos, com mais de 35 anos de experiência no mercado de fundações pré-fabricadas.
 nav: clientes
 -->
-<section class="phero" data-grid-area>
-  <div class="phero__media"><img src="{{root}}assets/img/3d/aerea-blueprint.jpg" alt=""></div>
-  <div class="grid-layer" data-grid="48"></div>
-  <div class="wrap phero__inner">
-    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Clientes</span></nav>
-    {{station}}
-    <h1 class="h-xl phero__title">Segurança e confiança <span class="hl">em sua obra.</span></h1>
-    <p class="lead">Clientes públicos e privados em diversos segmentos, com mais de 35 anos de experiência consolidada no mercado de fundações pré-fabricadas.</p>
+<section class="capa">
+  {{fios}}
+  <div class="wrap capa__grid">
+    <div class="capa__txt">
+      <nav class="crumbs" aria-label="Você está em"><a href="{{root}}">Início</a><span aria-hidden="true">/</span><span>Clientes</span></nav>
+      {{amostra}}
+      <h1 class="h-xl">Obras que já estão <span class="hl">de pé.</span></h1>
+      <p class="lead">Fábricas, centros logísticos, lojas e obras públicas apoiadas em estacas IPR. Mais de 35 anos de fundações pré-fabricadas para clientes públicos e privados.</p>
+      <ul class="capa__meta"><li>Indústria</li><li>Varejo e serviços</li><li>Infraestrutura</li></ul>
+    </div>
+    {{capa}}
   </div>
 </section>
 
-<section class="section">
+<section class="bloco" data-tone="obra">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Conheça alguns de nossos clientes.</h2>
-      </div>
-      <p class="lead">Indústria, varejo, energia, bens de consumo e serviços: empresas que confiaram a sustentação de suas obras às estacas IPR.</p>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Alguns de nossos clientes.</h2>
+      <p class="lead">Indústria, varejo, energia, bens de consumo e serviços: empresas que confiaram a sustentação das suas obras às estacas IPR.</p>
     </div>
     <div class="logo-grid reveal">{{logos}}</div>
   </div>
 </section>
 
-<section class="section dark dark--navy section--tight">
+{{faixa:hora-2200|22:00 · Estacas prontas no pátio de estocagem}}
+
+<section class="bloco bloco--justo" data-tone="cura">
   <div class="wrap">
-    <div class="segments reveal" style="background: transparent; border-color: var(--line-dark)">
-      <article class="segment" style="border-color: var(--line-dark)">{{icon:factory}}<span class="segment__k">Industrial</span><h3 style="color:#fff">Unidades fabris</h3><p style="color:var(--text-inv-2)">Complexos industriais e logísticos com cargas concentradas e grandes áreas.</p></article>
-      <article class="segment" style="border-color: var(--line-dark)">{{icon:building}}<span class="segment__k">Civil</span><h3 style="color:#fff">Comercial e residencial</h3><p style="color:var(--text-inv-2)">Shoppings, lojas e empreendimentos com prazo e canteiro enxutos.</p></article>
-      <article class="segment" style="border-color: var(--line-dark)">{{icon:bridge}}<span class="segment__k">Infraestrutura</span><h3 style="color:#fff">Obras públicas</h3><p style="color:var(--text-inv-2)">Pontes, viadutos, portos e linhas de transmissão.</p></article>
-    </div>
+    <ul class="regua reveal" style="--cols:3">
+      <li>{{icon:factory}}<span class="rotulo">Industrial</span><h3>Unidades fabris</h3><p>Complexos industriais e logísticos com cargas concentradas e grandes áreas.</p></li>
+      <li>{{icon:building}}<span class="rotulo">Civil</span><h3>Comercial e residencial</h3><p>Shoppings, lojas e empreendimentos com prazo e canteiro enxutos.</p></li>
+      <li>{{icon:bridge}}<span class="rotulo">Infraestrutura</span><h3>Obras públicas</h3><p>Pontes, viadutos, portos e linhas de transmissão.</p></li>
+    </ul>
   </div>
 </section>
-
-{{cta}}

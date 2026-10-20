@@ -1,0 +1,131 @@
+{
+  "_leia": "Cada cena do site tem um nome fixo. Troque a imagem de origem em media/src (foto real ou geração do Higgsfield, mesmo nome de cena) e rode: python tools/media.py && python build.py. 'pos' é o ponto focal do recorte (object-position). 'grade' é a gradação aplicada: 'dia', 'aco', 'crepusculo' ou 'original' (sem gradação, para gerações já no visual da série). 'video' é opcional: um MP4 em media/src com o nome da cena vira clipe de rolagem.",
+  "patio-pistas": {
+    "src": "pistas-silos.jpg", "grade": "dia", "pos": "50% 62%",
+    "alt": "Pistas de protensão da fábrica IPR em perspectiva, com os silos amarelos da central de concreto ao fundo"
+  },
+  "patio-nublado": {
+    "src": "patio-nublado.jpg", "grade": "crepusculo", "pos": "50% 55%",
+    "alt": "Pátio de estocagem da IPR sob céu carregado, com pilhas de estacas e galpões ao fundo"
+  },
+  "patio-largo": {
+    "src": "patio-largo.jpg", "grade": "dia", "pos": "50% 70%",
+    "alt": "Pistas e fôrmas no pátio da IPR sobre solo vermelho, com pilhas de estacas ao fundo"
+  },
+  "patio-eucaliptos": {
+    "src": "patio-eucaliptos.jpg", "grade": "dia", "pos": "50% 60%",
+    "alt": "Pilhas de estacas no pátio da IPR, entre eucaliptos, com guindaste e carreta ao fundo"
+  },
+  "patio-vsco": {
+    "src": "patio-vsco.jpg", "grade": "dia", "pos": "50% 60%",
+    "alt": "Pátio de estocagem da IPR com galpões e caminhão ao fundo"
+  },
+  "patio-retrato": {
+    "src": "patio-retrato.jpg", "grade": "dia", "pos": "50% 65%",
+    "alt": "Pilhas de estacas prontas para expedição no pátio da IPR"
+  },
+  "silos": {
+    "src": "silos-hf.jpg", "grade": "original", "pos": "45% 40%",
+    "alt": "Silos amarelos de cimento da central de concreto da IPR"
+  },
+  "central-painel": {
+    "src": "central-painel.jpg", "grade": "dia", "pos": "50% 45%",
+    "alt": "Painel da central de concreto com os indicadores das balanças de dosagem"
+  },
+  "central-maquina": {
+    "src": "central-maquina.jpg", "grade": "dia", "pos": "55% 45%",
+    "alt": "Operadores junto ao misturador da central de concreto da IPR"
+  },
+  "aco-rolo": {
+    "src": "aco-rolo-hf.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Rolo de aço de protensão no galpão da IPR"
+  },
+  "aco-insumos": {
+    "src": "insumos.jpg", "grade": "aco", "pos": "50% 70%",
+    "alt": "Rolos de aço de protensão e barras de aço no galpão"
+  },
+  "topos": {
+    "src": "pilha-circular.jpg", "grade": "dia", "pos": "50% 50%",
+    "alt": "Topos de estacas circulares empilhadas, com a textura do concreto curado"
+  },
+  "corpos-de-prova": {
+    "src": "corpos-de-prova-hf.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão"
+  },
+  "inspecao": {
+    "src": "inspecao.jpg", "grade": "dia", "pos": "50% 60%",
+    "alt": "Profissional da IPR de capacete diante de estacas hexagonais"
+  },
+  "transporte": {
+    "src": "transporte-hf.jpg", "grade": "original", "pos": "50% 26%",
+    "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano"
+  },
+  "patio-pistas-frente": {
+    "src": "patio-pistas-frente.png", "grade": "original", "pos": "50% 100%",
+    "alt": ""
+  },
+  "hora-0540": {
+    "src": "hora-0540.jpg", "grade": "original", "pos": "50% 55%",
+    "alt": "A pista de protensão da IPR antes do amanhecer, com os silos da central ao fundo"
+  },
+  "hora-0730": {
+    "src": "hora-0730.jpg", "grade": "original", "pos": "50% 45%",
+    "alt": "Os silos de cimento da central de concreto na primeira luz da manhã"
+  },
+  "hora-1000": {
+    "src": "hora-1000.jpg", "grade": "original", "pos": "50% 65%",
+    "alt": "Pistas e fôrmas da fábrica IPR sob a luz do dia"
+  },
+  "hora-2200": {
+    "src": "hora-2200.jpg", "grade": "original", "pos": "50% 60%",
+    "alt": "O pátio de estocagem da IPR à noite"
+  },
+  "filme-24h": {
+    "src": "tl-0600.jpg", "grade": "original", "pos": "52% 55%", "video": "fundo",
+    "alt": "Time-lapse de 24 horas na pista de protensão da IPR"
+  },
+  "tl-0600": {
+    "src": "tl-0600.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "06:00, hora azul: os fios de protensão tracionados na pista da IPR, com os silos acesos ao fundo"
+  },
+  "tl-0900": {
+    "src": "tl-0900.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "09:00: a pista de protensão sendo concretada, metade cheia de concreto fresco e metade ainda aberta"
+  },
+  "tl-1730": {
+    "src": "tl-1730.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "17:30: a pista inteira concretada, com o concreto já claro e fosco sob o sol baixo"
+  },
+  "tl-0600d2": {
+    "src": "tl-0600d2.jpg", "grade": "original", "pos": "52% 55%",
+    "alt": "06:00 do dia seguinte: as estacas prontas na pista ao nascer do sol atrás dos silos"
+  },
+  "cravacao-1": {
+    "src": "cravacao-1.jpg", "grade": "original", "pos": "62% 50%",
+    "alt": "Bate-estacas posicionado na obra, com a estaca içada na torre-guia e um operário conferindo o prumo"
+  },
+  "cravacao-2": {
+    "src": "cravacao-2.jpg", "grade": "original", "pos": "58% 50%",
+    "alt": "O martelo golpeia o topo da estaca, já meio cravada no solo vermelho"
+  },
+  "cravacao-3": {
+    "src": "cravacao-3.jpg", "grade": "original", "pos": "62% 50%",
+    "alt": "Soldador unindo os anéis metálicos da emenda entre dois segmentos de estaca"
+  },
+  "cravacao-4": {
+    "src": "cravacao-4.jpg", "grade": "original", "pos": "55% 50%",
+    "alt": "Engenheiro registrando a nega numa folha presa à estaca cravada, com o bate-estacas ao fundo"
+  },
+  "secao-circular": {
+    "src": "secao-circular.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Topo de uma estaca circular de concreto com seis fios de protensão"
+  },
+  "secao-hexagonal": {
+    "src": "secao-hexagonal.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Topo de uma estaca hexagonal de concreto com seis fios de protensão, um junto a cada canto"
+  },
+  "secao-quadrada": {
+    "src": "secao-quadrada.jpg", "grade": "original", "pos": "50% 50%",
+    "alt": "Topo de uma estaca quadrada de concreto com oito fios de protensão"
+  }
+}

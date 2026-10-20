@@ -13,42 +13,91 @@ e o restante do arquivo é o conteúdo do <main>. A saída vai para
 <slug>/index.html (ou index.html para a home), preservando as URLs do site antigo.
 
 Marcadores disponíveis nas páginas e parciais:
-    {{root}}        caminho relativo até a raiz do site ("" ou "../")
-    {{icon:nome}}   ícone SVG inline (ver src/icons/)
-    {{cta}}         faixa de chamada para orçamento
+    {{root}}                     caminho relativo até a raiz do site ("" ou "../")
+    {{icon:nome}}                ícone SVG inline (ver src/icons/)
+    {{amostra}}                  chip de material da etapa desta página
+    {{capa}}                     a cena da capa desta página (foto da etapa, carregamento prioritário)
+    {{fios}}                     fios de protensão que se soltam na capa (quando se chega pela passagem)
+    {{foto:cena|proporção|legenda|classes}}   figura com foto tratada (media/slots.json)
+    {{img:cena|sizes}}           só o <picture>, com carregamento preguiçoso ({{img!:...}} carrega com prioridade)
+    {{tom:cena}}                 cor média da cena (fundo de espera do contêiner)
+    {{cor:tom}}                  cor de amostra de um tom de material (TONES)
+
+Antes do build, rode tools/media.py para gerar assets/media a partir de media/src.
 """
+import html as H
+import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 # --verify gera uma cópia com marcações do verificador scroll-craft (data-sc-act / data-sc-copy)
-import sys
 VERIFY = "--verify" in sys.argv
-OUT = ROOT / "scrollcraft" / "builds" / "ipr-rota" / "site" if VERIFY else ROOT
+OUT = ROOT / "scrollcraft" / "builds" / "ipr-jornada" / "site" if VERIFY else ROOT
 SRC = ROOT / "src"
+MEDIA = json.loads((ROOT / "assets" / "media" / "manifest.json").read_text(encoding="utf-8"))
 
-# A rota de cravação: a ordem das páginas é a descida da estaca pelas camadas do solo.
-# (slug da página, chave do menu, rótulo, caminho, profundidade em m, camada, chamada da passagem, rascunho)
+# Tons de material: fundo, tinta, tinta secundária, amostra (a cor do material na etiqueta).
+# Paleta da marca: o azul-marinho domina, o branco é respiro, o amarelo é luz e ação.
+# fundo, tinta, tinta secundária, marca (o chip de etapa)
+TONES = {
+    "patio":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # azul-marinho IPR
+    "materia": ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # branco
+    "aco":     ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # noite
+    "cura":    ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # névoa clara
+    "terra":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # azul do dia
+    "obra":    ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),
+    "papel":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),
+    "noite":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),
+}
+
+# A ordem das páginas é a vida de uma estaca: matéria, aço, cura, solo, obra.
+# (slug, chave do menu, rótulo, caminho, tom, material, chamada da passagem, cena da capa)
 ROUTE = [
-    ("index", "home", "Home", "", 0.0, "Superfície do pátio",
-     "Onde a obra começa: o pátio, a fábrica e a cravação.", "hero-blueprint"),
-    ("central-de-concreto", "central", "Central de Concreto", "central-de-concreto/", 2.5, "Aterro",
-     "Antes da forma vem a matéria: o concreto dosado, misturado e registrado.", "central-blueprint"),
-    ("estacas", "estacas", "Estacas", "estacas/", 5.0, "Argila mole",
-     "Três geometrias, onze seções e o catálogo com os ábacos de cada uma.", "estacas-blueprint"),
-    ("controle-de-qualidade", "qualidade", "Controle de Qualidade", "controle-de-qualidade/", 7.5, "Silte argiloso",
-     "Cada lote ensaiado em 24 horas, 3, 7 e 28 dias. Cada peça inspecionada.", "pilha-blueprint"),
-    ("fundacao", "fundacao", "Fundação", "fundacao/", 10.0, "Areia fina, emenda a 10 m",
-     "Na obra, a estaca é cravada, emendada e verificada golpe a golpe.", "fundacao-blueprint"),
-    ("clientes", "clientes", "Clientes", "clientes/", 12.5, "Areia compacta",
-     "Indústria, varejo e infraestrutura que já estão sobre estacas IPR.", "aerea-blueprint"),
-    ("perguntas-frequentes", "faq", "Perguntas Frequentes", "perguntas-frequentes/", 15.0, "Areia muito compacta",
-     "As dúvidas mais comuns sobre nega, emendas, solo e transporte.", "cravacao-blueprint"),
-    ("contato", "contato", "Contato", "contato/", 17.6, "Camada resistente, nega atingida",
-     "A estaca chegou à camada resistente. A próxima etapa é a sua obra.", "hero-blueprint"),
+    ("index", "home", "Início", "", "patio", "O pátio",
+     "Onde tudo começa: a fábrica, as pistas e a cravação.", "patio-pistas"),
+    ("central-de-concreto", "central", "Central de Concreto", "central-de-concreto/", "materia", "A matéria",
+     "Cimento, areia e brita pesados na balança e registrados metro cúbico a metro cúbico.", "silos"),
+    ("estacas", "estacas", "Estacas", "estacas/", "aco", "O aço e a forma",
+     "Fios de protensão tracionados na pista, fôrmas metálicas e onze seções com ábaco próprio.", "aco-rolo"),
+    ("controle-de-qualidade", "qualidade", "Controle de Qualidade", "controle-de-qualidade/", "cura", "A cura e o ensaio",
+     "Cada lote rompido com 24 horas, 3, 7 e 28 dias. Cada peça inspecionada antes do pátio.", "corpos-de-prova"),
+    ("fundacao", "fundacao", "Fundação", "fundacao/", "terra", "O solo",
+     "A estaca deixa o pátio na frota própria e é cravada, emendada e verificada golpe a golpe.", "transporte"),
+    ("clientes", "clientes", "Clientes", "clientes/", "obra", "A obra de pé",
+     "Indústria, varejo e infraestrutura que já estão apoiados em estacas IPR.", "patio-vsco"),
+    ("perguntas-frequentes", "faq", "Perguntas Frequentes", "perguntas-frequentes/", "papel", "As dúvidas",
+     "Nega, emendas, solo e transporte, em respostas curtas da engenharia.", "topos"),
+    ("contato", "contato", "Contato", "contato/", "noite", "A nega",
+     "A próxima estaca a sair da pista é a da sua obra.", "patio-nublado"),
 ]
-MAX_DEPTH = ROUTE[-1][4]
-NAV = [(key, label, href) for _, key, label, href, *_ in ROUTE if key != "contato"]
+# A cor de cada página interna (referência carmofarm.com), dentro da paleta da marca: uma faixa
+# num tom do azul-marinho onde abre o título, o título em branco ou amarelo e o papel claro de chão.
+CORES = {
+    "central-de-concreto":   ("#0b1d3a", "#ffffff", "#fbfaf7"),
+    "estacas":               ("#071730", "#ffcd00", "#fbfaf7"),
+    "controle-de-qualidade": ("#0c2144", "#ffffff", "#fbfaf7"),
+    "fundacao":              ("#081a35", "#ffffff", "#fbfaf7"),
+    "clientes":              ("#0b1d3a", "#ffcd00", "#fbfaf7"),
+    "perguntas-frequentes":  ("#06132a", "#ffffff", "#fbfaf7"),
+    "contato":               ("#050f22", "#ffcd00", "#fbfaf7"),
+}
+
+
+def cores(slug):
+    if slug not in CORES:
+        return ""
+    f, t, c = CORES[slug]
+    return f"--faixa:{f};--faixa-t:{t};--chao:{c}"
+
+
+# a seção desenhada na abertura de cada página (ábacos IPR)
+DESENHO = {"central-de-concreto": "C30", "estacas": "H33", "controle-de-qualidade": "Q30", "fundacao": "H28",
+           "clientes": "C26", "perguntas-frequentes": "HV40", "contato": "H33"}
+# rótulos curtos no menu (o nome completo aparece na linha de produção e nas passagens)
+SHORT = {"central": "Central", "qualidade": "Qualidade", "faq": "Dúvidas"}
+NAV = [(key, SHORT.get(key, label), href, tone) for _, key, label, href, tone, *_ in ROUTE if key != "contato"]
 
 
 def read(path):
@@ -85,95 +134,214 @@ def marquee(half, root):
     return f'<div class="marquee__track">{tiles}<div style="display:contents" aria-hidden="true">{tiles}</div></div>'
 
 
-def render(text, ctx, icon_map):
-    text = text.replace("{{cta}}", read("partials/cta.html"))
-    root = ctx["root"]
-    text = re.sub(r'<div class="marquee" data-marquee="(a|b)"></div>',
-                  lambda m: f'<div class="marquee">{marquee(m.group(1), root)}</div>', text)
-    text = text.replace("{{logos}}", logo_tiles(CLIENTES, root))
-    text = re.sub(r"\{\{icon:([\w-]+)\}\}", lambda m: icon_map[m.group(1)], text)
-    text = re.sub(r"\{\{svg:([\w-]+)\}\}", lambda m: read(f"illustrations/{m.group(1)}.svg"), text)
-    for key, value in ctx.items():
-        text = text.replace("{{" + key + "}}", value)
-    return text
+# ---------- Imagens ----------
+
+def picture(slot, root, sizes="100vw", eager=False, alt=None):
+    m = MEDIA[slot]
+    base = f"{root}assets/media/{slot}"
+    ws = m["widths"]
+    srcset = lambda ext: ", ".join(f"{base}-{w}.{ext} {w}w" for w in ws)
+    alt = H.escape(m["alt"] if alt is None else alt, quote=True)
+    load = 'fetchpriority="high" decoding="async"' if eager else 'loading="lazy" decoding="async"'
+    return (f'<picture><source type="image/avif" srcset="{srcset("avif")}" sizes="{sizes}">'
+            f'<img src="{base}-{ws[-1]}.webp" srcset="{srcset("webp")}" sizes="{sizes}" '
+            f'width="{m["w"]}" height="{m["h"]}" alt="{alt}" {load} style="--pos:{m["pos"]}"></picture>')
 
 
-def m(depth):
-    return f"{depth:.1f}".replace(".", ",") + " m"
+def video_tag(slot, root, cls, scrub):
+    """Clipe do Higgsfield já codificado por tools/media.py (1600 px e 720 px para celular)."""
+    base = f"{root}assets/media/{slot}"
+    if scrub:
+        # o clipe de rolagem é baixado inteiro pelo jornada.js antes de responder à rolagem
+        return (f'<video class="{cls}" muted playsinline preload="none" data-scrub data-src="{base}.mp4" '
+                f'data-src-m="{base}-m.mp4" poster="{base}-poster.webp" aria-hidden="true" tabindex="-1"></video>')
+    return (f'<video class="{cls}" muted playsinline loop preload="none" data-loop poster="{base}-poster.webp" '
+            f'aria-hidden="true" tabindex="-1"><source src="{base}-m.mp4" type="video/mp4" media="(max-width: 820px)">'
+            f'<source src="{base}.mp4" type="video/mp4"></video>')
 
+
+def abertura_extra(root):
+    """Camadas opcionais da abertura: loop ambiente (patio-pistas.mp4) e recorte da frente (patio-pistas-frente)."""
+    out = ""
+    if MEDIA.get("patio-pistas", {}).get("video"):
+        out += video_tag("patio-pistas", root, "abertura__video", scrub=False)
+    if "patio-pistas-frente" in MEDIA:
+        out += (f'<div class="abertura__frente" data-depth="-0.12">'
+                f'{picture("patio-pistas-frente", root, "100vw", alt="")}</div>')
+    return out
+
+
+def fundo_tag(slot, root):
+    """O pátio real atrás da estaca 3D: time-lapse desfocado, levado à hora da cena pelo historia.js."""
+    if not MEDIA.get(slot, {}).get("fundo"):
+        return ""
+    base = f"{root}assets/media/{slot}-fundo"
+    return (f'<video class="dia__fundo" muted playsinline preload="none" data-fundo data-src="{base}.mp4" '
+            f'poster="{base}-poster.webp" aria-hidden="true" tabindex="-1"></video>')
+
+
+def faixa(spec, root):
+    """Imagem de ponta a ponta entre dois trechos: {{faixa:cena|legenda}}."""
+    slot, _, caption = spec.partition("|")
+    cap = f'<figcaption class="wrap"><span>{caption}</span></figcaption>' if caption else ""
+    return (f'<figure class="faixa"><div class="placa"><div class="cena grao faixa__cena" data-par style="{scene_style(slot)}">'
+            f'{picture(slot, root, "(max-width: 820px) 100vw, 1280px")}</div></div>{cap}</figure>')
+
+
+def scene_style(slot):
+    return f'--tone-img:{MEDIA[slot]["tone"]}'
+
+
+def foto(spec, root):
+    parts = spec.split("|")
+    slot, ar = parts[0], (parts[1] if len(parts) > 1 and parts[1] else "4/5")
+    caption = parts[2] if len(parts) > 2 else ""
+    extra = parts[3] if len(parts) > 3 else ""
+    cap = f"<figcaption><span>{caption}</span></figcaption>" if caption else ""
+    return (f'<figure class="foto reveal {extra}" style="--ar:{ar}"><div class="placa">'
+            f'<div class="cena grao" data-par style="{scene_style(slot)}">'
+            f'{picture(slot, root, "(max-width: 820px) 100vw, 50vw")}</div></div>{cap}</figure>')
+
+
+# ---------- Peças da jornada ----------
 
 def route_index(slug):
     return next(i for i, r in enumerate(ROUTE) if r[0] == slug)
 
 
-def station_html(slug):
-    _, _, label, _, depth, layer, *_ = ROUTE[route_index(slug)]
-    return (f'<p class="station"><span class="station__d">{m(depth)}</span>'
-            f'<span class="station__l">{layer}</span></p>')
+def amostra(tone, text):
+    return f'<span class="amostra" style="--c:{TONES[tone][3]}"><i></i>{text}</span>'
 
 
-def route_html(slug, root):
-    i = route_index(slug)
+def fios(mode):
+    """Seis fios de protensão. 'tensao': com folga, esticam ao fim da página. 'soltar': cortados na capa."""
+    ys = [12 + i * 12 for i in range(6)]
+    if mode == "tensao":
+        lines = "".join(f'<path data-fio d="M0 {y} Q500 {y + 34} 1000 {y}"/>' for y in ys)
+        lines += "".join(f'<path class="brilho" pathLength="1000" style="--i:{i}" d="M0 {y} L1000 {y}"/>' for i, y in enumerate(ys))
+        extra = '<span class="fios__leitura">Protensão aplicada</span>'
+        attr = " data-fios"
+    else:
+        lines = "".join(
+            f'<line class="metade metade--e" style="--i:{i}" x1="0" y1="{y}" x2="500" y2="{y}"/>'
+            f'<line class="metade metade--d" style="--i:{i}" x1="500" y1="{y}" x2="1000" y2="{y}"/>'
+            for i, y in enumerate(ys))
+        extra, attr = "", ""
+    return (f'<div class="fios"{attr} aria-hidden="true"><svg viewBox="0 0 1000 84" preserveAspectRatio="none">'
+            f'{lines}</svg>{extra}</div>')
+
+
+def linha_html(slug, root):
+    """A linha de produção no pé do cabeçalho: uma marca por etapa, a atual em amarelo."""
+    i, n = route_index(slug), len(ROUTE)
     items = []
-    for j, (_, _, label, href, depth, layer, *_rest) in enumerate(ROUTE):
-        state = "is-here" if j == i else ("is-past" if j < i else "is-ahead")
-        cur = ' aria-current="page"' if j == i else ""
-        top = depth / MAX_DEPTH * 100
-        items.append(
-            f'<li class="{state}" style="--at:{top:.2f}%"><a href="{root}{href}"{cur}>'
-            f'<span class="route__dot" aria-hidden="true"></span>'
-            f'<span class="route__txt"><b>{label}</b><small>{m(depth)} · {layer}</small></span></a></li>')
-    nxt = ROUTE[i + 1][4] if i + 1 < len(ROUTE) else MAX_DEPTH
-    return (f'<nav class="route" aria-label="Rota do site: a estaca desce pelas camadas do solo" data-route '
-            f'data-from="{ROUTE[i][4]}" data-to="{nxt}" data-max="{MAX_DEPTH}" data-step="{i}">'
-            f'<div class="route__rule" aria-hidden="true"><span class="route__pile" data-route-pile></span></div>'
-            f'<ol>{"".join(items)}</ol>'
-            f'<span class="route__read" aria-hidden="true" data-route-read>{m(ROUTE[i][4])}</span></nav>')
+    for j, (_, _, label, href, tone, material, *_r) in enumerate(ROUTE):
+        state = "is-here" if j == i else ("is-past" if j < i else "")
+        cur = ' aria-current="step"' if j == i else ""
+        items.append(f'<li class="{state}" style="--at:{(j + .5) / n * 100:.3f}"><a href="{root}{href}"{cur}>'
+                     f'<span>{label} · {material}</span></a></li>')
+    return (f'<nav class="linha" aria-label="Etapas da estaca, da matéria à nega" data-linha data-step="{i}" data-n="{n}">'
+            f'<span class="linha__fill" data-linha-fill></span><ol>{"".join(items)}</ol></nav>')
 
 
-def handoff_html(slug, root):
+def h1_of(slug):
+    raw = read(f"pages/{slug}.html")
+    m = re.search(r"<h1[^>]*>(.*?)</h1>", raw, re.S)
+    text = re.sub(r"<(?!/?span\b)[^>]+>", "", m.group(1)) if m else ""
+    # mantém só os spans de destaque (.hl); as linhas de animação da home viram texto corrido
+    text = re.sub(r'<span class="line"[^>]*>|<span style="--i:\d+">', "", text)
+    text = re.sub(r"</span>(\s*)</span>", r"</span>\1", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def lead_of(slug):
+    raw = read(f"pages/{slug}.html")
+    m = re.search(r'<p class="lead">(.*?)</p>', raw, re.S)
+    return m.group(1).strip() if m else ""
+
+
+def passagem_html(slug, root):
+    """O fim da página é a abertura da próxima, idêntica: ao clicar, os mesmos elementos deslizam
+    para o lugar e a troca de página não aparece."""
     i = route_index(slug)
     if i + 1 >= len(ROUTE):
-        # fim da rota: a estaca atinge a nega e o fecho resolve
-        stamps = "".join(f'<li><span>{m(r[4])}</span>{r[2]}</li>' for r in ROUTE)
-        return (f'<section class="handoff handoff--end" data-grid-area aria-label="Fim da rota">'
-                f'<div class="grid-layer" data-grid="48" data-grid-label="NEGA"></div>'
-                f'<div class="wrap handoff__inner"><div class="handoff__copy">'
-                f'<p class="station"><span class="station__d">{m(MAX_DEPTH)}</span><span class="station__l">Nega atingida</span></p>'
-                f'<h2 class="h-lg">A estaca chegou à camada resistente.</h2>'
-                f'<p class="lead">Você percorreu a rota inteira, da superfície do pátio à nega. A próxima etapa é a sua obra.</p>'
-                f'<a class="btn btn--ghost" href="{root}">Voltar à superfície {{{{icon:arrow}}}}</a></div>'
-                f'<ol class="handoff__log" aria-label="Camadas percorridas">{stamps}</ol></div></section>')
-    _, _, label, href, depth, layer, teaser, sketch = ROUTE[i + 1]
-    return (f'<section class="handoff" data-grid-area aria-label="Próxima camada: {label}">'
-            f'<div class="handoff__media" aria-hidden="true"><img src="{root}assets/img/3d/{sketch}.jpg" alt="" loading="lazy"></div>'
-            f'<div class="grid-layer" data-grid="48" data-grid-label="{m(depth)}"></div>'
-            f'<a class="wrap handoff__inner handoff__link" href="{root}{href}">'
-            f'<span class="handoff__copy">'
-            f'<span class="station"><span class="station__d">{m(depth)}</span><span class="station__l">{layer}</span></span>'
-            f'<span class="handoff__title">{label}</span>'
-            f'<span class="handoff__teaser">{teaser}</span></span>'
-            f'<span class="handoff__go">Descer para a próxima camada {{{{icon:arrow}}}}</span></a></section>')
+        return ""  # a última página fecha direto na chamada final (prefooter)
+    nslug, _, label, href, tone, material, teaser, scene = ROUTE[i + 1]
+    return (f'<section class="capa capa--seguinte" data-faixa style="{cores(nslug)}" aria-label="Próxima etapa: {label}">'
+            f'<div class="capa__faixa" aria-hidden="true"></div>'
+            f'<a class="capa__seguir-area" href="{root}{href}" data-passagem aria-label="Seguir para {label}"></a>'
+            f'<div class="wrap capa__grid"><div class="capa__txt">'
+            f'<nav class="crumbs" aria-label="Próxima etapa"><span>Próxima etapa</span><span aria-hidden="true">/</span><span>{label}</span></nav>'
+            f'<div class="desenho capa__desenho" data-desenho="{DESENHO.get(nslug, "H33")}" aria-hidden="true"></div>'
+            f'<h2 class="h-xl">{h1_of(nslug)}</h2>'
+            f'<p class="lead">{lead_of(nslug)}</p>'
+            f'<a class="capa__seguir" href="{root}{href}" data-passagem>Seguir para {label} {{{{icon:arrow}}}}</a></div>'
+            f'<figure class="capa__figura"><div class="placa"><div class="cena capa__cena" data-par style="{scene_style(scene)}">'
+            f'{picture(scene, root, "(max-width: 820px) 100vw, 55vw", alt="")}</div></div>'
+            f'<figcaption>{MEDIA[scene]["alt"]}</figcaption></figure></div></section>')
+
+
+def prefooter_html(slug, root):
+    """O fecho de todas as páginas (referência enerblock.net): chamada escura com a foto da pista em
+    parallax, o texto da engenharia no terço esquerdo e o título grande no canto, que se revela linha a linha."""
+    if slug == "contato":
+        return ""
+    return (f'<section class="pre" aria-label="Fale com a IPR">'
+            f'<div class="pre__fundo" aria-hidden="true"><div class="cena pre__cena" data-pre-par>{{{{img:hora-0540|100vw}}}}</div></div>'
+            f'<div class="pre__topo"><p class="pre__intro">Conte o que a sua obra precisa. A engenharia da IPR indica a seção, '
+            f'o comprimento e o número de estacas a partir da sondagem e das cargas de projeto, verifica a cravação '
+            f'prevista e retorna com o orçamento e o prazo de entrega.</p></div>'
+            f'<div class="pre__base"><div class="pre__fim"><h2 class="pre__titulo">Construa sobre uma estaca que nasceu sob controle</h2>'
+            f'<a class="btn-eb btn-eb--claro" href="{root}contato/"><span>Solicitar orçamento</span>{{{{icon:arrow}}}}</a></div></div>'
+            f'</section>')
 
 
 def nav_html(active, root):
     items = []
-    for key, label, href in NAV:
-        cls = ' class="is-active" aria-current="page"' if key == active else ""
-        items.append(f'<li><a href="{root}{href}"{cls}>{label}</a></li>')
+    for key, label, href, tone in NAV:
+        cls = ' aria-current="page"' if key == active else ""
+        items.append(f'<li><a href="{root}{href}" style="--c:{TONES[tone][3]}"{cls}>{label}</a></li>')
     return "\n".join(items)
+
+
+def tones_css(base):
+    rules = [f"html{{background:{TONES[base][0]}}}"]
+    for name, (g, ink, ink2, mark) in TONES.items():
+        rules.append(f'body[data-tone="{name}"]{{--ground:{g};--ink:{ink};--ink-2:{ink2};--mark:{mark}}}')
+    return "".join(rules)
+
+
+def render(text, ctx, icon_map):
+    root = ctx["root"]
+    text = re.sub(r'<div class="marquee" data-marquee="(a|b)"></div>',
+                  lambda m: f'<div class="marquee">{marquee(m.group(1), root)}</div>', text)
+    text = text.replace("{{logos}}", logo_tiles(CLIENTES, root))
+    text = re.sub(r"\{\{foto:([^}]+)\}\}", lambda m: foto(m.group(1), root), text)
+    # {{img!:...}} carrega com prioridade (a imagem da abertura); {{img:...}} espera a rolagem
+    text = re.sub(r"\{\{img(!?):([\w-]+)(?:\|([^}]*))?\}\}",
+                  lambda m: picture(m.group(2), root, m.group(3) or "(max-width: 820px) 100vw, 50vw", eager=bool(m.group(1))), text)
+    # {{loop:cena}}: loop ambiente de câmera parada sobre a foto, só se existir media/src/<cena>.mp4
+    text = re.sub(r"\{\{loop:([\w-]+)\}\}",
+                  lambda m: video_tag(m.group(1), root, "intervalo__video", scrub=False)
+                  if MEDIA.get(m.group(1), {}).get("video") else "", text)
+    text = re.sub(r"\{\{fundo:([\w-]+)\}\}", lambda m: fundo_tag(m.group(1), root), text)
+    text = re.sub(r"\{\{faixa:([^}]+)\}\}", lambda m: faixa(m.group(1), root), text)
+    text = re.sub(r"\{\{tom:([\w-]+)\}\}", lambda m: scene_style(m.group(1)), text)
+    text = re.sub(r"\{\{cor:(\w+)\}\}", lambda m: TONES[m.group(1)][3], text)
+    text = re.sub(r"\{\{icon:([\w-]+)\}\}", lambda m: icon_map[m.group(1)], text)
+    for key, value in ctx.items():
+        text = text.replace("{{" + key + "}}", value)
+    return text
 
 
 def mark_for_verify(html):
     """Marca seções como atos e blocos de texto como cópia, só para o verificador."""
-    html = re.sub(r'<section class="([^"]*\bdrive\b[^"]*)"', r'<section data-sc-act="pin" class="\1"', html)
+    html = re.sub(r'<section class="([^"]*\b(?:drive|trilho)\b[^"]*)"', r'<section data-sc-act="pin" class="\1"', html)
     html = re.sub(r'<section(?! data-sc-act)( [^>]*)?>', lambda m: f'<section data-sc-act="flow"{m.group(1) or ""}>', html)
-    # cada título e parágrafo é medido sozinho: um bloco inteiro mistura botões e fundos
     main = html.split("<main", 1)
     if len(main) == 2:
         main[1] = re.sub(r"<(h1|h2|h3|p)(?=[\s>])", r"<\1 data-sc-copy", main[1])
         html = "<main".join(main)
-    # o verificador espera o sinal de pronto do motor scroll-craft; este site não usa o motor
     html = html.replace("</body>", '<script>document.addEventListener("DOMContentLoaded",function(){document.documentElement.classList.add("sc-ready")})</script></body>')
     return html
 
@@ -189,24 +357,36 @@ def build():
             for k, v in (line.split(":", 1) for line in meta_block.strip().splitlines())
         )
         slug = page.stem
+        i = route_index(slug)
+        _, _, label, _href, tone, material, _teaser, scene = ROUTE[i]
         out = OUT / ("index.html" if slug == "index" else f"{slug}/index.html")
         root = "" if slug == "index" else "../"
+        nxt = ROUTE[i + 1][3] if i + 1 < len(ROUTE) else None
         ctx = {
             "root": root,
             "title": meta["title"],
             "desc": meta["desc"],
             "page": slug,
+            "tone": tone,
+            "cores": cores(slug),
+            "ground": TONES[tone][0],
+            "tones": tones_css(tone),
             "nav": nav_html(meta.get("nav", ""), root),
-            "route": route_html(slug, root),
-            "station": station_html(slug),
-            "handoff": handoff_html(slug, root),
+            "linha": linha_html(slug, root),
+            "amostra": f'<div class="desenho capa__desenho" data-desenho="{DESENHO.get(slug, "H33")}" aria-hidden="true"></div>',
+            "capa": (f'<figure class="capa__figura"><div class="placa"><div class="cena grao capa__cena" data-par style="{scene_style(scene)}">'
+                     f'{picture(scene, root, "(max-width: 820px) 100vw, 55vw", eager=True)}</div></div>'
+                     f'<figcaption>{MEDIA[scene]["alt"]}</figcaption></figure>'),
+            "fios": fios("soltar"),
+            "abertura-extra": abertura_extra(root),
+            "passagem": "" if slug == "index" else passagem_html(slug, root),
+            "prefooter": prefooter_html(slug, root),
+            "speculation": (f'<script type="speculationrules">{{"prerender":[{{"urls":["{root}{nxt}"],"eagerness":"moderate"}}]}}</script>'
+                            if nxt is not None else ""),
         }
+        body = body.replace('<section class="capa">', '<section class="capa" data-faixa><div class="capa__faixa" aria-hidden="true"></div>', 1)
         html = layout.replace("{{content}}", body.strip())
         html = render(render(html, ctx, icon_map), ctx, icon_map)
-        # renders da maquete: serve WebP com versão de 900 px para telas pequenas
-        html = re.sub(r'src="((?:\.\./)?)assets/img/3d/([\w-]+)\.jpg"',
-                      lambda m: f'src="{m[1]}assets/img/3d/{m[2]}.webp" '
-                                f'srcset="{m[1]}assets/img/3d/{m[2]}-900.webp 900w, {m[1]}assets/img/3d/{m[2]}.webp 1600w"', html)
         if VERIFY:
             html = mark_for_verify(html)
         out.parent.mkdir(parents=True, exist_ok=True)

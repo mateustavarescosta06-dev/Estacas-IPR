@@ -1,108 +1,82 @@
 <!--
 title: Fundação com estacas pré-fabricadas, segurança e agilidade | IPR Estacas
-desc: Fundação com estacas pré-fabricadas IPR: fabricação e cura controlada, logística com frota própria e verificação da capacidade de carga em tempo real durante a cravação.
+desc: Fundação com estacas pré-fabricadas IPR: fabricação e cura controlada, logística com frota própria e verificação da capacidade de carga durante a cravação.
 nav: fundacao
 -->
-<section class="phero" data-grid-area>
-  <div class="phero__media"><img src="{{root}}assets/img/3d/fundacao-blueprint.jpg" alt=""></div>
-  <div class="grid-layer" data-grid="48"></div>
-  <div class="wrap phero__inner">
-    <nav class="crumbs mono" aria-label="Você está em"><a href="{{root}}">Home</a><span aria-hidden="true">/</span><span>Fundação</span></nav>
-    {{station}}
-    <h1 class="h-xl phero__title">Segurança e agilidade <span class="hl">pré-fabricadas.</span></h1>
-    <p class="lead">Uma solução de engenharia de alta eficiência, caracterizada pelo controle industrial e pela rapidez de execução.</p>
+<section class="capa">
+  {{fios}}
+  <div class="wrap capa__grid">
+    <div class="capa__txt">
+      <nav class="crumbs" aria-label="Você está em"><a href="{{root}}">Início</a><span aria-hidden="true">/</span><span>Fundação</span></nav>
+      {{amostra}}
+      <h1 class="h-xl">A estaca sai do pátio <span class="hl">e encontra o solo.</span></h1>
+      <p class="lead">Peças curadas e inspecionadas sobem na carreta da frota própria e chegam ao canteiro prontas. Lá, a fundação deixa de ser concretagem e vira montagem técnica, verificada golpe a golpe.</p>
+      <ul class="capa__meta"><li>Frota própria</li><li>Cravação por deslocamento</li><li>Nega e repique por estaca</li></ul>
+    </div>
+    {{capa}}
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap grid-2">
+<section class="bloco" data-tone="terra">
+  <div class="wrap par par--largo">
     <div class="reveal">
-      <h2 class="h-lg">A complexidade fica na fábrica. <span class="hl--dark">A obra vira montagem técnica.</span></h2>
+      <h2 class="h-lg">A complexidade fica na fábrica. <span class="hl">A obra vira montagem.</span></h2>
       <div class="prose">
-        <p class="lead">Diferente das estacas moldadas in loco, o método pré-fabricado transfere a complexidade executiva para a fábrica, garantindo um produto final com características mecânicas superiores.</p>
-        <p>Na IPR, transformamos o canteiro de obras em uma etapa de montagem técnica, eliminando os riscos e as variáveis comuns das fundações moldadas no solo.</p>
+        <p class="lead">Diferente das estacas moldadas no solo, o método pré-fabricado leva a parte difícil para dentro da fábrica e entrega um produto com características mecânicas conhecidas antes do primeiro golpe.</p>
+        <p>Na IPR, o canteiro recebe peças prontas: sem espera de cura, sem concretagem enterrada e sem as variáveis de umidade e contaminação do solo.</p>
       </div>
     </div>
-    <figure class="frame reveal" style="--d:.1s">
-      <img src="{{root}}assets/img/3d/protensao-paper.jpg" alt="Pista de protensão e moldagem das estacas" loading="lazy">
-      <figcaption>Pistas de protensão · fábrica IPR</figcaption>
-    </figure>
+    {{foto:patio-largo|4/3|Pistas e fôrmas · fábrica IPR|sangra-d}}
   </div>
 </section>
 
-<section class="section concrete blueprint-light">
+{{faixa:cravacao-2|Cravação sem escavar · golpe a golpe}}
+
+<section class="bloco" data-tone="papel">
   <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Pré-fabricada × moldada in loco.</h2>
-      </div>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Pré-fabricada × moldada in loco.</h2>
       <p class="lead">Onde o controle industrial faz diferença na qualidade, no prazo e no canteiro.</p>
     </div>
     <div class="compare reveal" role="table" aria-label="Comparativo entre estaca pré-fabricada IPR e estaca moldada in loco">
-      <div class="compare__head" role="row"><div role="columnheader">Critério</div><div role="columnheader">Pré-fabricada <span>IPR</span></div><div role="columnheader">Moldada in loco</div></div>
-      <div class="compare__row" role="row"><div role="cell">Concretagem</div><div role="cell">{{icon:check}} Em fábrica, moldes metálicos e cura controlada</div><div role="cell">No solo, sujeita a contaminação e variações de umidade</div></div>
+      <div class="compare__head" role="row"><div role="columnheader">Critério</div><div role="columnheader">Pré-fabricada IPR</div><div role="columnheader">Moldada in loco</div></div>
+      <div class="compare__row" role="row"><div role="cell">Concretagem</div><div role="cell">{{icon:check}} Em fábrica, em fôrmas metálicas e cura controlada</div><div role="cell">No solo, sujeita a contaminação e variações de umidade</div></div>
       <div class="compare__row" role="row"><div role="cell">Integridade do fuste</div><div role="cell">{{icon:check}} Inspecionada peça a peça antes da cravação</div><div role="cell">Risco de descontinuidade ou estrangulamento pela pressão do solo</div></div>
       <div class="compare__row" role="row"><div role="cell">Resistência do concreto</div><div role="cell">{{icon:check}} fck verificado em ensaios de 24 h a 28 dias por lote</div><div role="cell">Depende das condições de lançamento no canteiro</div></div>
-      <div class="compare__row" role="row"><div role="cell">Capacidade de carga</div><div role="cell">{{icon:check}} Verificada em tempo real pela nega e repique</div><div role="cell">Verificação posterior, por ensaios adicionais</div></div>
-      <div class="compare__row" role="row"><div role="cell">Canteiro</div><div role="cell">{{icon:check}} Sem retirada de terra, lama ou sobra de concreto</div><div role="cell">Geração de resíduos de escavação e lama bentonítica</div></div>
+      <div class="compare__row" role="row"><div role="cell">Capacidade de carga</div><div role="cell">{{icon:check}} Verificada durante a cravação, pela nega e pelo repique</div><div role="cell">Verificação posterior, por ensaios adicionais</div></div>
+      <div class="compare__row" role="row"><div role="cell">Canteiro</div><div role="cell">{{icon:check}} Sem retirada de terra, lama ou sobra de concreto</div><div role="cell">Resíduos de escavação e lama bentonítica</div></div>
       <div class="compare__row" role="row"><div role="cell">Prazo</div><div role="cell">{{icon:check}} Peças prontas no estoque, sem espera de cura na obra</div><div role="cell">Execução condicionada à cura no local</div></div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="grid-2">
-      <figure class="frame reveal">
-        <img src="{{root}}assets/img/3d/pilha-paper.jpg" alt="Pilhas de estacas curadas no pátio" loading="lazy">
-        <figcaption>Estacas curadas no pátio</figcaption>
-      </figure>
-      <div class="reveal" style="--d:.1s">
-        <h2 class="h-md">A qualidade começa no ambiente fabril.</h2>
-        <p class="muted">Ao contrário do concreto lançado diretamente na terra, as estacas IPR são produzidas em moldes metálicos de alta precisão e submetidas a uma cura controlada.</p>
-        <ul class="spec-list">
-          <li>{{icon:shield}}<div><b>Integridade estrutural</b><span>O concreto atinge a resistência ideal de maneira uniforme, sem risco de contaminação por solo ou variações de umidade.</span></div></li>
-          <li>{{icon:ruler}}<div><b>Padronização geométrica</b><span>Cada estaca possui dimensões exatas e posicionamento rigoroso das armaduras internas.</span></div></li>
-        </ul>
-      </div>
+<section class="bloco" data-tone="obra">
+  <div class="wrap par par--foto-esq">
+    <div class="reveal">
+      <h2 class="h-md">Frota própria do pátio ao canteiro.</h2>
+      <p class="lead" style="margin-top: 22px">A fundação é o caminho crítico de qualquer obra. Por isso a logística é da própria IPR.</p>
+      <ul class="spec-list">
+        <li>{{icon:truck}}<div><b>Transporte direto</b><span>Veículos próprios dão flexibilidade de prazo e agilidade no atendimento à obra.</span></div></li>
+        <li>{{icon:shield}}<div><b>Manuseio de precisão</b><span>Equipes treinadas para o içamento e o descarregamento preservam a integridade das peças.</span></div></li>
+      </ul>
     </div>
+    {{foto:patio-retrato|4/5|Estoque pronto para expedição|sangra-e}}
   </div>
 </section>
 
-<section class="section dark">
+{{faixa:cravacao-4|A nega registrada estaca a estaca}}
+
+<section class="bloco" data-tone="terra">
   <div class="wrap">
-    <div class="grid-2">
-      <div class="reveal">
-        <h2 class="h-md">Frota própria do pátio ao canteiro.</h2>
-        <p class="lead">A fundação é o cronograma crítico de qualquer obra. Por isso investimos em logística integrada.</p>
-        <ul class="spec-list">
-          <li>{{icon:truck}}<div><b>Transporte direto</b><span>Veículos próprios permitem flexibilidade total nos prazos e maior agilidade no atendimento às demandas da obra.</span></div></li>
-          <li>{{icon:shield}}<div><b>Manuseio de precisão</b><span>Equipes treinadas para içamento e descarregamento segundo normas rígidas, preservando a integridade das estacas.</span></div></li>
-        </ul>
-      </div>
-      <figure class="frame reveal" style="--d:.1s">
-        <img src="{{root}}assets/img/3d/logistica-blueprint.jpg" alt="Caminhão com estacas para entrega na obra" loading="lazy">
-        <figcaption>Descarregamento em obra</figcaption>
-      </figure>
+    <div class="cab cab--split reveal">
+      <h2 class="h-lg">Limpeza, previsibilidade, <span class="hl">carga verificada.</span></h2>
+      <p class="lead">O acompanhamento contínuo durante a cravação mostra a capacidade de carga em tempo real, com transparência total para o engenheiro responsável.</p>
     </div>
+    <ul class="regua reveal">
+      <li>{{icon:leaf}}<h3>Canteiro limpo</h3><p>Método de deslocamento: sem lama, sem retirada de terra e sem sobra de concreto.</p></li>
+      <li>{{icon:gauge}}<h3>Carga verificada</h3><p>Nega e repique elástico medidos estaca a estaca e confrontados com o projeto.</p></li>
+      <li>{{icon:clock}}<h3>Cronograma curto</h3><p>Peças prontas e curadas: a obra não espera o concreto ganhar resistência.</p></li>
+      <li>{{icon:trace}}<h3>Rastreabilidade</h3><p>Cada estaca ligada aos ensaios do seu lote de concreto.</p></li>
+    </ul>
   </div>
 </section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section__head section__head--split reveal">
-      <div>
-        <h2 class="h-lg">Limpeza, sustentabilidade e previsibilidade.</h2>
-      </div>
-      <p class="lead">O monitoramento contínuo durante a cravação permite a verificação da capacidade de carga em tempo real, com total transparência ao engenheiro responsável.</p>
-    </div>
-    <div class="cards-4 reveal">
-      <article class="card">{{icon:leaf}}<h3>Canteiro limpo</h3><p>Método de deslocamento: sem lama, sem retirada de terra e sem sobras de concreto.</p></article>
-      <article class="card">{{icon:gauge}}<h3>Carga verificada</h3><p>Nega e repique elástico medidos estaca a estaca e confrontados com o projeto.</p></article>
-      <article class="card">{{icon:clock}}<h3>Cronograma curto</h3><p>Peças prontas e curadas: a obra não espera concreto ganhar resistência.</p></article>
-      <article class="card">{{icon:trace}}<h3>Rastreabilidade</h3><p>Cada estaca vinculada aos ensaios do seu lote de concreto.</p></article>
-    </div>
-  </div>
-</section>
-
-{{cta}}

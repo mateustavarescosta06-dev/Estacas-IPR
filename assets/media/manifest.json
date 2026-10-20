@@ -1,0 +1,369 @@
+{
+ "patio-pistas": {
+  "pos": "50% 62%",
+  "alt": "Pistas de protensão da fábrica IPR em perspectiva, com os silos amarelos da central de concreto ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#97928a"
+ },
+ "patio-nublado": {
+  "pos": "50% 55%",
+  "alt": "Pátio de estocagem da IPR sob céu carregado, com pilhas de estacas e galpões ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#585551"
+ },
+ "patio-largo": {
+  "pos": "50% 70%",
+  "alt": "Pistas e fôrmas no pátio da IPR sobre solo vermelho, com pilhas de estacas ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#999996"
+ },
+ "patio-eucaliptos": {
+  "pos": "50% 60%",
+  "alt": "Pilhas de estacas no pátio da IPR, entre eucaliptos, com guindaste e carreta ao fundo",
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "tone": "#758088"
+ },
+ "patio-vsco": {
+  "pos": "50% 60%",
+  "alt": "Pátio de estocagem da IPR com galpões e caminhão ao fundo",
+  "w": 1264,
+  "h": 843,
+  "widths": [
+   640,
+   1080,
+   1264
+  ],
+  "tone": "#8e8e8b"
+ },
+ "patio-retrato": {
+  "pos": "50% 65%",
+  "alt": "Pilhas de estacas prontas para expedição no pátio da IPR",
+  "w": 1000,
+  "h": 1500,
+  "widths": [
+   640,
+   1000
+  ],
+  "tone": "#71767b"
+ },
+ "silos": {
+  "pos": "45% 40%",
+  "alt": "Silos amarelos de cimento da central de concreto da IPR",
+  "w": 1856,
+  "h": 2304,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#666250"
+ },
+ "central-painel": {
+  "pos": "50% 45%",
+  "alt": "Painel da central de concreto com os indicadores das balanças de dosagem",
+  "w": 1000,
+  "h": 1500,
+  "widths": [
+   640,
+   1000
+  ],
+  "tone": "#c4c2c1"
+ },
+ "central-maquina": {
+  "pos": "55% 45%",
+  "alt": "Operadores junto ao misturador da central de concreto da IPR",
+  "w": 667,
+  "h": 1000,
+  "widths": [
+   640,
+   667
+  ],
+  "tone": "#767b77"
+ },
+ "aco-rolo": {
+  "pos": "50% 50%",
+  "alt": "Rolo de aço de protensão no galpão da IPR",
+  "w": 1856,
+  "h": 2304,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#4d5863"
+ },
+ "aco-insumos": {
+  "pos": "50% 70%",
+  "alt": "Rolos de aço de protensão e barras de aço no galpão",
+  "w": 800,
+  "h": 1200,
+  "widths": [
+   640,
+   800
+  ],
+  "tone": "#677579"
+ },
+ "topos": {
+  "pos": "50% 50%",
+  "alt": "Topos de estacas circulares empilhadas, com a textura do concreto curado",
+  "w": 800,
+  "h": 1422,
+  "widths": [
+   640,
+   800
+  ],
+  "tone": "#a09f9d"
+ },
+ "corpos-de-prova": {
+  "pos": "50% 50%",
+  "alt": "Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão",
+  "w": 1856,
+  "h": 2304,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#96a0a6"
+ },
+ "inspecao": {
+  "pos": "50% 60%",
+  "alt": "Profissional da IPR de capacete diante de estacas hexagonais",
+  "w": 800,
+  "h": 1200,
+  "widths": [
+   640,
+   800
+  ],
+  "tone": "#80898d"
+ },
+ "transporte": {
+  "pos": "50% 26%",
+  "alt": "Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano",
+  "w": 1856,
+  "h": 2304,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#60768e"
+ },
+ "hora-0540": {
+  "pos": "50% 55%",
+  "alt": "A pista de protensão da IPR antes do amanhecer, com os silos da central ao fundo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#4d444c"
+ },
+ "hora-0730": {
+  "pos": "50% 45%",
+  "alt": "Os silos de cimento da central de concreto na primeira luz da manhã",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#3c515e"
+ },
+ "hora-1000": {
+  "pos": "50% 65%",
+  "alt": "Pistas e fôrmas da fábrica IPR sob a luz do dia",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#727981"
+ },
+ "hora-2200": {
+  "pos": "50% 60%",
+  "alt": "O pátio de estocagem da IPR à noite",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#3a3233"
+ },
+ "filme-24h": {
+  "pos": "52% 55%",
+  "alt": "Time-lapse de 24 horas na pista de protensão da IPR",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#484a63",
+  "fundo": true
+ },
+ "tl-0600": {
+  "pos": "52% 55%",
+  "alt": "06:00, hora azul: os fios de protensão tracionados na pista da IPR, com os silos acesos ao fundo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#484a63"
+ },
+ "tl-0900": {
+  "pos": "52% 55%",
+  "alt": "09:00: a pista de protensão sendo concretada, metade cheia de concreto fresco e metade ainda aberta",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#5d6e7b"
+ },
+ "tl-1730": {
+  "pos": "52% 55%",
+  "alt": "17:30: a pista inteira concretada, com o concreto já claro e fosco sob o sol baixo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#706665"
+ },
+ "tl-0600d2": {
+  "pos": "52% 55%",
+  "alt": "06:00 do dia seguinte: as estacas prontas na pista ao nascer do sol atrás dos silos",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#665c5c"
+ },
+ "cravacao-1": {
+  "pos": "62% 50%",
+  "alt": "Bate-estacas posicionado na obra, com a estaca içada na torre-guia e um operário conferindo o prumo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#49464d"
+ },
+ "cravacao-2": {
+  "pos": "58% 50%",
+  "alt": "O martelo golpeia o topo da estaca, já meio cravada no solo vermelho",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#3b4860"
+ },
+ "cravacao-3": {
+  "pos": "62% 50%",
+  "alt": "Soldador unindo os anéis metálicos da emenda entre dois segmentos de estaca",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#49404c"
+ },
+ "cravacao-4": {
+  "pos": "55% 50%",
+  "alt": "Engenheiro registrando a nega numa folha presa à estaca cravada, com o bate-estacas ao fundo",
+  "w": 2752,
+  "h": 1536,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#4f4a4e"
+ },
+ "secao-circular": {
+  "pos": "50% 50%",
+  "alt": "Topo de uma estaca circular de concreto com seis fios de protensão",
+  "w": 2048,
+  "h": 2048,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#515661"
+ },
+ "secao-hexagonal": {
+  "pos": "50% 50%",
+  "alt": "Topo de uma estaca hexagonal de concreto com seis fios de protensão, um junto a cada canto",
+  "w": 2048,
+  "h": 2048,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#59606c"
+ },
+ "secao-quadrada": {
+  "pos": "50% 50%",
+  "alt": "Topo de uma estaca quadrada de concreto com oito fios de protensão",
+  "w": 2048,
+  "h": 2048,
+  "widths": [
+   640,
+   1080,
+   1600
+  ],
+  "tone": "#56585f"
+ }
+}

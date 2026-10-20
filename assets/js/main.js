@@ -30,38 +30,6 @@
     });
   }
 
-  var progress = $("[data-progress]");
-  var heroImg = $(".hero__media img");
-  function onScroll() {
-    var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
-    document.body.classList.toggle("scrolled", y > 36);
-    if (heroImg && !reduceMotion && y < window.innerHeight) {
-      heroImg.parentNode.style.transform = "translateY(" + y * 0.18 + "px)";
-    }
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  /* ---------- Rascunhos acompanham o ponteiro (profundidade sutil) ---------- */
-  if (!reduceMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    $$(".phero, .handoff").forEach(function (sec) {
-      var img = $(".phero__media img, .handoff__media img", sec);
-      if (!img) return;
-      var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
-      function step() {
-        x += (tx - x) * 0.08; y += (ty - y) * 0.08;
-        img.style.translate = x.toFixed(2) + "px " + y.toFixed(2) + "px";
-        raf = Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05 ? requestAnimationFrame(step) : 0;
-      }
-      sec.addEventListener("pointermove", function (e) {
-        var r = sec.getBoundingClientRect();
-        tx = ((e.clientX - r.left) / r.width - 0.5) * -18; ty = ((e.clientY - r.top) / r.height - 0.5) * -10;
-        if (!raf) raf = requestAnimationFrame(step);
-      });
-      sec.addEventListener("pointerleave", function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(step); });
-    });
-  }
-
   /* ---------- Revelação e contadores ---------- */
   function countUp(el) {
     var target = parseFloat(el.getAttribute("data-count"));
@@ -85,9 +53,9 @@
         io.unobserve(en.target);
       });
     }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
-    $$(".reveal, .stats").forEach(function (el) { io.observe(el); });
+    $$(".reveal, .stats, .faixa, .capa__cena, .passagem__cena").forEach(function (el) { io.observe(el); });
   } else {
-    $$(".reveal").forEach(function (el) { el.classList.add("is-in"); });
+    $$(".reveal, .faixa, .capa__cena, .passagem__cena").forEach(function (el) { el.classList.add("is-in"); });
   }
 
   /* ---------- Desenho de seções (planta técnica) ---------- */
@@ -126,7 +94,7 @@
       if (!opts.mini) svg += '<circle class="cover" cx="' + cx + '" cy="' + cy + '" r="' + (R - cov) + '"/>';
     } else if (e.forma === "hexagonal") {
       svg += '<polygon class="sec" points="' + hexPoints(cx, cy, R) + '"/>';
-      if (e.furo) svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + R * 0.5 + '" fill="#fbfaf8" stroke="currentColor" class="dim"/>';
+      if (e.furo) svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + R * 0.5 + '" fill="var(--ground)" stroke="currentColor" class="dim"/>';
       if (!opts.mini && !e.furo) svg += '<polygon class="cover" points="' + hexPoints(cx, cy, R - cov * 1.15) + '"/>';
     } else {
       svg += '<rect class="sec" x="' + (cx - R) + '" y="' + (cy - R) + '" width="' + 2 * R + '" height="' + 2 * R + '"/>';
@@ -151,6 +119,19 @@
   var DATA = window.IPR_ESTACAS || [];
   var byId = {};
   DATA.forEach(function (e) { byId[e.id] = e; });
+
+  /* Desenho técnico das seções sobre a grade: traçado ao chegar na tela, fios acendem ao passar o cursor */
+  $$("[data-desenho]").forEach(function (el) {
+    var e = byId[el.getAttribute("data-desenho")];
+    if (!e) return;
+    el.innerHTML = drawSection(e, { scale: e.d > 34 ? 4.3 : e.d < 24 ? 6.4 : 5.4 });
+  });
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var ioD = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("is-in"); ioD.unobserve(en.target); } });
+    }, { threshold: 0.3 });
+    $$(".desenho").forEach(function (el) { ioD.observe(el); });
+  } else $$(".desenho").forEach(function (el) { el.classList.add("is-in"); });
 
   $$("[data-shape]").forEach(function (el) {
     var e = byId[el.getAttribute("data-shape")];
@@ -188,62 +169,99 @@
   function initDrive(root) {
     var viz = $("[data-drive-viz]", root);
     var steps = $$(".drive__step", root);
-    var dots = $$(".drive__dots button", root);
+    var dots = $$(".crv__etapa", root);
+    var diagrama = $("[data-diagrama]", root), barra = $(".crv__progresso i", root);
     var track = $(".drive__track", root);
+    var fotos = $$(".drive__foto", root); // fotos reais de cada etapa, atrás da simulação
     var G = 250, PX = 18, X = 196, PW = 22, SEG = 10; // terreno (y), px por metro, eixo, largura, segmento (m)
+    // perfil de solo típico: aterro, argila, silte, areia e camada resistente, em azuis cada vez mais fundos
     var layers = [
-      { nome: "Aterro", a: 0, b: 2, cor: "#3b3631", pen: 50 },
-      { nome: "Argila mole", a: 2, b: 7, cor: "#4a3d31", pen: 35 },
-      { nome: "Silte argiloso", a: 7, b: 12, cor: "#544634", pen: 18 },
-      { nome: "Areia fina compacta", a: 12, b: 17, cor: "#63533b", pen: 8 },
-      { nome: "Camada resistente", a: 17, b: 30, cor: "#2c3038", pen: 2.5 }
+      { nome: "Aterro", a: 0, b: 2, cor: "#1a3a66", pen: 50 },
+      { nome: "Argila mole", a: 2, b: 7, cor: "#15325b", pen: 35 },
+      { nome: "Silte argiloso", a: 7, b: 12, cor: "#112a4e", pen: 18 },
+      { nome: "Areia fina compacta", a: 12, b: 17, cor: "#0d2342", pen: 8 },
+      { nome: "Camada resistente", a: 17, b: 30, cor: "#081833", pen: 2.5 }
     ];
     var FINAL = 17.6;
+    var CREAM = "#f3f5f9", AMARELO = "#ffcd00", MAQ = "#0a1f3d", ACO = "#c9d2de";
 
     var s = '<svg viewBox="0 0 420 760" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
-    s += '<defs><pattern id="pDots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".9" fill="rgba(255,255,255,.14)"/></pattern>';
-    s += '<pattern id="pHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,.08)" stroke-width="2"/></pattern>';
-    s += '<pattern id="pLattice" width="10" height="14" patternUnits="userSpaceOnUse"><path d="M0 0L10 14M10 0L0 14" stroke="#ffcc00" stroke-width="1.2"/></pattern>';
-    s += '<linearGradient id="gPile" x1="0" x2="1"><stop offset="0" stop-color="#b8b2a7"/><stop offset=".45" stop-color="#e7e2d8"/><stop offset="1" stop-color="#a49e93"/></linearGradient></defs>';
+    s += '<defs><pattern id="pGraos" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".8" fill="rgba(240,230,218,.13)"/><circle cx="6.5" cy="7" r=".6" fill="rgba(0,0,0,.18)"/></pattern>';
+    s += '<pattern id="pCamadas" width="14" height="6" patternUnits="userSpaceOnUse"><path d="M0 5h7" stroke="rgba(0,0,0,.16)" stroke-width="1"/></pattern>';
+    s += '<pattern id="pTrelica" width="10" height="14" patternUnits="userSpaceOnUse"><path d="M0 0L10 14M10 0L0 14" stroke="' + AMARELO + '" stroke-width="1.1"/></pattern>';
+    s += '<linearGradient id="gPile" x1="0" x2="1"><stop offset="0" stop-color="#a39d92"/><stop offset=".45" stop-color="#e6e1d7"/><stop offset="1" stop-color="#9a948a"/></linearGradient></defs>';
+    // corte do terreno como folha técnica: fronteiras onduladas, uma textura por camada e luz de cima
+    s += '<pattern id="tAterro" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="4" r="1.4" fill="rgba(220,232,250,.16)"/><circle cx="9" cy="9" r="1" fill="rgba(220,232,250,.1)"/><path d="M7 2l2 1-1 2z" fill="rgba(220,232,250,.12)"/></pattern>';
+    s += '<pattern id="tArgila" width="18" height="7" patternUnits="userSpaceOnUse"><path d="M0 4h10M12 4h4" stroke="rgba(220,232,250,.1)" stroke-width="1"/></pattern>';
+    s += '<pattern id="tSilte" width="24" height="9" patternUnits="userSpaceOnUse"><path d="M0 5q6-3 12 0t12 0" fill="none" stroke="rgba(220,232,250,.09)" stroke-width="1"/></pattern>';
+    s += '<pattern id="tAreia" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".7" fill="rgba(220,232,250,.17)"/><circle cx="5.5" cy="5" r=".55" fill="rgba(220,232,250,.12)"/></pattern>';
+    s += '<pattern id="tRocha" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M0 14L14 0M-4 4L4-4M10 18l8-8" stroke="rgba(220,232,250,.08)" stroke-width="1"/></pattern>';
+    s += '<linearGradient id="gLuz" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="rgba(120,160,220,.18)"/><stop offset=".55" stop-color="rgba(120,160,220,0)"/></linearGradient>';
+    var TEX = ["tAterro", "tArgila", "tSilte", "tAreia", "tRocha"], COR = ["#21487d", "#1a3c6c", "#14325c", "#0f284c", "#0a1d3a"];
+    function onda(y, fase, amp) {
+      var d = "M40 " + y.toFixed(1);
+      for (var x = 40; x <= 420; x += 20) d += " L" + x + " " + (y + Math.sin(x / 38 + fase) * amp + Math.sin(x / 13 + fase * 2) * amp * 0.35).toFixed(1);
+      return d;
+    }
     layers.forEach(function (L, i) {
-      var y = G + L.a * PX, h = (Math.min(L.b, 28) - L.a) * PX;
-      s += '<rect x="40" y="' + y + '" width="380" height="' + h + '" fill="' + L.cor + '"/>';
-      s += '<rect x="40" y="' + y + '" width="380" height="' + h + '" fill="url(#' + (i % 2 ? "pHatch" : "pDots") + ')"/>';
-      s += '<line x1="40" x2="420" y1="' + y + '" y2="' + y + '" stroke="rgba(255,255,255,.1)"/>';
-      s += '<text x="412" y="' + (y + 16) + '" text-anchor="end" class="drive-layer" data-layer="' + i + '">' + L.nome.toUpperCase() + "</text>";
+      var y0 = G + L.a * PX, y1 = G + Math.min(L.b, 28) * PX, topo = i === 0 ? "M40 " + G + " L420 " + G : onda(y0, i * 1.7, 3.2);
+      // a área vai pela fronteira de cima e volta pela de baixo, de trás para a frente
+      var baixo = i === layers.length - 1 ? ["420 " + y1, "40 " + y1] : onda(y1, (i + 1) * 1.7, 3.2).slice(1).split(" L").reverse();
+      var area = topo + " L" + baixo.join(" L") + " Z";
+      s += '<path d="' + area + '" fill="' + COR[i] + '"/>';
+      s += '<path d="' + area + '" fill="url(#' + TEX[i] + ')"/>';
+      if (i) s += '<path d="' + onda(y0, i * 1.7, 3.2) + '" fill="none" stroke="rgba(220,232,250,.22)" stroke-width="1"/>';
+      // rótulo da camada à direita, com a faixa de profundidade
+      s += '<text x="412" y="' + (y0 + 18) + '" text-anchor="end" class="drive-layer" data-layer="' + i + '">' + L.nome.toUpperCase() + "</text>";
+      s += '<text x="412" y="' + (y0 + 31) + '" text-anchor="end" class="drive-layer drive-layer--m">' + L.a + " a " + (L.b > 28 ? "28+" : L.b) + " m</text>";
     });
+    s += '<rect x="40" y="' + G + '" width="380" height="' + (760 - G) + '" fill="url(#gLuz)"/>';
     // régua de profundidade
     for (var m = 0; m <= 27; m++) {
       var yy = G + m * PX;
-      s += '<line x1="' + (m % 5 ? 32 : 24) + '" x2="40" y1="' + yy + '" y2="' + yy + '" stroke="rgba(255,255,255,.35)"/>';
+      s += '<line x1="' + (m % 5 ? 32 : 24) + '" x2="40" y1="' + yy + '" y2="' + yy + '" stroke="currentColor" stroke-opacity=".4"/>';
       if (m % 5 === 0) s += '<text x="20" y="' + (yy + 4) + '" text-anchor="end" class="drive-tick">' + m + "m</text>";
     }
-    s += '<line x1="40" x2="40" y1="' + G + '" y2="760" stroke="rgba(255,255,255,.35)"/>';
-    // superfície e equipamento
-    s += '<line x1="0" x2="420" y1="' + G + '" y2="' + G + '" stroke="#ffcc00" stroke-width="2"/>';
+    s += '<line x1="40" x2="40" y1="' + G + '" y2="760" stroke="currentColor" stroke-opacity=".4"/>';
+    // superfície e bate-estacas sobre esteiras
+    s += '<line x1="0" x2="420" y1="' + G + '" y2="' + G + '" stroke="' + CREAM + '" stroke-width="1.5"/>';
     s += '<text x="412" y="' + (G - 8) + '" text-anchor="end" class="drive-tick">N.T. ±0,00</text>';
-    s += '<g class="rig"><rect x="' + (X + 14) + '" y="14" width="12" height="' + (G - 34) + '" fill="url(#pLattice)" stroke="#ffcc00" stroke-width="1.5"/>';
-    s += '<path d="M' + (X + 26) + " 120L" + (X + 92) + " " + (G - 30) + '" stroke="#ffcc00" stroke-width="3"/>';
-    s += '<rect x="' + (X + 30) + '" y="' + (G - 40) + '" width="120" height="26" fill="#0c3360" stroke="#ffcc00"/>';
-    s += '<rect x="' + (X + 22) + '" y="' + (G - 16) + '" width="136" height="16" rx="8" fill="#13202f" stroke="#6f7d8c"/>';
-    s += '<circle cx="' + (X + 32) + '" cy="' + (G - 8) + '" r="5" fill="#6f7d8c"/><circle cx="' + (X + 148) + '" cy="' + (G - 8) + '" r="5" fill="#6f7d8c"/>';
-    s += '<rect x="' + (X + 100) + '" y="' + (G - 62) + '" width="40" height="22" fill="#0c3360" stroke="#ffcc00"/>';
-    s += '<rect x="' + (X + 106) + '" y="' + (G - 58) + '" width="16" height="10" fill="rgba(255,204,0,.35)"/></g>';
-    s += '<line data-plumb x1="' + X + '" x2="' + X + '" y1="10" y2="' + (G + 40) + '" stroke="#ffcc00" stroke-dasharray="4 5" opacity=".0"/>';
+    s += '<g class="rig"><rect x="' + (X + 14) + '" y="14" width="12" height="' + (G - 34) + '" fill="url(#pTrelica)" stroke="' + AMARELO + '" stroke-width="1.2"/>';
+    s += '<path d="M' + (X + 26) + " 120L" + (X + 92) + " " + (G - 30) + '" stroke="' + AMARELO + '" stroke-width="2.5"/>';
+    s += '<rect x="' + (X + 30) + '" y="' + (G - 40) + '" width="120" height="26" fill="' + MAQ + '" stroke="rgba(240,230,218,.22)"/>';
+    s += '<rect x="' + (X + 22) + '" y="' + (G - 16) + '" width="136" height="16" rx="8" fill="#1d1916" stroke="rgba(240,230,218,.22)"/>';
+    s += '<circle cx="' + (X + 32) + '" cy="' + (G - 8) + '" r="5" fill="#4a423c"/><circle cx="' + (X + 148) + '" cy="' + (G - 8) + '" r="5" fill="#4a423c"/>';
+    s += '<rect x="' + (X + 100) + '" y="' + (G - 62) + '" width="40" height="22" fill="' + MAQ + '" stroke="rgba(240,230,218,.22)"/>';
+    s += '<rect x="' + (X + 106) + '" y="' + (G - 58) + '" width="16" height="10" fill="rgba(255,205,0,.3)"/></g>';
+    s += '<line data-plumb x1="' + X + '" x2="' + X + '" y1="10" y2="' + (G + 40) + '" stroke="' + CREAM + '" stroke-dasharray="4 5" opacity=".0"/>';
     s += '<g data-pile><g data-seg2><rect x="' + (X - PW / 2) + '" y="0" width="' + PW + '" height="' + SEG * PX + '" fill="url(#gPile)"/></g>';
-    s += '<g data-seg1><rect x="' + (X - PW / 2) + '" y="0" width="' + PW + '" height="' + SEG * PX + '" fill="url(#gPile)"/><path d="M' + (X - PW / 2) + " " + SEG * PX + "l" + PW / 2 + " 10l" + PW / 2 + ' -10z" fill="#a49e93"/></g>';
-    s += '<rect data-ring x="' + (X - PW / 2 - 3) + '" y="0" width="' + (PW + 6) + '" height="6" fill="#ffcc00"/></g>';
-    s += '<g data-hammer><rect x="' + (X - 17) + '" y="0" width="34" height="44" fill="#16457a" stroke="#ffcc00" stroke-width="1.5"/><rect x="' + (X - 17) + '" y="16" width="34" height="6" fill="#ffcc00"/><rect x="' + (X - 13) + '" y="44" width="26" height="6" fill="#6f7d8c"/></g>';
-    s += '<circle data-impact cx="' + X + '" cy="0" r="0" fill="none" stroke="#ffcc00" stroke-width="2" opacity="0"/>';
+    s += '<g data-seg1><rect x="' + (X - PW / 2) + '" y="0" width="' + PW + '" height="' + SEG * PX + '" fill="url(#gPile)"/><path d="M' + (X - PW / 2) + " " + SEG * PX + "l" + PW / 2 + " 10l" + PW / 2 + ' -10z" fill="#9a948a"/></g>';
+    s += '<rect data-ring x="' + (X - PW / 2 - 3) + '" y="0" width="' + (PW + 6) + '" height="6" fill="' + ACO + '"/></g>';
+    s += '<g data-hammer><rect x="' + (X - 17) + '" y="0" width="34" height="44" fill="' + MAQ + '" stroke="rgba(240,230,218,.25)"/><rect x="' + (X - 17) + '" y="16" width="34" height="5" fill="' + AMARELO + '"/><rect x="' + (X - 13) + '" y="44" width="26" height="6" fill="#4a423c"/></g>';
+    s += '<circle data-impact cx="' + X + '" cy="0" r="0" fill="none" stroke="' + CREAM + '" stroke-width="1.5" opacity="0"/>';
     s += "</svg>";
-    s += '<div class="readout" aria-live="off"><span class="readout__title">Registro de cravação · simulação</span>';
-    s += '<span>Profundidade</span><b data-r="prof">0,00 m</b><span>Golpes</span><b data-r="golpes">0</b>';
-    s += '<span>Nega (10 golpes)</span><b data-r="nega" class="y">aguardando</b><span>Camada</span><b data-r="camada">superfície</b></div>';
     viz.innerHTML = s;
+
+    // diagrama do boletim: golpes por metro, metro a metro, desenhado enquanto a estaca desce
+    var DM = 20, DW = 220, DH = 140, GMAX = 420;
+    var dBase = "";
+    for (var dm = 0; dm <= DM; dm += 5) dBase += '<line x1="0" x2="' + DW + '" y1="' + (dm * DH / DM) + '" y2="' + (dm * DH / DM) + '" class="crv-dg-grade"/><text x="' + (DW - 2) + '" y="' + (dm * DH / DM - 3) + '" text-anchor="end" class="crv-dg-t">' + dm + " m</text>";
+    var golpesM = [];
+    for (var mm = 0; mm < DM; mm++) { var Lm = layers[layerAt(mm + 0.5)]; golpesM.push(1000 / Lm.pen); }
+    function diagramaAte(b) {
+      if (!diagrama) return;
+      var g = dBase, cheio = Math.floor(b), resto = b - cheio;
+      for (var i = 0; i < Math.min(DM, Math.ceil(b)); i++) {
+        var f = i < cheio ? 1 : resto, w = Math.max(1, golpesM[i] / GMAX * (DW - 34));
+        g += '<rect x="0" y="' + (i * DH / DM + 1) + '" width="' + (w * f).toFixed(1) + '" height="' + (DH / DM - 2) + '" class="' + (i === cheio || (i === cheio - 1 && resto === 0) ? "crv-dg-agora" : "crv-dg-b") + '"/>';
+      }
+      g += '<line x1="0" x2="' + DW + '" y1="' + (b * DH / DM).toFixed(1) + '" y2="' + (b * DH / DM).toFixed(1) + '" class="crv-dg-nivel"/>';
+      diagrama.innerHTML = g;
+    }
 
     var pile = $("[data-pile]", viz), seg1 = $("[data-seg1]", viz), seg2 = $("[data-seg2]", viz), ring = $("[data-ring]", viz);
     var hammer = $("[data-hammer]", viz), plumb = $("[data-plumb]", viz), impact = $("[data-impact]", viz);
-    var r = { prof: $('[data-r="prof"]', viz), golpes: $('[data-r="golpes"]', viz), nega: $('[data-r="nega"]', viz), camada: $('[data-r="camada"]', viz) };
+    var r = { prof: $('[data-r="prof"]', root), golpes: $('[data-r="golpes"]', root), nega: $('[data-r="nega"]', root), camada: $('[data-r="camada"]', root) };
     var layerText = $$(".drive-layer", viz);
 
     function layerAt(d) { for (var i = layers.length - 1; i >= 0; i--) if (d >= layers[i].a) return i; return 0; }
@@ -286,8 +304,11 @@
       lastBlow = Math.floor(blows);
 
       var li = layerAt(Math.max(0, b - .001));
+      root.style.setProperty("--k", p.toFixed(4));
       root.setAttribute("data-sc-verify-state", stepIdx + ":" + b.toFixed(2));
-      r.prof.textContent = fmt(b, 2) + " m";
+      r.prof.textContent = fmt(b, 2);
+      diagramaAte(b);
+      if (barra) barra.style.transform = "scaleX(" + p.toFixed(4) + ")";
       r.golpes.textContent = fmt(Math.floor(blows));
       r.nega.textContent = b > 0 ? fmt(layers[li].pen * 10, 0) + " mm" : "aguardando";
       r.camada.textContent = b > 0 ? layers[li].nome : "superfície";
@@ -297,6 +318,7 @@
         current = stepIdx;
         steps.forEach(function (st, i) { st.classList.toggle("is-active", i === stepIdx); });
         dots.forEach(function (d, i) { d.classList.toggle("is-active", i === stepIdx); });
+        fotos.forEach(function (f, i) { f.classList.toggle("is-on", i === stepIdx); });
       }
     }
 
@@ -318,6 +340,7 @@
       window.addEventListener("resize", update);
       update();
     }
+    // cada etapa da lista leva a rolagem até o seu trecho
     var marks = [0.05, 0.36, 0.58, 0.96];
     dots.forEach(function (d, i) {
       d.addEventListener("click", function () {
@@ -459,7 +482,7 @@
     });
     function showTip(row, x, y) {
       var e = byId[row.getAttribute("data-id")];
-      tip.innerHTML = "<b>" + e.nome + "</b>NBR 6118: " + fmt(e.compNbr, 1) + " kN<br>Máxima: " + fmt(e.compMax, 1) + " kN<br>Massa: " + fmt(e.massa) + " kg/m<br><span style=\"color:#6f7d8c\">Clique para ver a ficha</span>";
+      tip.innerHTML = "<b>" + e.nome + "</b>NBR 6118: " + fmt(e.compNbr, 1) + " kN<br>Máxima: " + fmt(e.compMax, 1) + " kN<br>Massa: " + fmt(e.massa) + " kg/m<br><span>Clique para ver a ficha</span>";
       tip.style.left = Math.min(x + 16, window.innerWidth - 250) + "px";
       tip.style.top = (y + 16) + "px";
       tip.classList.add("is-on");
