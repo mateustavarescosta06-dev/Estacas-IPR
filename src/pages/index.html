@@ -278,45 +278,6 @@ nav: home
   <div class="marquee" data-marquee="a"></div>
 </section>
 
-<section class="eb eb-valores" aria-label="Garantias">
-  <div class="eb-valores__esq">
-    <p class="eb-sobre">Garantias</p>
-    <h2 class="eb-titulo">Controle, rastreabilidade e execução confiável na obra</h2>
-  </div>
-  <div class="eb-valores__dir">
-    <details class="eb-acord" open>
-      <summary>Rastreabilidade<i></i></summary>
-      <div class="eb-acord__corpo"><p>Cada estaca fica ligada ao lote de concreto e aos ensaios desse lote, da balança da central ao registro da nega na obra.</p><figure>{{img:central-painel|220px}}</figure><a class="btn-eb btn-eb--sm" href="{{root}}controle-de-qualidade/"><span>Saiba mais</span>{{icon:arrow}}</a></div>
-    </details>
-    <details class="eb-acord">
-      <summary>Ensaio de 24 horas<i></i></summary>
-      <div class="eb-acord__corpo"><p>Um corpo de prova do lote vai à prensa com 24 horas. É ele que libera a desmoldagem. Outros são rompidos com 3, 7 e 28 dias.</p><figure>{{img:corpos-de-prova|220px}}</figure><a class="btn-eb btn-eb--sm" href="{{root}}controle-de-qualidade/#ensaios"><span>Saiba mais</span>{{icon:arrow}}</a></div>
-    </details>
-    <details class="eb-acord">
-      <summary>Inspeção peça a peça<i></i></summary>
-      <div class="eb-acord__corpo"><p>Dimensão, alinhamento e superfície conferidos em todas as estacas antes de irem ao pátio de estocagem.</p><figure>{{img:inspecao|220px}}</figure><a class="btn-eb btn-eb--sm" href="{{root}}controle-de-qualidade/#inspecao"><span>Saiba mais</span>{{icon:arrow}}</a></div>
-    </details>
-  </div>
-</section>
-
-<section class="eb eb-matriz eb-matriz--dir" aria-label="Central própria">
-  <figure class="eb-matriz__fig" data-eb-medida>{{img:central-maquina|(max-width: 820px) 100vw, 50vw}}<span class="eb-x">X: 0</span><span class="eb-y">Y: 0</span><i class="eb-canto"></i></figure>
-  <div class="eb-matriz__txt">
-    <h2 class="eb-titulo">Matéria-prima sob o nosso controle</h2>
-    <p>A IPR tem central de concreto própria. Cimento, areia e brita são pesados em balanças calibradas e cada metro cúbico fica registrado, para que toda estaca receba o mesmo concreto C40.</p>
-    <a class="btn-eb" href="{{root}}central-de-concreto/"><span>Conhecer a central</span>{{icon:arrow}}</a>
-  </div>
-</section>
-
-<section class="eb eb-matriz eb-matriz--esq" aria-label="35 anos de pátio">
-  <div class="eb-matriz__txt">
-    <h2 class="eb-titulo">35 anos de pátio</h2>
-    <p>Mais de três décadas fabricando e cravando estacas pré-fabricadas, com laboratório, central e frota próprios.</p>
-    <a class="btn-eb" href="{{root}}clientes/"><span>Quem confia na IPR</span>{{icon:arrow}}</a>
-  </div>
-  <figure class="eb-matriz__fig eb-matriz__fig--peq" data-eb-medida>{{img:topos|(max-width: 820px) 100vw, 30vw}}<span class="eb-x">X: 0</span><span class="eb-y">Y: 0</span><i class="eb-canto"></i></figure>
-</section>
-
 <section class="mt mt-serv" aria-label="O que a IPR faz">
   <div class="wrap">
     <div class="mt-abas" role="tablist" aria-label="Etapas do serviço" data-mt-abas>
@@ -383,14 +344,57 @@ nav: home
   </div>
 </section>
 
-<section class="eb-pre" aria-label="Fale com a IPR">
-  <p class="eb-pre__intro">Conte o que a sua obra precisa. A engenharia da IPR indica a seção, o comprimento e o número de estacas a partir da sondagem e das cargas de projeto, e retorna com o orçamento.</p>
-  <div class="eb-pre__img cena" data-par>{{img:hora-0540|(max-width: 820px) 100vw, 75vw}}</div>
-  <div class="eb-pre__fim">
-    <h2 class="eb-titulo">Construa sobre uma estaca que nasceu sob controle</h2>
-    <a class="btn-eb btn-eb--claro" href="{{root}}contato/"><span>Solicitar orçamento</span>{{icon:arrow}}</a>
+<section class="eb eb-valores" aria-label="Garantias">
+  <div class="eb-valores__esq">
+    <p class="eb-sobre" data-piscar>Garantias</p>
+    <h2 class="eb-titulo">Garantias de sistema que asseguram controle, rastreabilidade e execução confiável na obra</h2>
+  </div>
+  <div class="eb-valores__dir" data-eb-acords>
+    <details class="eb-acord" open>
+      <summary>Rastreabilidade<i></i></summary>
+      <div class="eb-acord__corpo"><div class="eb-acord__txt"><p>Cada estaca fica ligada ao lote de concreto e aos ensaios desse lote, da balança da central ao registro da nega na obra.</p><a class="btn-eb btn-eb--sm" href="{{root}}controle-de-qualidade/"><span>Saiba mais</span>{{icon:arrow}}</a></div><figure>{{img:central-painel|(max-width: 820px) 40vw, 18vw}}</figure></div>
+    </details>
+    <details class="eb-acord">
+      <summary>Ensaio de 24 horas<i></i></summary>
+      <div class="eb-acord__corpo"><div class="eb-acord__txt"><p>Um corpo de prova do lote vai à prensa com 24 horas. É ele que libera a desmoldagem. Outros são rompidos com 3, 7 e 28 dias.</p><a class="btn-eb btn-eb--sm" href="{{root}}controle-de-qualidade/#ensaios"><span>Saiba mais</span>{{icon:arrow}}</a></div><figure>{{img:corpos-de-prova|(max-width: 820px) 40vw, 18vw}}</figure></div>
+    </details>
+    <details class="eb-acord">
+      <summary>Inspeção peça a peça<i></i></summary>
+      <div class="eb-acord__corpo"><div class="eb-acord__txt"><p>Dimensão, alinhamento e superfície conferidos em todas as estacas antes de irem ao pátio de estocagem.</p><a class="btn-eb btn-eb--sm" href="{{root}}controle-de-qualidade/#inspecao"><span>Saiba mais</span>{{icon:arrow}}</a></div><figure>{{img:inspecao|(max-width: 820px) 40vw, 18vw}}</figure></div>
+    </details>
   </div>
 </section>
+
+<section class="eb eb-matriz eb-matriz--dir" aria-label="Central própria">
+  <div class="eb-matriz__col">
+    <figure class="eb-cruz" data-eb-cruz>
+      <div class="eb-cruz__img">{{img:central-maquina|(max-width: 820px) 100vw, 50vw}}</div>
+      <i class="eb-cruz__fv"></i><i class="eb-cruz__fh"></i><i class="eb-cruz__v"></i><i class="eb-cruz__h"></i>
+      <span class="eb-cruz__x">X: 0</span><span class="eb-cruz__y">Y: 0</span><i class="eb-cruz__p"></i>
+    </figure>
+  </div>
+  <div class="eb-matriz__txt">
+    <h2 class="eb-titulo">Matéria-prima sob o nosso controle</h2>
+    <p>A IPR tem central de concreto própria. Cimento, areia e brita são pesados em balanças calibradas e cada metro cúbico fica registrado, para que toda estaca receba o mesmo concreto C40.</p>
+    <a class="btn-eb" href="{{root}}central-de-concreto/"><span>Conhecer a central</span>{{icon:arrow}}</a>
+  </div>
+</section>
+
+<section class="eb eb-matriz eb-matriz--esq" aria-label="Estrutura própria">
+  <div class="eb-matriz__txt">
+    <h2 class="eb-titulo">Estrutura própria, do silo à obra</h2>
+    <p>Central, laboratório, pátio de estocagem, frota e equipe de cravação: tudo da IPR. A mesma empresa responde pela estaca do concreto à nega.</p>
+    <a class="btn-eb" href="{{root}}clientes/"><span>Quem confia na IPR</span>{{icon:arrow}}</a>
+  </div>
+  <div class="eb-matriz__col">
+    <figure class="eb-cruz eb-cruz--peq" data-eb-cruz>
+      <div class="eb-cruz__img">{{img:topos|(max-width: 820px) 100vw, 30vw}}</div>
+      <i class="eb-cruz__fv"></i><i class="eb-cruz__fh"></i><i class="eb-cruz__v"></i><i class="eb-cruz__h"></i>
+      <span class="eb-cruz__x">X: 0</span><span class="eb-cruz__y">Y: 0</span><i class="eb-cruz__p"></i>
+    </figure>
+  </div>
+</section>
+
 
 <script src="{{root}}assets/js/eb.js"></script>
 <script type="module" src="{{root}}assets/js/historia.js"></script>

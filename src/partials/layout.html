@@ -62,48 +62,56 @@
 <main id="conteudo">
 {{content}}
 {{passagem}}
+{{prefooter}}
 </main>
 
-<footer class="ft">
-  <div class="wrap ft__topo" aria-hidden="true"><p class="ft__frase">Estaca é o que fazemos.</p></div>
-  <figure class="ft__foto" aria-hidden="true">{{img:topos|50vw}}</figure>
-  <div class="wrap ft__grid">
-    <div class="ft__brand">
-      <img src="{{root}}assets/img/logo.png" alt="IPR Estacas" width="1080" height="814" loading="lazy">
-      <p>35 anos fabricando e cravando estacas pré-fabricadas protendidas de concreto, com central própria, laboratório e frota própria.</p>
+<footer class="ft2">
+  <nav class="ft2__cols" aria-label="Rodapé">
+    <div class="ft2__col">
+      <p class="ft2__rot" data-piscar>IPR. 01</p>
+      <div class="ft2__listas">
+        <ul>
+          <li><a href="{{root}}">Início</a></li>
+          <li><a href="{{root}}central-de-concreto/">Central de Concreto</a></li>
+          <li><a href="{{root}}estacas/">Estacas</a></li>
+          <li><a href="{{root}}controle-de-qualidade/">Controle de Qualidade</a></li>
+        </ul>
+        <ul>
+          <li><a href="{{root}}fundacao/">Fundação</a></li>
+          <li><a href="{{root}}clientes/">Clientes</a></li>
+          <li><a href="{{root}}perguntas-frequentes/">Perguntas Frequentes</a></li>
+          <li><a href="{{root}}contato/">Contato</a></li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <h2 class="ft__title">A fábrica</h2>
-      <ul class="ft__list">
-        <li><a href="{{root}}">Início</a></li>
-        <li><a href="{{root}}central-de-concreto/">Central de Concreto</a></li>
-        <li><a href="{{root}}estacas/">Estacas</a></li>
-        <li><a href="{{root}}controle-de-qualidade/">Controle de Qualidade</a></li>
-        <li><a href="{{root}}fundacao/">Fundação</a></li>
-        <li><a href="{{root}}clientes/">Clientes</a></li>
-        <li><a href="{{root}}perguntas-frequentes/">Perguntas Frequentes</a></li>
+    <div class="ft2__col">
+      <p class="ft2__rot" data-piscar>IPR. 02</p>
+      <ul>
+        <li><a href="https://wa.me/5511984472267" target="_blank" rel="noopener">WhatsApp (11) 98447-2267</a></li>
+        <li><a href="tel:+551138314181">(11) 3831-4181</a></li>
+        <li><a href="tel:+551138322372">(11) 3832-2372</a></li>
+        <li><a href="tel:+551934961074">(19) 3496-1074</a></li>
+        <li><a href="mailto:comercial@estacasipr.com.br">comercial@estacasipr.com.br</a></li>
       </ul>
     </div>
-    <div>
-      <h2 class="ft__title">Contato</h2>
-      <ul class="ft__list">
-        <li><a href="https://wa.me/5511984472267" target="_blank" rel="noopener">{{icon:whatsapp}} (11) 98447-2267</a></li>
-        <li><a href="tel:+551138314181">{{icon:phone}} (11) 3831-4181</a></li>
-        <li><a href="tel:+551138322372">{{icon:phone}} (11) 3832-2372</a></li>
-        <li><a href="tel:+551934961074">{{icon:phone}} (19) 3496-1074</a></li>
-        <li><a href="mailto:comercial@estacasipr.com.br">{{icon:mail}} comercial@estacasipr.com.br</a></li>
+    <div class="ft2__col">
+      <p class="ft2__rot" data-piscar>IPR. 03</p>
+      <ul>
+        <li><a href="{{root}}estacas/#catalogo">Catálogo técnico</a></li>
+        <li><a href="{{root}}contato/">Solicitar orçamento</a></li>
       </ul>
+      <p class="ft2__selo">Concreto C40 · Protensão CP-175 RB</p>
     </div>
-    <div>
-      <h2 class="ft__title">Fichas técnicas</h2>
-      <p class="muted">Ábacos de interação, cargas e características geométricas de cada seção.</p>
-      <a class="link" href="{{root}}estacas/#catalogo">Abrir o catálogo técnico {{icon:arrow}}</a>
-    </div>
+  </nav>
+  <div class="ft2__marca" aria-hidden="true" data-ft-marca>
+    <div class="ft2__marca-in"><span>IPR Estacas</span></div>
+    <i class="ft2__sombra"></i>
   </div>
-  <p class="ft__marca" aria-hidden="true">IPR Estacas</p>
-  <div class="wrap ft__bottom">
+  <div class="ft2__sub">
     <span>© <span data-year>2026</span> IPR Estacas</span>
-    <span>Concreto C40 · Protensão CP-175 RB</span>
+    <span>Fábrica e cravação</span>
+    <span>35 anos de pátio</span>
+    <a href="#conteudo">Voltar ao topo ↑</a>
   </div>
 </footer>
 
@@ -117,5 +125,6 @@
 <script src="{{root}}assets/js/trilha.js"></script>
 <script src="{{root}}assets/js/letras.js"></script>
 <script src="{{root}}assets/js/barra.js"></script>
+<script src="{{root}}assets/js/fim.js"></script>
 </body>
 </html>

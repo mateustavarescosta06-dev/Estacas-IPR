@@ -1,5 +1,5 @@
-/* Parte final da home (referência enerblock.net): o carrossel de obras com setas e as figuras
-   "medidas", que crescem com a rolagem e mostram no canto as próprias dimensões, X e Y, em pixels. */
+/* Parte final da home (referência enerblock.net): o carrossel de obras com setas, as figuras com mira
+   que abrem com a rolagem mostrando X e Y, as abas de serviço e a foto fixa com a frase que troca. */
 (function () {
   "use strict";
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -20,24 +20,36 @@
     if (prox) prox.addEventListener("click", function () { passo(1); });
   }
 
-  // figuras medidas: a largura vai de 72% a 100% da coluna enquanto a figura atravessa a tela
-  var figs = $$("[data-eb-medida]").map(function (f) { return { f: f, x: $(".eb-x", f), y: $(".eb-y", f), img: $("img", f) }; });
-  var raf = 0;
+  // figura com mira (referência enerblock.net, "cross-image"): a foto abre a partir de um ponto perto do
+  // canto superior esquerdo até ocupar o quadro, a mira acompanha o canto que cresce e mostra X e Y em
+  // pixels; a foto por dentro vem de 2x e assenta em 1x.
+  var cruzes = $$("[data-eb-cruz]").map(function (f) {
+    return { f: f, img: $(".eb-cruz__img", f), im: $(".eb-cruz__img img", f), v: $(".eb-cruz__v", f), h: $(".eb-cruz__h", f), p: $(".eb-cruz__p", f), x: $(".eb-cruz__x", f), y: $(".eb-cruz__y", f) };
+  });
+  var raf = 0, M0 = 20;
   function quadro() {
     raf = 0;
     var vh = window.innerHeight;
-    figs.forEach(function (o) {
-      var r = o.f.parentNode.getBoundingClientRect();
-      var k = reduce ? 1 : clamp((vh - r.top) / (vh + r.height * 0.4), 0, 1);
-      var e = k * k * (3 - 2 * k);
-      o.f.style.setProperty("--k", e.toFixed(4));
-      var b = o.f.getBoundingClientRect();
-      o.x.textContent = "X: " + Math.round(b.width);
-      o.y.textContent = "Y: " + Math.round(b.height);
+    cruzes.forEach(function (o) {
+      var r = o.f.getBoundingClientRect(), W = r.width, H = r.height;
+      // começa quando o topo da figura entra pelo pé da tela e termina quando ela está quase inteira à vista
+      var k = reduce ? 1 : clamp((vh * 0.95 - r.top) / (Math.min(H, vh) * 0.95), 0, 1);
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      var m = M0 * (1 - e), cx = m + (W - m) * e, cy = m + (H - m) * e;
+      o.img.style.clipPath = "inset(" + m.toFixed(1) + "px " + (W - cx).toFixed(1) + "px " + (H - cy).toFixed(1) + "px " + m.toFixed(1) + "px)";
+      if (o.im) o.im.style.transform = "scale(" + (2 - e).toFixed(4) + ")";
+      o.v.style.transform = "translate3d(" + cx.toFixed(1) + "px,0,0)";
+      o.h.style.transform = "translate3d(0," + cy.toFixed(1) + "px,0)";
+      o.p.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
+      o.x.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
+      o.y.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
+      o.x.textContent = "X: " + Math.round(cx - M0);
+      o.x.classList.toggle("is-esq", cx > W - 80); // perto da borda direita, o X passa para o lado de dentro da mira
+      o.y.textContent = "Y: " + Math.round(cy - M0);
     });
   }
   function pedir() { if (!raf) raf = requestAnimationFrame(quadro); }
-  if (figs.length) {
+  if (cruzes.length) {
     window.addEventListener("scroll", pedir, { passive: true });
     window.addEventListener("resize", pedir);
     window.addEventListener("load", pedir);

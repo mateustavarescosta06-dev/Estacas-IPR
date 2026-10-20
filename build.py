@@ -265,7 +265,7 @@ def passagem_html(slug, root):
     para o lugar e a troca de página não aparece."""
     i = route_index(slug)
     if i + 1 >= len(ROUTE):
-        return fim_html(root)
+        return ""  # a última página fecha direto na chamada final (prefooter)
     nslug, _, label, href, tone, material, teaser, scene = ROUTE[i + 1]
     return (f'<section class="capa capa--seguinte" data-faixa style="{cores(nslug)}" aria-label="Próxima etapa: {label}">'
             f'<div class="capa__faixa" aria-hidden="true"></div>'
@@ -281,12 +281,19 @@ def passagem_html(slug, root):
             f'<figcaption>{MEDIA[scene]["alt"]}</figcaption></figure></div></section>')
 
 
-def fim_html(root):
-    return (f'<section class="fim" aria-label="Fim do percurso"><div class="wrap">'
-            f'<h2 class="h-xl">A próxima estaca a sair da pista é a da sua obra.</h2>'
-            f'<p class="lead">Você percorreu a fábrica inteira, da matéria à nega. Envie a sondagem e as cargas de projeto: '
-            f'a engenharia da IPR retorna com a seção indicada e o orçamento.</p>'
-            f'<a class="btn btn--ink" href="{root}">Voltar ao pátio {{{{icon:arrow}}}}</a></div></section>')
+def prefooter_html(slug, root):
+    """O fecho de todas as páginas (referência enerblock.net): chamada escura com a foto da pista em
+    parallax, o texto da engenharia no terço esquerdo e o título grande no canto, que se revela linha a linha."""
+    if slug == "contato":
+        return ""
+    return (f'<section class="pre" aria-label="Fale com a IPR">'
+            f'<div class="pre__fundo" aria-hidden="true"><div class="cena pre__cena" data-pre-par>{{{{img:hora-0540|100vw}}}}</div></div>'
+            f'<div class="pre__topo"><p class="pre__intro">Conte o que a sua obra precisa. A engenharia da IPR indica a seção, '
+            f'o comprimento e o número de estacas a partir da sondagem e das cargas de projeto, verifica a cravação '
+            f'prevista e retorna com o orçamento e o prazo de entrega.</p></div>'
+            f'<div class="pre__base"><div class="pre__fim"><h2 class="pre__titulo">Construa sobre uma estaca que nasceu sob controle</h2>'
+            f'<a class="btn-eb btn-eb--claro" href="{root}contato/"><span>Solicitar orçamento</span>{{{{icon:arrow}}}}</a></div></div>'
+            f'</section>')
 
 
 def nav_html(active, root):
@@ -373,6 +380,7 @@ def build():
             "fios": fios("soltar"),
             "abertura-extra": abertura_extra(root),
             "passagem": "" if slug == "index" else passagem_html(slug, root),
+            "prefooter": prefooter_html(slug, root),
             "speculation": (f'<script type="speculationrules">{{"prerender":[{{"urls":["{root}{nxt}"],"eagerness":"moderate"}}]}}</script>'
                             if nxt is not None else ""),
         }
