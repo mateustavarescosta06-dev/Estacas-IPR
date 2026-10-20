@@ -72,6 +72,26 @@ ROUTE = [
     ("contato", "contato", "Contato", "contato/", "noite", "A nega",
      "A próxima estaca a sair da pista é a da sua obra.", "patio-nublado"),
 ]
+# A cor de cada página interna (referência carmofarm.com), dentro da paleta da marca: uma faixa
+# num tom do azul-marinho onde abre o título, o título em branco ou amarelo e o papel claro de chão.
+CORES = {
+    "central-de-concreto":   ("#0f2c55", "#ffffff", "#fbfaf7"),
+    "estacas":               ("#0a1f3d", "#ffcd00", "#fbfaf7"),
+    "controle-de-qualidade": ("#143a6b", "#ffffff", "#fbfaf7"),
+    "fundacao":              ("#0a1f3d", "#ffffff", "#fbfaf7"),
+    "clientes":              ("#0f2c55", "#ffcd00", "#fbfaf7"),
+    "perguntas-frequentes":  ("#071428", "#ffffff", "#fbfaf7"),
+    "contato":               ("#071428", "#ffcd00", "#fbfaf7"),
+}
+
+
+def cores(slug):
+    if slug not in CORES:
+        return ""
+    f, t, c = CORES[slug]
+    return f"--faixa:{f};--faixa-t:{t};--chao:{c}"
+
+
 # a seção desenhada na abertura de cada página (ábacos IPR)
 DESENHO = {"central-de-concreto": "C30", "estacas": "H33", "controle-de-qualidade": "Q30", "fundacao": "H28",
            "clientes": "C26", "perguntas-frequentes": "HV40", "contato": "H33"}
@@ -247,7 +267,8 @@ def passagem_html(slug, root):
     if i + 1 >= len(ROUTE):
         return fim_html(root)
     nslug, _, label, href, tone, material, teaser, scene = ROUTE[i + 1]
-    return (f'<section class="capa capa--seguinte" aria-label="Próxima etapa: {label}">'
+    return (f'<section class="capa capa--seguinte" data-faixa style="{cores(nslug)}" aria-label="Próxima etapa: {label}">'
+            f'<div class="capa__faixa" aria-hidden="true"></div>'
             f'<a class="capa__seguir-area" href="{root}{href}" data-passagem aria-label="Seguir para {label}"></a>'
             f'<div class="wrap capa__grid"><div class="capa__txt">'
             f'<nav class="crumbs" aria-label="Próxima etapa"><span>Próxima etapa</span><span aria-hidden="true">/</span><span>{label}</span></nav>'
@@ -340,6 +361,7 @@ def build():
             "desc": meta["desc"],
             "page": slug,
             "tone": tone,
+            "cores": cores(slug),
             "ground": TONES[tone][0],
             "tones": tones_css(tone),
             "nav": nav_html(meta.get("nav", ""), root),
@@ -354,6 +376,7 @@ def build():
             "speculation": (f'<script type="speculationrules">{{"prerender":[{{"urls":["{root}{nxt}"],"eagerness":"moderate"}}]}}</script>'
                             if nxt is not None else ""),
         }
+        body = body.replace('<section class="capa">', '<section class="capa" data-faixa><div class="capa__faixa" aria-hidden="true"></div>', 1)
         html = layout.replace("{{content}}", body.strip())
         html = render(render(html, ctx, icon_map), ctx, icon_map)
         if VERIFY:

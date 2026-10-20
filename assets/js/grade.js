@@ -14,6 +14,13 @@
   var W = 0, H = 0, dpr = 1, raf = 0, bAtual = -1;
   var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
   var fonte = getComputedStyle(root).getPropertyValue("--f-mono").trim() || "monospace";
+  // páginas internas: chão e faixa da própria página (definidos no body); a home usa papel e azul
+  var bs = getComputedStyle(document.body);
+  var CHAO = bs.getPropertyValue("--chao").trim() || "#fbfaf7", FAIXA = bs.getPropertyValue("--faixa").trim() || "#0a1f3d";
+  var faixas = Array.prototype.slice.call(document.querySelectorAll("[data-faixa]")).map(function (sec) {
+    return { sec: sec, el: sec.querySelector(".capa__faixa"), cor: getComputedStyle(sec).getPropertyValue("--faixa").trim() || FAIXA };
+  });
+  var hd = document.querySelector(".hd"), hdCor = "";
 
   function medir() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -38,8 +45,17 @@
     var b = azul();
     if (Math.abs(b - bAtual) > 0.001) {
       bAtual = b;
-      root.style.backgroundColor = "color-mix(in oklch, #0a1f3d " + (b * 100).toFixed(1) + "%, #fbfaf7)";
+      root.style.backgroundColor = "color-mix(in oklch, " + FAIXA + " " + (b * 100).toFixed(1) + "%, " + CHAO + ")";
       root.style.setProperty("--azul", b.toFixed(3));
+    }
+    // o cabeçalho toma a cor da faixa que estiver embaixo dele
+    if (hd) {
+      var linha = hd.offsetHeight * 0.5, sob = "";
+      for (var f = 0; f < faixas.length; f++) {
+        var fr = faixas[f].el && faixas[f].el.getBoundingClientRect();
+        if (fr && fr.top <= linha && fr.bottom >= linha) sob = faixas[f].cor;
+      }
+      if (sob !== hdCor) { hdCor = sob; hd.style.setProperty("--hd-faixa", sob || "transparent"); hd.classList.toggle("na-faixa", !!sob); }
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);

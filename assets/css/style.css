@@ -1296,3 +1296,67 @@ body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-event
   .galeria__item { position: relative; opacity: 1; transform: none; }
   .galeria__barra { display: none; }
 }
+
+/* =========================================================================
+   Páginas internas (referência carmofarm.com): cada página tem uma cor.
+   A abertura é uma faixa escura chapada com o título na cor clara da página;
+   a foto atravessa a borda da faixa e assenta no chão claro. O fim da página
+   já é a faixa da próxima, então a troca de página quase não se percebe.
+   ========================================================================= */
+body:not([data-page="index"]) { --texto: color-mix(in srgb, var(--faixa) 72%, #fff); }
+body:not([data-page="index"]) .medida { opacity: .8; }
+
+/* a faixa */
+.capa[data-faixa] { position: relative; isolation: isolate; padding-top: calc(var(--hd) + clamp(48px, 8vh, 96px)); border-top: 0 !important; }
+.capa__faixa { position: absolute; z-index: -1; left: 0; right: 0; top: 0; bottom: clamp(140px, 24vh, 260px); background: var(--faixa); }
+.capa[data-faixa] .capa__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(36px, 6vw, 112px); padding-bottom: clamp(72px, 10vw, 140px); }
+.capa[data-faixa] .capa__txt h1, .capa[data-faixa] .capa__txt h2 { color: var(--faixa-t); max-width: 12ch; }
+.capa[data-faixa] .capa__txt .lead { color: color-mix(in srgb, #fff 82%, var(--faixa)); }
+.capa[data-faixa] .crumbs, .capa[data-faixa] .crumbs a { color: color-mix(in srgb, var(--faixa-t) 80%, var(--faixa)); }
+.capa[data-faixa] .capa__desenho { color: var(--faixa-t); }
+.capa[data-faixa] .capa__desenho .sec { fill: transparent; }
+.capa[data-faixa] .capa__desenho .strand { fill: var(--faixa); }
+/* a foto atravessa a borda da faixa: metade no escuro, metade no chão claro */
+.capa[data-faixa] .capa__figura { margin-top: clamp(80px, 14vh, 160px); }
+.capa[data-faixa] .capa__cena { aspect-ratio: 4 / 5; }
+.capa[data-faixa] .placa::before { --m: var(--faixa-t); }
+.capa[data-faixa] figcaption { color: var(--texto); }
+.capa--seguinte .capa__seguir { color: var(--faixa-t); }
+.capa--seguinte { margin-top: clamp(40px, 6vw, 96px); }
+
+/* o cabeçalho sobre a faixa toma a cor dela */
+body:not([data-page="index"]) .hd::before { background: color-mix(in oklch, var(--faixa) calc(var(--azul, 0) * 100%), var(--chao)); transition: background-color .35s var(--ease-mat); }
+body:not([data-page="index"]) .hd.na-faixa::before { background: var(--hd-faixa); box-shadow: none; }
+body:not([data-page="index"]) .hd.na-faixa { --ink: #fff; --ink-2: rgb(255 255 255 / .7); color: #fff; }
+body:not([data-page="index"]) .hd.na-faixa .nav-toggle { border-color: rgb(255 255 255 / .35); }
+
+/* seções: títulos com o pequeno botão redondo de seta, texto mais calmo, a cor da página nos detalhes */
+body:not([data-page="index"]) .bloco h2 { color: var(--faixa); }
+body:not([data-page="index"]) [data-azul] h2 { color: var(--faixa-t); }
+body:not([data-page="index"]) .regua .ico, body:not([data-page="index"]) .spec-list .ico { color: var(--faixa); }
+body:not([data-page="index"]) .trilha { background: color-mix(in srgb, var(--faixa) 22%, transparent); }
+body:not([data-page="index"]) .trilha__fill { background: var(--faixa); }
+body:not([data-page="index"]) .trilha__no { border-color: var(--faixa); background: var(--chao); }
+body:not([data-page="index"]) .trilha__no.is-on { background: var(--faixa); }
+body:not([data-page="index"]) .trilha__no::after { background: var(--faixa); }
+
+/* rodapé das páginas internas: a frase grande e a foto cortada em círculo */
+.ft__topo, .ft__foto { display: none; }
+body:not([data-page="index"]) .ft { background: var(--faixa); overflow: clip; padding-top: clamp(80px, 10vw, 140px); }
+body:not([data-page="index"]) .ft__topo { display: block; position: relative; z-index: 1; }
+body:not([data-page="index"]) .ft__frase { margin: 0 0 clamp(48px, 6vw, 80px); max-width: 12ch; font: 600 clamp(2.4rem, 5vw, 4.6rem)/1 var(--f-display); font-stretch: 125%; text-transform: uppercase; color: var(--faixa-t); }
+body:not([data-page="index"]) .ft__foto { display: block; position: absolute; z-index: 0; right: -9vw; top: -9vw; width: min(42vw, 640px); aspect-ratio: 1 / 1; margin: 0; border-radius: 50%; overflow: hidden; }
+body:not([data-page="index"]) .ft__foto picture, body:not([data-page="index"]) .ft__foto img { width: 100%; height: 100%; }
+body:not([data-page="index"]) .ft__foto img { object-fit: cover; }
+body:not([data-page="index"]) .ft__grid, body:not([data-page="index"]) .ft__bottom { position: relative; z-index: 1; }
+body:not([data-page="index"]) .ft__grid { width: min(100% - 2 * var(--gutter), 60vw); margin-left: var(--bleed); grid-template-columns: 1.3fr 1fr 1fr; }
+body:not([data-page="index"]) .ft__grid > :last-child { display: none; }
+
+@media (max-width: 900px) {
+  .capa[data-faixa] .capa__grid { grid-template-columns: 1fr; }
+  .capa[data-faixa] .capa__figura { margin-top: 8px; }
+  .capa__faixa { bottom: clamp(160px, 30vh, 280px); }
+  body:not([data-page="index"]) .ft__foto { width: 90vw; right: -40vw; top: -20vw; opacity: .55; }
+}
+
+.capa[data-faixa] .capa__desenho circle[fill] { fill: var(--faixa) !important; }
