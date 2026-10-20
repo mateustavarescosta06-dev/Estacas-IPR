@@ -1,7 +1,6 @@
-/* O fundo das partes azuis (referência rapidkert.com): não é mais um azul chapado. Uma luz larga
-   vinda do alto, uma vinheta que escurece as bordas, um granulado fino de filme, a linha do terreno
-   (N.T. ±0,00) atravessando a tela e, bem apagadas, algumas seções de estaca cotadas como numa folha
-   de detalhes. Uma luz de sódio quente acompanha o ponteiro, devagar. A estaca continua o destaque. */
+/* O fundo das partes azuis: azul chapado, sem luz, vinheta nem granulado. Por cima, só desenho:
+   a linha do terreno (N.T. ±0,00) atravessando a tela e, bem apagadas, algumas seções de estaca
+   cotadas como numa folha de detalhes, que sobem devagar com a rolagem e se movem um pouco com o ponteiro. */
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -12,22 +11,10 @@
   var W = 0, H = 0, dpr = 1, raf = 0;
   var mx = 0.66, my = 0.5, tx = 0.66, ty = 0.5;
   var fonte = getComputedStyle(root).getPropertyValue("--f-mono").trim() || "monospace";
-  var simbolos = [], grao = null;
+  var simbolos = [];
 
   var semente = 11;
   function rnd() { semente = (semente * 16807) % 2147483647; return semente / 2147483647; }
-
-  // granulado: um ladrilho de ruído desenhado uma vez e repetido
-  function fazerGrao() {
-    var g = document.createElement("canvas"); g.width = g.height = 160;
-    var gx = g.getContext("2d"), img = gx.createImageData(160, 160);
-    for (var i = 0; i < img.data.length; i += 4) {
-      var v = Math.random() * 255;
-      img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 14;
-    }
-    gx.putImageData(img, 0, 0);
-    return ctx.createPattern(g, "repeat");
-  }
 
   function medir() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -36,7 +23,6 @@
     c.style.width = W + "px"; c.style.height = H + "px";
     semente = 11; simbolos = [];
     for (var i = 0; i < 9; i++) simbolos.push({ x: 0.06 + rnd() * 0.88, y: rnd() * 5, r: 16 + rnd() * 16, f: Math.floor(rnd() * 3) });
-    grao = fazerGrao();
     pedir();
   }
 
@@ -53,21 +39,6 @@
     mx += (tx - mx) * 0.05; my += (ty - my) * 0.05;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    var D = Math.max(W, H);
-
-    // luz larga do alto, um pouco à direita (onde a peça está)
-    // o fundo da cena (onde a pista some) fica num azul mais claro e saturado, nunca esbranquiçado
-    var g = ctx.createRadialGradient(W * 0.46, H * 0.22, 0, W * 0.46, H * 0.22, D * 0.7);
-    g.addColorStop(0, "rgba(24,78,160,0.5)"); g.addColorStop(0.42, "rgba(14,52,118,0.22)"); g.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    // vinheta: bordas e pé da tela mais escuros
-    var v = ctx.createRadialGradient(W * 0.55, H * 0.42, D * 0.25, W * 0.55, H * 0.42, D * 0.85);
-    v.addColorStop(0, "rgba(1,5,14,0)"); v.addColorStop(1, "rgba(1,5,14,0.72)");
-    ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
-    // halo de sódio que segue o ponteiro
-    var s = ctx.createRadialGradient(W * mx, H * my, 0, W * mx, H * my, Math.min(W, H) * 0.5);
-    s.addColorStop(0, "rgba(255,186,72,0.08)"); s.addColorStop(1, "rgba(255,186,72,0)");
-    ctx.fillStyle = s; ctx.fillRect(0, 0, W, H);
 
     // a linha do terreno, com a marcação do nível
     var sy = window.scrollY * 0.18, yN = Math.round(H * 0.84) + 0.5;
@@ -93,7 +64,6 @@
     }
 
     // granulado de filme por cima de tudo
-    if (grao) { ctx.fillStyle = grao; ctx.fillRect(0, 0, W, H); }
 
     if (!reduce && (Math.abs(tx - mx) > 0.001 || Math.abs(ty - my) > 0.001)) pedir();
   }

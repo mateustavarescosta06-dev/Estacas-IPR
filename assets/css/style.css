@@ -1807,3 +1807,41 @@ a:hover > .rola .rola__l > span, a:focus-visible > .rola .rola__l > span { trans
   .mt-pane.is-on, .mt-pane.is-on .mt-pane__img img { animation: none; }
   .mt-exp__img img { transition: none; transform: none; }
 }
+
+/* =========================================================================
+   Abertura branca: a estaca se monta no papel, em azul-marinho;
+   o azul da página só chega nas partes seguintes.
+   ========================================================================= */
+html .dia { color: #0a1f3d; }
+html .dia .abre-l:not(.abre-l--vazada), html .dia .capitulo__titulo { color: #0a1f3d !important; }
+html .dia .abre-l--vazada { -webkit-text-stroke: 1.5px rgb(10 31 61 / .92); background: repeating-linear-gradient(-55deg, rgb(10 31 61 / .28) 0 1px, transparent 1px 7px); -webkit-background-clip: text; background-clip: text; }
+html .dia .capitulo p:not([class]) { color: #3b4a61; }
+html .dia .capitulo__hora { color: #9a7400; }
+html .dia__capitulos .capitulo .capitulo__hora::before { color: rgb(10 31 61 / .5); }
+html .dia .capitulo__ficha { color: #0a1f3d; border-top-color: rgb(10 31 61 / .18); }
+html .dia .abre-dados { border-top-color: rgb(10 31 61 / .16); }
+html .dia .abre-dados dt { color: #0a1f3d; }
+html .dia .abre-dados dd { color: rgb(10 31 61 / .6); }
+html .dia .btn:not(.btn--primary) { --fg: #0a1f3d; --bd: rgb(10 31 61 / .4); }
+html .dia .btn--linha:hover { --bd: rgb(10 31 61 / .75); }
+html .dia .etapas button { color: #6b778a; }
+html .dia .etapas button::after { background: rgb(10 31 61 / .18); }
+html .dia .etapas button:hover, html .dia .etapas button.is-past, html .dia .etapas button.is-on { color: #0a1f3d; }
+html .dia .etapas button.is-past::after { background: #0a1f3d; }
+html .dia__cota line { stroke: rgb(10 31 61 / .5); }
+html .dia__cota .a, html .dia__cota .b { stroke: rgb(10 31 61 / .32); }
+html .dia__cota text { fill: rgb(10 31 61 / .8); }
+html .dia__regua::before { background: rgb(10 31 61 / .2); }
+html .dia__regua li { color: rgb(10 31 61 / .5); }
+html .dia__regua li::after { background: rgb(10 31 61 / .4); }
+html .dia__agora b { color: #0a1f3d; }
+html .dia__nota { color: #0a1f3d; }
+html body[data-page="index"] .hd:not(.hd--fundo) { --ink: #0a1f3d; --ink-2: #0a1f3d; color: #0a1f3d; }
+html .dia .rotulo3d span { color: #0a1f3d; text-shadow: none; border-bottom-color: rgb(10 31 61 / .5); }
+/* título da abertura: a linha vazada ganha um amarelo leve por dentro do traço azul-marinho */
+html .dia .abre-l--vazada { color: transparent; -webkit-text-stroke: 1.5px #0a1f3d;
+  background: linear-gradient(180deg, #fff4c2 0%, #ffe066 52%, #ffcd00 100%); -webkit-background-clip: text; background-clip: text; }
+/* no celular o texto da abertura passa por cima da pista: um halo da cor do papel mantém a leitura */
+@media (max-width: 760px) {
+  .dia .capitulo--abertura :is(h1, p, .abre-dados), .dia .capitulo :is(.capitulo__titulo, p, .capitulo__hora) { filter: drop-shadow(0 0 6px rgb(251 250 247 / .95)) drop-shadow(0 0 14px rgb(251 250 247 / .8)); }
+}

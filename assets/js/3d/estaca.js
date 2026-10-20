@@ -62,7 +62,7 @@ function realTextures() {
 /* Ambiente para reflexos: uma sala escura com painéis de luz (o aço precisa de algo para refletir). */
 function environment(renderer) {
   const s = new THREE.Scene();
-  s.add(new THREE.Mesh(new THREE.BoxGeometry(30, 14, 30), new THREE.MeshBasicMaterial({ color: 0x0c1830, side: THREE.BackSide })));
+  s.add(new THREE.Mesh(new THREE.BoxGeometry(30, 14, 30), new THREE.MeshBasicMaterial({ color: 0x262c35, side: THREE.BackSide })));
   const panel = (w, h, pos, c, k) => {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide }));
     m.position.set(...pos); m.lookAt(0, 0, 0); s.add(m);
@@ -121,7 +121,7 @@ export function createEstaca(canvas, opts = {}) {
   const small = window.innerWidth < 760;
   const quality = opts.quality ?? (small ? 0.6 : 1);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.75 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.localClippingEnabled = true;
@@ -130,7 +130,9 @@ export function createEstaca(canvas, opts = {}) {
 
   const scene = new THREE.Scene();
   scene.environment = environment(renderer);
-  scene.fog = new THREE.Fog(0x0b1f3d, 7.5, 15);
+  // a estaca se monta no papel: luz clara e neutra, névoa da cor da página, sombra e malha em azul-marinho
+  const LOOK = { fog: "#fbfaf7", sky: 0xe4e9f0, ground: 0xc9ced6, hemi: 1.55, sunMin: 1.7, rim: 0.5, exposure: 1.0, env: 1.0, sombra: [0x0a1f3d, 0.2], grade: "10,31,61", gradeA: 0.2 };
+  scene.fog = new THREE.Fog(LOOK.fog, 11, 27);
   const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 60);
 
   const T = textures(quality);
@@ -138,7 +140,7 @@ export function createEstaca(canvas, opts = {}) {
     concrete: new THREE.MeshStandardMaterial({ map: T.concrete.map, roughnessMap: T.concrete.roughnessMap, normalMap: T.concrete.normalMap, normalScale: new THREE.Vector2(0.5, 0.5), side: THREE.DoubleSide }),
     wet: new THREE.MeshStandardMaterial({ color: 0x4a4e53, roughness: 0.34, metalness: 0, normalMap: T.concrete.normalMap, normalScale: new THREE.Vector2(0.25, 0.25) }),
     slab: new THREE.MeshStandardMaterial({ map: T.slab.map, roughnessMap: T.slab.roughnessMap, normalMap: T.slab.normalMap, color: 0x9aa0a8, transparent: true }),
-    form: new THREE.MeshStandardMaterial({ map: T.steel.map, roughnessMap: T.steel.roughnessMap, normalMap: T.steel.normalMap, color: 0xb4bec9, metalness: 0.55, roughness: 0.42, transparent: true, side: THREE.DoubleSide }),
+    form: new THREE.MeshStandardMaterial({ map: T.steel.map, roughnessMap: T.steel.roughnessMap, normalMap: T.steel.normalMap, color: 0xd6dde4, metalness: 0.3, roughness: 0.4, transparent: true, side: THREE.DoubleSide }),
     head: new THREE.MeshStandardMaterial({ color: 0x0d2a52, metalness: 0.6, roughness: 0.45, transparent: true }), // cabeceiras no azul da marca
     wire: new THREE.MeshStandardMaterial({ color: 0xe6ebf0, metalness: 0.55, roughness: 0.3 }),
     cp: new THREE.MeshStandardMaterial({ map: T.concrete.map, normalMap: T.concrete.normalMap, color: 0xd9d6cf, roughness: 0.85, transparent: true, emissive: 0xffcd00, emissiveIntensity: 0 }),
@@ -201,10 +203,29 @@ export function createEstaca(canvas, opts = {}) {
   fixed.add(bed, ...heads);
   scene.add(fixed);
   // chão invisível que só recebe a sombra: a pista assenta no azul da página em vez de flutuar
-  const M_sombra = new THREE.ShadowMaterial({ color: 0x020814, opacity: 0.42 });
+  const M_sombra = new THREE.ShadowMaterial({ color: LOOK.sombra[0], opacity: LOOK.sombra[1] });
   const chao = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), M_sombra);
   chao.rotation.x = -Math.PI / 2; chao.position.set(0, -BED_H - 0.002, -L / 2); chao.receiveShadow = true;
   scene.add(chao);
+  // malha de piso em perspectiva, 50 cm entre linhas, apagando com a distância: dá chão e profundidade
+  const M_grade = (() => {
+    const N = 2048, g = document.createElement("canvas"); g.width = g.height = N;
+    const x = g.getContext("2d"), passo = N / 60;
+    for (let i = 0; i <= 60; i++) {
+      const p = Math.round(i * passo) + 0.5, forte = i % 2 === 0;
+      x.fillStyle = "rgba(" + LOOK.grade + "," + (forte ? 0.7 : 0.3) + ")";
+      x.fillRect(p - 0.75, 0, 1.5, N); x.fillRect(0, p - 0.75, N, 1.5);
+    }
+    x.globalCompositeOperation = "destination-in";
+    const r = x.createRadialGradient(N / 2, N / 2, N * 0.06, N / 2, N / 2, N * 0.5);
+    r.addColorStop(0, "rgba(0,0,0,1)"); r.addColorStop(0.55, "rgba(0,0,0,.55)"); r.addColorStop(1, "rgba(0,0,0,0)");
+    x.fillStyle = r; x.fillRect(0, 0, N, N);
+    const t = new THREE.CanvasTexture(g); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return new THREE.MeshBasicMaterial({ map: t, transparent: true, opacity: LOOK.gradeA, depthWrite: false, fog: true });
+  })();
+  const grade = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), M_grade);
+  grade.rotation.x = -Math.PI / 2; grade.position.set(0, -BED_H - 0.004, -L / 2); grade.renderOrder = -1;
+  scene.add(grade);
 
   const bucket = new THREE.Group();
   const cone = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.09, 0.42, 28, 1, true), M.bucket); cone.castShadow = true;
@@ -348,7 +369,8 @@ export function createEstaca(canvas, opts = {}) {
     M.head.opacity = form * ground;
     M.form.opacity = form * (1 - open * 0.9) * ground;
     fixed.visible = M.slab.opacity > 0.01;
-    M_sombra.opacity = 0.42 * Math.min(1, form * 1.4) * ground;
+    M_sombra.opacity = LOOK.sombra[1] * Math.min(1, form * 1.4) * ground;
+    M_grade.opacity = LOOK.gradeA * Math.min(1, form * 1.4) * ground;
     formGroup.visible = M.form.opacity > 0.01;
     formGroup.position.y = y0 + (1 - form) * 0.25;
     formL.rotation.z = open * 1.25; formR.rotation.z = -open * 1.25;
@@ -425,12 +447,15 @@ export function createEstaca(canvas, opts = {}) {
     const el = THREE.MathUtils.degToRad(Math.max(Lg.elev, 1)), az = THREE.MathUtils.degToRad(Lg.azim);
     sun.position.set(Math.sin(az) * Math.cos(el) * 12, Math.sin(el) * 12, -L / 2 + Math.cos(az) * Math.cos(el) * 12);
     sun.castShadow = Lg.sunI > 0.05;
-    hemi.color.set(Lg.sky); hemi.groundColor.set(Lg.ground); hemi.intensity = Lg.hemiI;
+    hemi.color.set(Lg.sky).lerp(tmpC.set(LOOK.sky), 0.6); hemi.groundColor.set(Lg.ground).lerp(tmpC.set(LOOK.ground), 0.7); hemi.intensity = Math.max(Lg.hemiI, LOOK.hemi);
+    sun.color.lerp(tmpC.set(0xffffff), 0.45); sun.intensity = Math.max(Lg.sunI, LOOK.sunMin);
+    if (Lg.elev < 16) sun.position.set(Math.sin(az) * Math.cos(0.28) * 12, Math.sin(0.28) * 12, -L / 2 + Math.cos(az) * Math.cos(0.28) * 12);
+    sun.castShadow = true;
     sodium.intensity = Lg.sodium * 3.2;
-    rim.intensity = Lg.rim ?? 1.4;
-    renderer.toneMappingExposure = Lg.exposure;
-    scene.environmentIntensity = Lg.env;
-    scene.fog.color.set(Lg.fog);
+    rim.intensity = LOOK.rim;
+    renderer.toneMappingExposure = LOOK.exposure;
+    scene.environmentIntensity = Math.max(Lg.env, LOOK.env);
+    scene.fog.color.set(LOOK.fog);
 
     // câmera: três quartos sobre a pista, rasante ao longo dos fios, e de frente para a seção no fim
     // A: três quartos, de lado e do alto; B: rasante ao longo dos fios; D: a prensa do ensaio; C: de frente para a seção
