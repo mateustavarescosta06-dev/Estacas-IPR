@@ -48,7 +48,7 @@ function realTextures() {
   const base = new URL("../../img/tex/", import.meta.url).href;
   const loader = new THREE.TextureLoader();
   const load = (file, srgb) => new Promise((ok) => loader.load(base + file, (t) => {
-    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 16;
     if (srgb) t.colorSpace = THREE.SRGBColorSpace;
     ok(t);
   }, undefined, () => ok(null)));
@@ -75,6 +75,19 @@ function environment(renderer) {
   const tex = pm.fromScene(s, 0.04).texture;
   pm.dispose();
   return tex;
+}
+
+/* UV em metros, projetada pela face da caixa: a textura da chapa fica na escala real em vez de
+   esticada ao longo dos 6 m da fôrma (o que virava riscos borrados). */
+function uvCaixa(geo, tile) {
+  const p = geo.attributes.position, n = geo.attributes.normal, uv = geo.attributes.uv;
+  for (let i = 0; i < p.count; i++) {
+    const ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i));
+    const u = ax > 0.5 ? p.getZ(i) : p.getX(i), v = ay > 0.5 ? p.getZ(i) : p.getY(i);
+    uv.setXY(i, u / tile, v / tile);
+  }
+  uv.needsUpdate = true;
+  return geo;
 }
 
 /* ---------- Geometria da seção (ábacos IPR) ---------- */
@@ -121,7 +134,7 @@ export function createEstaca(canvas, opts = {}) {
   const small = window.innerWidth < 760;
   const quality = opts.quality ?? (small ? 0.6 : 1);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.75 : 2));
+  renderer.setPixelRatio(small ? Math.min(window.devicePixelRatio || 1, 2) : Math.min(Math.max(window.devicePixelRatio || 1, 1.5), 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.localClippingEnabled = true;
@@ -168,6 +181,7 @@ export function createEstaca(canvas, opts = {}) {
     use(M.wet, R.fresco, [3, 3], 0xffffff);
     use(M.slab, R.pista, [1, 9], 0xd9dee6);
     use(M.form, R.aco, [1, 1], 0xffffff);
+    M.form.color.setRGB(1.32, 1.36, 1.42); // a foto da chapa é escura: clareia para o aço ler como aço contra o papel
     request();
   });
 
@@ -195,7 +209,7 @@ export function createEstaca(canvas, opts = {}) {
     const g = new THREE.Group();
     const block = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.62, 0.24), M.head);
     block.position.y = 0.31; block.castShadow = block.receiveShadow = true;
-    const plate = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.42, 0.03), M.form);
+    const plate = new THREE.Mesh(uvCaixa(new THREE.BoxGeometry(0.62, 0.42, 0.03), 0.6), M.form);
     plate.position.set(0, 0.3, z > 0 ? -0.135 : 0.135);
     g.add(block, plate); g.position.z = z;
     return g;
@@ -248,7 +262,7 @@ export function createEstaca(canvas, opts = {}) {
 
   function edgeStrip(a, b, len) {
     const dx = b.x - a.x, dy = b.y - a.y, w = Math.hypot(dx, dy);
-    const m = new THREE.Mesh(new THREE.BoxGeometry(w + FORM_T, FORM_T, len), M.form);
+    const m = new THREE.Mesh(uvCaixa(new THREE.BoxGeometry(w + FORM_T, FORM_T, len), 1.1), M.form);
     const nx = dy / w, ny = -dx / w; // normal para fora (polígono anti-horário)
     m.position.set((a.x + b.x) / 2 + nx * FORM_T / 2, (a.y + b.y) / 2 + ny * FORM_T / 2, 0);
     m.rotation.z = Math.atan2(dy, dx);

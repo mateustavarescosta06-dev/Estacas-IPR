@@ -1845,3 +1845,13 @@ html .dia .abre-l--vazada { color: transparent; -webkit-text-stroke: 1.5px #0a1f
 @media (max-width: 760px) {
   .dia .capitulo--abertura :is(h1, p, .abre-dados), .dia .capitulo :is(.capitulo__titulo, p, .capitulo__hora) { filter: drop-shadow(0 0 6px rgb(251 250 247 / .95)) drop-shadow(0 0 14px rgb(251 250 247 / .8)); }
 }
+/* descrições sobre a estaca: etiqueta de papel com filete amarelo, legível sobre a fôrma ou sobre o chão */
+.dia .rotulo3d span { padding: 7px 11px; background: #fbfaf7; color: #0a1f3d; border: 0; border-left: 2px solid var(--ipr); box-shadow: 0 0 0 1px rgb(10 31 61 / .1), 0 8px 22px rgb(10 31 61 / .14);
+  font: 600 .78rem/1.2 var(--f-mono); letter-spacing: .04em; text-shadow: none; }
+.dia .rotulo3d::before { background: #0a1f3d; }
+.dia .rotulo3d i { background: var(--ipr); box-shadow: 0 0 0 3px #fbfaf7, 0 0 0 4px rgb(10 31 61 / .55); }
+.dia__cota text { fill: #0a1f3d; font-weight: 600; font-size: 12px; paint-order: stroke; stroke: #fbfaf7; stroke-width: 5px; stroke-linejoin: round; }
+.dia__regua li { color: rgb(10 31 61 / .72); text-shadow: 0 0 3px #fbfaf7, 0 0 8px #fbfaf7, 0 0 12px #fbfaf7; }
+.dia__agora { z-index: 2; }
+.dia__agora b { padding: 3px 6px; background: #fbfaf7; box-shadow: 0 0 0 1px rgb(10 31 61 / .12); }
+.dia__nota { text-shadow: 0 0 4px #fbfaf7, 0 0 10px #fbfaf7; font-weight: 600; }
