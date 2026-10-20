@@ -372,7 +372,7 @@ def build():
                      f'<figcaption>{MEDIA[scene]["alt"]}</figcaption></figure>'),
             "fios": fios("soltar"),
             "abertura-extra": abertura_extra(root),
-            "passagem": passagem_html(slug, root),
+            "passagem": "" if slug == "index" else passagem_html(slug, root),
             "speculation": (f'<script type="speculationrules">{{"prerender":[{{"urls":["{root}{nxt}"],"eagerness":"moderate"}}]}}</script>'
                             if nxt is not None else ""),
         }
