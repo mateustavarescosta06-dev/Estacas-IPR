@@ -6,7 +6,7 @@
 (function () {
   "use strict";
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
-  var titulos = document.querySelectorAll("main .bloco h2, main .capa h1, main .capa h2, main .galeria__cab h2, main .real__txt h2, main .corte h2, main .eb-titulo, main .mt-titulo, main .pre__titulo");
+  var titulos = document.querySelectorAll("main .bloco h2, main .capa h1, main .capa h2, main .galeria__cab h2, main .real__txt h2, main .cfg__titulo, main .crv__titulo, main .eb-titulo, main .mt-titulo, main .pre__titulo");
 
   // cada palavra vira um span, sem mexer na marcação que já existe (destaques, quebras)
   Array.prototype.forEach.call(titulos, function (h) {
@@ -64,5 +64,16 @@
   setTimeout(comecar, 1200);
 
   var jeitos = ["esq", "baixo", "centro", "dir", "abre"];
-  Array.prototype.forEach.call(document.querySelectorAll("main .placa"), function (p, k) { p.dataset.revela = jeitos[k % jeitos.length]; });
+  var placas = document.querySelectorAll("main .placa");
+  Array.prototype.forEach.call(placas, function (p, k) { p.dataset.revela = jeitos[k % jeitos.length]; });
+  // cada lâmina abre quando chega à tela, esteja ela numa foto, numa faixa ou na abertura da próxima página
+  var ioP = new IntersectionObserver(function (es) {
+    es.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var c = en.target.querySelector(".cena");
+      if (c) c.classList.add("is-in");
+      ioP.unobserve(en.target);
+    });
+  }, { threshold: 0.12 });
+  Array.prototype.forEach.call(placas, function (p) { ioP.observe(p); });
 })();

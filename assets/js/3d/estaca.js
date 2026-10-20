@@ -143,8 +143,11 @@ export function createEstaca(canvas, opts = {}) {
 
   const scene = new THREE.Scene();
   scene.environment = environment(renderer);
-  // a estaca se monta no papel: luz clara e neutra, névoa da cor da página, sombra e malha em azul-marinho
-  const LOOK = { fog: "#fbfaf7", sky: 0xe4e9f0, ground: 0xc9ced6, hemi: 1.55, sunMin: 1.7, rim: 0.5, exposure: 1.0, env: 1.0, sombra: [0x0a1f3d, 0.2], grade: "10,31,61", gradeA: 0.2 };
+  // no papel (abertura da home): luz clara e neutra, névoa da cor da página, sombra e malha em azul-marinho;
+  // no azul (configurador): a névoa e a malha seguem o azul da página, para nada clarear o fundo
+  const LOOK = opts.fundo === "azul"
+    ? { fog: "#06132a", sky: 0xb4c4dc, ground: 0x1a2332, hemi: 1.25, sunMin: 1.7, rim: 1.1, exposure: 1.04, env: 1.0, sombra: [0x01060f, 0.55], grade: "190,208,235", gradeA: 0.16 }
+    : { fog: "#fbfaf7", sky: 0xe4e9f0, ground: 0xc9ced6, hemi: 1.55, sunMin: 1.7, rim: 0.5, exposure: 1.0, env: 1.0, sombra: [0x0a1f3d, 0.2], grade: "10,31,61", gradeA: 0.2 };
   scene.fog = new THREE.Fog(LOOK.fog, 11, 27);
   const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 60);
 

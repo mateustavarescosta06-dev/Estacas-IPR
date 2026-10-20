@@ -169,7 +169,8 @@
   function initDrive(root) {
     var viz = $("[data-drive-viz]", root);
     var steps = $$(".drive__step", root);
-    var dots = $$(".drive__dots button", root);
+    var dots = $$(".crv__etapa", root);
+    var diagrama = $("[data-diagrama]", root), barra = $(".crv__progresso i", root);
     var track = $(".drive__track", root);
     var fotos = $$(".drive__foto", root); // fotos reais de cada etapa, atrás da simulação
     var G = 250, PX = 18, X = 196, PW = 22, SEG = 10; // terreno (y), px por metro, eixo, largura, segmento (m)
@@ -239,13 +240,24 @@
     s += '<g data-hammer><rect x="' + (X - 17) + '" y="0" width="34" height="44" fill="' + MAQ + '" stroke="rgba(240,230,218,.25)"/><rect x="' + (X - 17) + '" y="16" width="34" height="5" fill="' + AMARELO + '"/><rect x="' + (X - 13) + '" y="44" width="26" height="6" fill="#4a423c"/></g>';
     s += '<circle data-impact cx="' + X + '" cy="0" r="0" fill="none" stroke="' + CREAM + '" stroke-width="1.5" opacity="0"/>';
     s += "</svg>";
-    s += '<div class="readout" aria-live="off"><span class="readout__title">Registro de cravação · simulação</span>';
-    s += '<span>Profundidade</span><b data-r="prof">0,00 m</b><span>Golpes</span><b data-r="golpes">0</b>';
-    s += '<span>Nega (10 golpes)</span><b data-r="nega" class="y">aguardando</b><span>Camada</span><b data-r="camada">superfície</b></div>';
     viz.innerHTML = s;
-    // o registro sai de cima do desenho e vai para a coluna do texto, embaixo das etapas
-    var registro = $(".readout", viz), dotsEl = $(".drive__dots", root);
-    if (registro && dotsEl) dotsEl.parentNode.insertBefore(registro, dotsEl.nextSibling);
+
+    // diagrama do boletim: golpes por metro, metro a metro, desenhado enquanto a estaca desce
+    var DM = 20, DW = 220, DH = 140, GMAX = 420;
+    var dBase = "";
+    for (var dm = 0; dm <= DM; dm += 5) dBase += '<line x1="0" x2="' + DW + '" y1="' + (dm * DH / DM) + '" y2="' + (dm * DH / DM) + '" class="crv-dg-grade"/><text x="' + (DW - 2) + '" y="' + (dm * DH / DM - 3) + '" text-anchor="end" class="crv-dg-t">' + dm + " m</text>";
+    var golpesM = [];
+    for (var mm = 0; mm < DM; mm++) { var Lm = layers[layerAt(mm + 0.5)]; golpesM.push(1000 / Lm.pen); }
+    function diagramaAte(b) {
+      if (!diagrama) return;
+      var g = dBase, cheio = Math.floor(b), resto = b - cheio;
+      for (var i = 0; i < Math.min(DM, Math.ceil(b)); i++) {
+        var f = i < cheio ? 1 : resto, w = Math.max(1, golpesM[i] / GMAX * (DW - 34));
+        g += '<rect x="0" y="' + (i * DH / DM + 1) + '" width="' + (w * f).toFixed(1) + '" height="' + (DH / DM - 2) + '" class="' + (i === cheio || (i === cheio - 1 && resto === 0) ? "crv-dg-agora" : "crv-dg-b") + '"/>';
+      }
+      g += '<line x1="0" x2="' + DW + '" y1="' + (b * DH / DM).toFixed(1) + '" y2="' + (b * DH / DM).toFixed(1) + '" class="crv-dg-nivel"/>';
+      diagrama.innerHTML = g;
+    }
 
     var pile = $("[data-pile]", viz), seg1 = $("[data-seg1]", viz), seg2 = $("[data-seg2]", viz), ring = $("[data-ring]", viz);
     var hammer = $("[data-hammer]", viz), plumb = $("[data-plumb]", viz), impact = $("[data-impact]", viz);
@@ -294,7 +306,9 @@
       var li = layerAt(Math.max(0, b - .001));
       root.style.setProperty("--k", p.toFixed(4));
       root.setAttribute("data-sc-verify-state", stepIdx + ":" + b.toFixed(2));
-      r.prof.textContent = fmt(b, 2) + " m";
+      r.prof.textContent = fmt(b, 2);
+      diagramaAte(b);
+      if (barra) barra.style.transform = "scaleX(" + p.toFixed(4) + ")";
       r.golpes.textContent = fmt(Math.floor(blows));
       r.nega.textContent = b > 0 ? fmt(layers[li].pen * 10, 0) + " mm" : "aguardando";
       r.camada.textContent = b > 0 ? layers[li].nome : "superfície";
@@ -326,6 +340,7 @@
       window.addEventListener("resize", update);
       update();
     }
+    // cada etapa da lista leva a rolagem até o seu trecho
     var marks = [0.05, 0.36, 0.58, 0.96];
     dots.forEach(function (d, i) {
       d.addEventListener("click", function () {

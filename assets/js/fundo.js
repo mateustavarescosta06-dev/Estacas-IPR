@@ -1,6 +1,6 @@
 /* O fundo das partes azuis: azul chapado, sem luz, vinheta nem granulado. Por cima, só desenho:
-   a linha do terreno (N.T. ±0,00) atravessando a tela e, bem apagadas, algumas seções de estaca
-   cotadas como numa folha de detalhes, que sobem devagar com a rolagem e se movem um pouco com o ponteiro. */
+   bem apagadas, algumas seções de estaca cotadas como numa folha de detalhes, que sobem devagar com a
+   rolagem e se movem um pouco com o ponteiro. Nada de texto fixo na tela, que cruzaria o conteúdo. */
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -10,7 +10,6 @@
   var ctx = c.getContext("2d"), root = document.documentElement;
   var W = 0, H = 0, dpr = 1, raf = 0;
   var mx = 0.66, my = 0.5, tx = 0.66, ty = 0.5;
-  var fonte = getComputedStyle(root).getPropertyValue("--f-mono").trim() || "monospace";
   var simbolos = [];
 
   var semente = 11;
@@ -40,13 +39,8 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
 
-    // a linha do terreno, com a marcação do nível
-    var sy = window.scrollY * 0.18, yN = Math.round(H * 0.84) + 0.5;
+    var sy = window.scrollY * 0.18;
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgba(200,216,240,0.12)";
-    ctx.setLineDash([2, 6]); ctx.beginPath(); ctx.moveTo(0, yN); ctx.lineTo(W, yN); ctx.stroke(); ctx.setLineDash([]);
-    ctx.font = "500 10px " + fonte; ctx.textBaseline = "bottom"; ctx.fillStyle = "rgba(200,216,240,0.32)";
-    ctx.fillText("N.T. ±0,00", W - 160, yN - 6);
 
     // seções cotadas, raras e apagadas, que sobem devagar com a rolagem
     ctx.strokeStyle = "rgba(200,216,240,0.07)";

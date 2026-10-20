@@ -233,12 +233,13 @@ if (dia) {
   frame();
 }
 
-/* ---------- A estaca em corte ---------- */
+/* ---------- Monte a sua estaca: configurador na prancha ---------- */
 const corte = $("[data-corte]");
 if (corte) {
   const DATA = window.IPR_ESTACAS || [];
-  const canvas = $("canvas", corte), range = $("[data-montagem]", corte), etapa = $("[data-etapa]", corte);
+  const canvas = $("canvas", corte), etapasBts = $$("[data-etapas] button", corte);
   const formas = $$("[data-forma]", corte), lista = $("[data-bitolas]", corte), ficha = $("[data-ficha]", corte);
+  const prancha = $("[data-prancha]", corte), marca = $(".cfg__marca", corte);
   const fmt = (n, d) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
   let estaca = null, atual = DATA.find((e) => e.id === "H33") || DATA[0], anim = 0;
   let kAtual = 0, yaw = 0, pitch = 0;
@@ -251,59 +252,85 @@ if (corte) {
     { ancora: "fioface", texto: "", de: 0.93, ate: 1.2 },
     { ancora: "secao", texto: "", de: 0.93, ate: 1.2, lado: "e" },
   ]);
-  const ETAPAS = [[0, "Fôrma"], [0.14, "Fios"], [0.35, "Concreto"], [0.6, "Cura"], [0.75, "Liberação"], [0.9, "Seção"]];
+  const ETAPAS = etapasBts.map((b) => +b.dataset.k);
 
   function estado(k) {
     return {
       form: r(k, 0, 0.12), wireIn: r(k, 0.1, 0.2), tension: r(k, 0.18, 0.34), fill: r(k, 0.35, 0.6), cure: r(k, 0.6, 0.75),
       cps: 0, test: 0, release: r(k, 0.75, 0.82), open: r(k, 0.8, 0.88), lift: r(k, 0.86, 0.94), turn: r(k, 0.9, 1), view: 0,
-      light: { sun: "#fff3e0", sunI: 2.4, elev: 26, azim: -55, sky: "#9db6dc", ground: "#0a1426", hemiI: 1.0, sodium: 0, exposure: 1.04, env: 0.85, fog: "#0a1f3d" },
+      light: { sun: "#fff3e0", sunI: 2.4, elev: 26, azim: -55, sky: "#9db6dc", ground: "#0a1426", hemiI: 1.0, sodium: 0, exposure: 1.04, env: 0.85, fog: "#06132a" },
     };
   }
   function textosSecao() {
     labels.items[3].el.querySelector("span").textContent = atual.consulta ? "Linha vazada" : atual.aco;
     labels.items[4].el.querySelector("span").textContent = atual.nome;
   }
+  // a régua de etapas: cada trecho enche enquanto a montagem passa por ele
   function montar(k) {
     kAtual = k;
-    range.value = Math.round(k * 100);
-    range.style.setProperty("--p", k * 100 + "%");
-    let nome = ETAPAS[0][1];
-    ETAPAS.forEach(([v, n]) => { if (k >= v) nome = n; });
-    etapa.textContent = nome;
+    etapasBts.forEach((b, i) => {
+      const de = ETAPAS[i], ate = ETAPAS[i + 1] ?? 1.0001;
+      b.style.setProperty("--f", clamp((k - de) / (ate - de), 0, 1).toFixed(3));
+      const on = k >= de && k < ate;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
     if (estaca) estaca.set(Object.assign(estado(k), { yaw, pitch }));
   }
-  function play() {
-    if (reduce) { montar(1); return; }
+  function play(de = 0, ate = 1) {
+    if (reduce) { montar(ate); return; }
     cancelAnimationFrame(anim);
-    const t0 = performance.now(), dur = 3400;
-    const step = (t) => { const k = clamp((t - t0) / dur, 0, 1); montar(k); if (k < 1) anim = requestAnimationFrame(step); };
+    const t0 = performance.now(), dur = Math.max(700, 3400 * (ate - de));
+    const step = (t) => { const k = clamp((t - t0) / dur, 0, 1); montar(de + (ate - de) * k); if (k < 1) anim = requestAnimationFrame(step); };
     anim = requestAnimationFrame(step);
   }
+  etapasBts.forEach((b, i) => b.addEventListener("click", () => play(ETAPAS[i], i === etapasBts.length - 1 ? 1 : ETAPAS[i + 1] - 0.001)));
+
+  // ficha em números grandes, que correm do valor anterior até o novo
+  const antes = {};
   function renderFicha(e) {
     if (e.consulta) {
-      ficha.innerHTML = '<div><dt>Seção</dt><dd>' + e.nome + '</dd></div><div><dt>Linha vazada</dt><dd>sob consulta</dd></div>';
+      ficha.innerHTML = '<div class="cfg__f cfg__f--larga"><dt>Linha vazada</dt><dd><b>Sob consulta</b></dd></div>' +
+        '<div class="cfg__f cfg__f--larga"><dt>Seção</dt><dd><b>' + e.nome + "</b></dd></div>";
       return;
     }
-    ficha.innerHTML = [["Seção", e.nome], ["Aço", e.aco], ["Área de concreto", fmt(e.area) + " cm²"], ["Massa", fmt(e.massa) + " kg/m"], ["Compressão NBR 6118", fmt(e.compNbr, 1) + " kN"]]
-      .map(([k, v]) => "<div><dt>" + k + "</dt><dd>" + v + "</dd></div>").join("");
+    const itens = [["area", "Área de concreto", e.area, "cm²", 0], ["massa", "Massa", e.massa, "kg/m", 0], ["comp", "Compressão NBR 6118", e.compNbr, "kN", 1]];
+    ficha.innerHTML = itens.map(([id, rot, v, un]) => '<div class="cfg__f"><dt>' + rot + '</dt><dd><b data-n="' + id + '">0</b><span>' + un + "</span></dd></div>").join("") +
+      '<div class="cfg__f cfg__f--larga"><dt>Aço de protensão</dt><dd><b>' + e.aco + "</b></dd></div>";
+    itens.forEach(([id, , v, , d]) => {
+      const el = $('[data-n="' + id + '"]', ficha), de = antes[id] ?? 0;
+      antes[id] = v;
+      if (reduce) { el.textContent = fmt(v, d); return; }
+      const t0 = performance.now();
+      const step = (t) => { const k = clamp((t - t0) / 700, 0, 1), q = 1 - Math.pow(1 - k, 3); el.textContent = fmt(de + (v - de) * q, d); if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+  }
+  // bitolas numa régua: o marcador amarelo desliza até a escolhida
+  function marcar() {
+    const b = $('[aria-pressed="true"]', lista);
+    if (!b || !marca) return;
+    marca.style.transform = "translate3d(" + (b.offsetLeft + b.offsetWidth / 2) + "px,0,0)";
   }
   function lista_(forma) {
     lista.innerHTML = DATA.filter((e) => e.forma === forma).map((e) =>
-      '<li><button type="button" data-id="' + e.id + '" aria-pressed="' + (e.id === atual.id) + '">' + (e.forma === "quadrada" ? "30 × 30" : "Ø " + e.d) + "</button></li>").join("");
+      '<li><button type="button" data-id="' + e.id + '" aria-pressed="' + (e.id === atual.id) + '">' +
+      (e.forma === "quadrada" ? "30 × 30" : "<small>Ø</small> " + e.d) + (e.consulta ? "<em>vazada</em>" : "") + "</button></li>").join("");
+    requestAnimationFrame(marcar);
   }
   const reais = $$(".corte__real [data-foto]", corte);
   function escolher(e, animar) {
     atual = e;
     reais.forEach((f) => f.classList.toggle("is-on", f.dataset.foto === e.forma));
     const desenho = $("[data-corte-desenho]", corte);
-    if (desenho && window.IPR_drawSection) { desenho.innerHTML = window.IPR_drawSection(e, { scale: e.d > 34 ? 4.3 : 5.4 }); desenho.classList.add("is-in"); }
+    if (desenho && window.IPR_drawSection) { desenho.innerHTML = window.IPR_drawSection(e, { scale: e.d > 34 ? 3.4 : 4.2 }); desenho.classList.add("is-in"); }
     formas.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.forma === e.forma)));
+    if (prancha) prancha.textContent = e.nome;
     lista_(e.forma);
     renderFicha(e);
     textosSecao();
     if (estaca) estaca.setSection(e);
-    if (animar) play(); else montar(+range.value / 100);
+    if (animar) play(); else montar(kAtual);
   }
   formas.forEach((b) => b.addEventListener("click", () => {
     const first = DATA.find((e) => e.forma === b.dataset.forma && !e.consulta) || DATA.find((e) => e.forma === b.dataset.forma);
@@ -313,7 +340,7 @@ if (corte) {
     const b = ev.target.closest("[data-id]");
     if (b) escolher(DATA.find((e) => e.id === b.dataset.id), true);
   });
-  range.addEventListener("input", () => { cancelAnimationFrame(anim); montar(+range.value / 100); });
+  addEventListener("resize", marcar);
   // arrastar para girar: o visitante comanda a câmera; nada segue o ponteiro sozinho
   let arrasto = null;
   canvas.addEventListener("pointerdown", (ev) => { arrasto = { x: ev.clientX, y: ev.clientY, yaw, pitch }; canvas.setPointerCapture(ev.pointerId); corte.classList.add("is-girando"); });
@@ -330,7 +357,7 @@ if (corte) {
 
   function iniciar() {
     if (webgl && canvas && !estaca) {
-      try { estaca = createEstaca(canvas, { estaca: atual, onRender: () => labels.place(estaca.anchors(), kAtual) }); } catch (e) { estaca = null; }
+      try { estaca = createEstaca(canvas, { estaca: atual, fundo: "azul", onRender: () => labels.place(estaca.anchors(), kAtual) }); } catch (e) { estaca = null; }
     }
     if (!estaca) {
       corte.classList.add("sem-3d");

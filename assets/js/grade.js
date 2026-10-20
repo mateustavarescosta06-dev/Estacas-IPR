@@ -31,12 +31,17 @@
     bAtual = -1; pedir();
   }
   // quanto de azul: entra enquanto o topo da parte interativa sobe de 45% a 15% da tela, sai no espelho
+  // partes azuis vizinhas contam como uma só: entre elas o fundo não pode piscar de branco
+  var colada = azuis.map(function (el) {
+    var ant = el.previousElementSibling, prox = el.nextElementSibling;
+    return { antes: !!(ant && ant.hasAttribute("data-azul")), depois: !!(prox && prox.hasAttribute("data-azul")) };
+  });
   function azul() {
     var b = 0;
     for (var i = 0; i < azuis.length; i++) {
       var r = azuis[i].getBoundingClientRect();
-      var entra = clamp((H * 0.45 - r.top) / (H * 0.3), 0, 1);
-      var sai = clamp((r.bottom - H * 0.55) / (H * 0.3), 0, 1);
+      var entra = colada[i].antes ? (r.top < H ? 1 : 0) : clamp((H * 0.45 - r.top) / (H * 0.3), 0, 1);
+      var sai = colada[i].depois ? (r.bottom > 0 ? 1 : 0) : clamp((r.bottom - H * 0.55) / (H * 0.3), 0, 1);
       b = Math.max(b, Math.min(entra, sai));
     }
     return b * b * (3 - 2 * b);

@@ -33,6 +33,7 @@
     else if (d > 4 && y > hd.offsetHeight) hd.classList.add("hd--oculta");
     else if (d < -4) hd.classList.remove("hd--oculta");
     hd.classList.toggle("hd--fundo", y > 10 || !!aberto);
+    document.documentElement.classList.toggle("rolou", y > 240);
     if (Math.abs(d) > 4) ultimo = y;
   }
   function pedir() { if (!raf) raf = requestAnimationFrame(quadro); }
