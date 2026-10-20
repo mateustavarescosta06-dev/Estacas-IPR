@@ -458,7 +458,7 @@ export function createEstaca(canvas, opts = {}) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     // telas estreitas: afasta a câmera para a peça caber
-    camera.zoom = w / h < 0.6 ? 0.55 : w / h < 0.9 ? 0.72 : 1;
+    camera.zoom = w / h < 0.6 ? 0.55 : w / h < 0.9 ? 0.72 : w / h < 1.35 ? 0.86 : 1; // painel mais estreito que a tela: a peça inteira cabe
     const shift = w / h > 1.2 ? (opts.shiftX || 0) : 0;
     if (shift) camera.setViewOffset(w, h, -w * shift, 0, w, h); else camera.clearViewOffset();
     camera.updateProjectionMatrix();

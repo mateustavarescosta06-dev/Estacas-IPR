@@ -95,7 +95,7 @@ if (dia) {
   ]);
   let estaca = null, pAtual = 0;
   if (webgl && canvas) {
-    try { estaca = createEstaca(canvas, { shiftX: 0.1, onRender: () => labels.place(estaca.anchors(), pAtual) }); } catch (e) { estaca = null; }
+    try { estaca = createEstaca(canvas, { shiftX: 0, onRender: () => labels.place(estaca.anchors(), pAtual) }); } catch (e) { estaca = null; }
   }
   if (!estaca && canvas) canvas.hidden = true;
   dia.classList.toggle("sem-3d", !estaca);
@@ -119,7 +119,7 @@ if (dia) {
 
   function estado(p) {
     return {
-      form: r(p, 0.05, 0.1), wireIn: r(p, 0.08, 0.12), tension: r(p, 0.12, 0.185), view: r(p, 0.07, 0.12) * (1 - r(p, 0.27, 0.3)),
+      form: r(p, -0.04, 0.035), wireIn: r(p, 0.08, 0.12), tension: r(p, 0.12, 0.185), view: r(p, 0.07, 0.12) * (1 - r(p, 0.27, 0.3)),
       fill: r(p, 0.29, 0.37), cps: r(p, 0.34, 0.4), cure: r(p, 0.52, 0.6),
       test: r(p, 0.72, 0.82), release: r(p, 0.84, 0.875), open: r(p, 0.87, 0.91), lift: r(p, 0.9, 0.95), turn: r(p, 0.93, 0.995),
     };
@@ -150,20 +150,22 @@ if (dia) {
     let atual = -1;
     MARCOS.forEach((v, i) => { if (p >= v - 0.035) atual = i; });
     etapas.forEach((el, i) => { el.classList.toggle("is-on", i === atual); el.classList.toggle("is-past", i < atual); });
-    dia.classList.toggle("is-inicio", p < 0.05);
+    dia.classList.toggle("is-inicio", p < 0.03);
 
     // capítulos e interlúdios: entram e saem com margens curtas
     let cobre = 0;
     caps.forEach((c) => {
-      const f = 0.014, o = clamp(Math.min((p - c.de) / f + 1, (c.ate - p) / f + 1), 0, 1);
-      c.el.style.opacity = o.toFixed(3);
+      // um capítulo sai antes de o próximo entrar: a opacidade cai rápido e o texto desliza um pouco
+      const f = 0.008, o = c.cobre ? clamp(Math.min((p - c.de) / f + 1, (c.ate - p) / f + 1), 0, 1) : clamp(Math.min((p - c.de) / f, (c.ate - p) / f), 0, 1), oo = o * o * o;
+      c.el.style.opacity = oo.toFixed(3);
+      if (!c.cobre) c.el.style.transform = "translate3d(0," + ((1 - o) * (p < c.de ? 14 : -14)).toFixed(1) + "px,0)";
       c.el.classList.toggle("is-on", o > 0.5);
       c.el.style.setProperty("--k", r(p, c.de, c.ate).toFixed(4));
       if (c.cobre) cobre = Math.max(cobre, o);
     });
     if (estaca) {
       canvas.style.opacity = camada.style.opacity = (1 - cobre).toFixed(3);
-      if (cobre < 0.999) estaca.set(Object.assign(estado(p), { light: luz }));
+      if (cobre < 0.999) estaca.set(Object.assign(estado(p), { light: Object.assign({}, luz, { fog: "#0a1f3d" }) })); // a peça some no azul da própria página
     }
   }
   let ticking = false;
@@ -197,7 +199,7 @@ if (corte) {
     return {
       form: r(k, 0, 0.12), wireIn: r(k, 0.1, 0.2), tension: r(k, 0.18, 0.34), fill: r(k, 0.35, 0.6), cure: r(k, 0.6, 0.75),
       cps: 0, test: 0, release: r(k, 0.75, 0.82), open: r(k, 0.8, 0.88), lift: r(k, 0.86, 0.94), turn: r(k, 0.9, 1), view: 0,
-      light: { sun: "#fff3e0", sunI: 2.4, elev: 26, azim: -55, sky: "#9db6dc", ground: "#0a1426", hemiI: 1.0, sodium: 0, exposure: 1.04, env: 0.85, fog: "#071428" },
+      light: { sun: "#fff3e0", sunI: 2.4, elev: 26, azim: -55, sky: "#9db6dc", ground: "#0a1426", hemiI: 1.0, sodium: 0, exposure: 1.04, env: 0.85, fog: "#0a1f3d" },
     };
   }
   function textosSecao() {
@@ -236,6 +238,8 @@ if (corte) {
   function escolher(e, animar) {
     atual = e;
     reais.forEach((f) => f.classList.toggle("is-on", f.dataset.foto === e.forma));
+    const desenho = $("[data-corte-desenho]", corte);
+    if (desenho && window.IPR_drawSection) { desenho.innerHTML = window.IPR_drawSection(e, { scale: e.d > 34 ? 4.3 : 5.4 }); desenho.classList.add("is-in"); }
     formas.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.forma === e.forma)));
     lista_(e.forma);
     renderFicha(e);

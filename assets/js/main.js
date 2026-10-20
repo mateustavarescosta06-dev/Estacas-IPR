@@ -53,9 +53,9 @@
         io.unobserve(en.target);
       });
     }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
-    $$(".reveal, .stats").forEach(function (el) { io.observe(el); });
+    $$(".reveal, .stats, .faixa, .capa__cena, .passagem__cena").forEach(function (el) { io.observe(el); });
   } else {
-    $$(".reveal").forEach(function (el) { el.classList.add("is-in"); });
+    $$(".reveal, .faixa, .capa__cena, .passagem__cena").forEach(function (el) { el.classList.add("is-in"); });
   }
 
   /* ---------- Desenho de seções (planta técnica) ---------- */
@@ -119,6 +119,19 @@
   var DATA = window.IPR_ESTACAS || [];
   var byId = {};
   DATA.forEach(function (e) { byId[e.id] = e; });
+
+  /* Desenho técnico das seções sobre a grade: traçado ao chegar na tela, fios acendem ao passar o cursor */
+  $$("[data-desenho]").forEach(function (el) {
+    var e = byId[el.getAttribute("data-desenho")];
+    if (!e) return;
+    el.innerHTML = drawSection(e, { scale: e.d > 34 ? 4.3 : e.d < 24 ? 6.4 : 5.4 });
+  });
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var ioD = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("is-in"); ioD.unobserve(en.target); } });
+    }, { threshold: 0.3 });
+    $$(".desenho").forEach(function (el) { ioD.observe(el); });
+  } else $$(".desenho").forEach(function (el) { el.classList.add("is-in"); });
 
   $$("[data-shape]").forEach(function (el) {
     var e = byId[el.getAttribute("data-shape")];

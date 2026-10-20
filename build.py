@@ -42,14 +42,14 @@ MEDIA = json.loads((ROOT / "assets" / "media" / "manifest.json").read_text(encod
 # Paleta da marca: o azul-marinho domina, o branco é respiro, o amarelo é luz e ação.
 # fundo, tinta, tinta secundária, marca (o chip de etapa)
 TONES = {
-    "patio":   ("#0a1f3d", "#f3f5f9", "#a9b8cc", "#ffcd00"),   # azul-marinho IPR
-    "materia": ("#f4f6f9", "#0a1f3d", "#4b5d78", "#ffcd00"),   # branco
-    "aco":     ("#071428", "#f3f5f9", "#9fb0c8", "#ffcd00"),   # noite
-    "cura":    ("#e7ecf3", "#0a1f3d", "#46597a", "#ffcd00"),   # névoa clara
-    "terra":   ("#0f2c55", "#f3f5f9", "#b0c0d6", "#ffcd00"),   # azul do dia
-    "obra":    ("#0a1f3d", "#f3f5f9", "#a9b8cc", "#ffcd00"),
-    "papel":   ("#f4f6f9", "#0a1f3d", "#4b5d78", "#ffcd00"),
-    "noite":   ("#061020", "#f3f5f9", "#9aa9c0", "#ffcd00"),
+    "patio":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # azul-marinho IPR
+    "materia": ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # branco
+    "aco":     ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # noite
+    "cura":    ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # névoa clara
+    "terra":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),   # azul do dia
+    "obra":    ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),
+    "papel":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),
+    "noite":   ("#ffffff", "#0a1f3d", "#51607a", "#ffcd00"),
 }
 
 # A ordem das páginas é a vida de uma estaca: matéria, aço, cura, solo, obra.
@@ -72,6 +72,9 @@ ROUTE = [
     ("contato", "contato", "Contato", "contato/", "noite", "A nega",
      "A próxima estaca a sair da pista é a da sua obra.", "patio-nublado"),
 ]
+# a seção desenhada na abertura de cada página (ábacos IPR)
+DESENHO = {"central-de-concreto": "C30", "estacas": "H33", "controle-de-qualidade": "Q30", "fundacao": "H28",
+           "clientes": "C26", "perguntas-frequentes": "HV40", "contato": "H33"}
 # rótulos curtos no menu (o nome completo aparece na linha de produção e nas passagens)
 SHORT = {"central": "Central", "qualidade": "Qualidade", "faq": "Dúvidas"}
 NAV = [(key, SHORT.get(key, label), href, tone) for _, key, label, href, tone, *_ in ROUTE if key != "contato"]
@@ -161,8 +164,8 @@ def faixa(spec, root):
     """Imagem de ponta a ponta entre dois trechos: {{faixa:cena|legenda}}."""
     slot, _, caption = spec.partition("|")
     cap = f'<figcaption class="wrap"><span>{caption}</span></figcaption>' if caption else ""
-    return (f'<figure class="faixa"><div class="cena grao faixa__cena" data-par style="{scene_style(slot)}">'
-            f'{picture(slot, root, "(max-aspect-ratio: 16/9) 178vh, 100vw")}</div>{cap}</figure>')
+    return (f'<figure class="faixa"><div class="placa"><div class="cena grao faixa__cena" data-par style="{scene_style(slot)}">'
+            f'{picture(slot, root, "(max-width: 820px) 100vw, 1280px")}</div></div>{cap}</figure>')
 
 
 def scene_style(slot):
@@ -175,9 +178,9 @@ def foto(spec, root):
     caption = parts[2] if len(parts) > 2 else ""
     extra = parts[3] if len(parts) > 3 else ""
     cap = f"<figcaption><span>{caption}</span></figcaption>" if caption else ""
-    return (f'<figure class="foto reveal {extra}" style="--ar:{ar}">'
+    return (f'<figure class="foto reveal {extra}" style="--ar:{ar}"><div class="placa">'
             f'<div class="cena grao" data-par style="{scene_style(slot)}">'
-            f'{picture(slot, root, "(max-width: 820px) 100vw, 50vw")}</div>{cap}</figure>')
+            f'{picture(slot, root, "(max-width: 820px) 100vw, 50vw")}</div></div>{cap}</figure>')
 
 
 # ---------- Peças da jornada ----------
@@ -231,36 +234,38 @@ def h1_of(slug):
     return re.sub(r"\s+", " ", text).strip()
 
 
+def lead_of(slug):
+    raw = read(f"pages/{slug}.html")
+    m = re.search(r'<p class="lead">(.*?)</p>', raw, re.S)
+    return m.group(1).strip() if m else ""
+
+
 def passagem_html(slug, root):
+    """O fim da página é a abertura da próxima, idêntica: ao clicar, os mesmos elementos deslizam
+    para o lugar e a troca de página não aparece."""
     i = route_index(slug)
     if i + 1 >= len(ROUTE):
         return fim_html(root)
     nslug, _, label, href, tone, material, teaser, scene = ROUTE[i + 1]
-    return (f'<section class="passagem" data-tone="{tone}" aria-label="Próxima etapa: {label}">'
-            f'{fios("tensao")}'
-            f'<a class="wrap passagem__link" href="{root}{href}" data-passagem>'
-            f'<span class="passagem__txt"><span class="passagem__de rotulo">Próxima etapa · {label}</span>'
-            f'{amostra(tone, material)}'
-            f'<span class="passagem__titulo">{h1_of(nslug)}</span>'
-            f'<span class="passagem__teaser">{teaser}</span>'
-            f'<span class="btn btn--ink passagem__ir">Seguir para {label} {{{{icon:arrow}}}}</span></span>'
-            f'<span class="cena grao passagem__cena" data-par style="{scene_style(scene)}">'
-            f'{picture(scene, root, "(max-aspect-ratio: 16/9) 178vh, 100vw", alt="")}'
-            f'{video_tag(scene, root, "passagem__video", scrub=True) if MEDIA[scene].get("video") else ""}'
-            f'</span></a></section>')
+    return (f'<section class="capa capa--seguinte" aria-label="Próxima etapa: {label}">'
+            f'<a class="capa__seguir-area" href="{root}{href}" data-passagem aria-label="Seguir para {label}"></a>'
+            f'<div class="wrap capa__grid"><div class="capa__txt">'
+            f'<nav class="crumbs" aria-label="Próxima etapa"><span>Próxima etapa</span><span aria-hidden="true">/</span><span>{label}</span></nav>'
+            f'<div class="desenho capa__desenho" data-desenho="{DESENHO.get(nslug, "H33")}" aria-hidden="true"></div>'
+            f'<h2 class="h-xl">{h1_of(nslug)}</h2>'
+            f'<p class="lead">{lead_of(nslug)}</p>'
+            f'<a class="capa__seguir" href="{root}{href}" data-passagem>Seguir para {label} {{{{icon:arrow}}}}</a></div>'
+            f'<figure class="capa__figura"><div class="placa"><div class="cena capa__cena" data-par style="{scene_style(scene)}">'
+            f'{picture(scene, root, "(max-width: 820px) 100vw, 55vw", alt="")}</div></div>'
+            f'<figcaption>{MEDIA[scene]["alt"]}</figcaption></figure></div></section>')
 
 
 def fim_html(root):
-    regs = "".join(
-        f'<li style="--i:{j};--c:{TONES[tone][3]}"><i></i><b>{label}</b><span>{material}</span></li>'
-        for j, (_, _, label, _h, tone, material, *_r) in enumerate(ROUTE))
-    return (f'<section class="fim" data-tone="noite" aria-label="Fim do percurso"><div class="wrap">'
-            f'{amostra("noite", "Nega atingida")}'
-            f'<h2 class="h-xl" style="margin-top:22px">A próxima estaca a sair da pista é a da sua obra.</h2>'
+    return (f'<section class="fim" aria-label="Fim do percurso"><div class="wrap">'
+            f'<h2 class="h-xl">A próxima estaca a sair da pista é a da sua obra.</h2>'
             f'<p class="lead">Você percorreu a fábrica inteira, da matéria à nega. Envie a sondagem e as cargas de projeto: '
             f'a engenharia da IPR retorna com a seção indicada e o orçamento.</p>'
-            f'<a class="btn btn--ink" href="{root}">Voltar ao pátio {{{{icon:arrow}}}}</a>'
-            f'<ol class="registro reveal" aria-label="Etapas percorridas">{regs}</ol></div></section>')
+            f'<a class="btn btn--ink" href="{root}">Voltar ao pátio {{{{icon:arrow}}}}</a></div></section>')
 
 
 def nav_html(active, root):
@@ -339,9 +344,10 @@ def build():
             "tones": tones_css(tone),
             "nav": nav_html(meta.get("nav", ""), root),
             "linha": linha_html(slug, root),
-            "amostra": amostra(tone, material),
-            "capa": (f'<div class="cena grao capa__cena" data-par style="{scene_style(scene)}">'
-                     f'{picture(scene, root, "(max-aspect-ratio: 16/9) 178vh, 100vw", eager=True)}</div>'),
+            "amostra": f'<div class="desenho capa__desenho" data-desenho="{DESENHO.get(slug, "H33")}" aria-hidden="true"></div>',
+            "capa": (f'<figure class="capa__figura"><div class="placa"><div class="cena grao capa__cena" data-par style="{scene_style(scene)}">'
+                     f'{picture(scene, root, "(max-width: 820px) 100vw, 55vw", eager=True)}</div></div>'
+                     f'<figcaption>{MEDIA[scene]["alt"]}</figcaption></figure>'),
             "fios": fios("soltar"),
             "abertura-extra": abertura_extra(root),
             "passagem": passagem_html(slug, root),

@@ -170,18 +170,21 @@
   /* ---------- Costura com a próxima página ---------- */
   // O fim desta página já é a capa da próxima: no clique, a cena e os fios da passagem
   // recebem os nomes que a capa da próxima página usa, e a troca vira um só movimento.
+  // O fim da página é a abertura da próxima: no clique, título, texto, desenho e foto desta cópia
+  // recebem os nomes que a abertura da próxima usa, e a troca vira um deslizar para o lugar.
+  var NOMES = { ".capa__txt h1, .capa__txt h2": "capa-titulo", ".capa__txt .lead": "capa-lead", ".capa__desenho": "capa-desenho", ".capa__cena": "cena" };
   function clearNames() {
-    $$(".passagem__cena, .passagem .fios").forEach(function (el) { el.style.viewTransitionName = ""; });
-    $$(".capa__cena, .abertura__cena").forEach(function (el) { el.style.viewTransitionName = ""; });
+    Object.keys(NOMES).forEach(function (sel) { $$(sel).forEach(function (el) { el.style.viewTransitionName = ""; }); });
   }
   document.addEventListener("click", function (ev) {
     var a = ev.target.closest("[data-passagem]");
     if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
-    try { sessionStorage.setItem("ipr-fios", "1"); } catch (e) { /* sem sessão: a capa abre sem os fios */ }
-    $$(".capa__cena, .abertura__cena").forEach(function (el) { el.style.viewTransitionName = "none"; });
-    var cena = $(".passagem__cena", a), f = $(".fios", a.closest(".passagem"));
-    if (cena) cena.style.viewTransitionName = "cena";
-    if (f) f.style.viewTransitionName = "fios";
+    var seg = a.closest(".capa--seguinte");
+    Object.keys(NOMES).forEach(function (sel) {
+      $$(sel).forEach(function (el) { el.style.viewTransitionName = "none"; });
+      var alvo = seg && $(sel, seg);
+      if (alvo) alvo.style.viewTransitionName = NOMES[sel];
+    });
   });
   window.addEventListener("pageshow", function (e) { if (e.persisted) { clearNames(); onScroll(); } });
 })();
