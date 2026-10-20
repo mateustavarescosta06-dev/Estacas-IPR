@@ -323,11 +323,11 @@ if (corte) {
   } else iniciar();
 }
 
-/* ---------- A peça de verdade: a foto da face encolhe para uma lâmina e vira a fábrica ---------- */
+/* ---------- A peça de verdade: a foto da face vira o desenho do ábaco, e o desenho abre espaço ao texto ---------- */
 const realSec = $(".real");
 if (realSec) {
   const pistaR = $(".real__pista", realSec), palcoR = $(".real__palco", realSec);
-  const quadro = $("[data-real-quadro]", realSec), fabrica = $("[data-real-fabrica]", realSec), txt = $("[data-real-txt]", realSec);
+  const quadro = $("[data-real-quadro]", realSec), foto = $("[data-real-foto]", realSec), desenho = $("[data-real-desenho]", realSec), txt = $("[data-real-txt]", realSec);
   const ease = (k) => k * k * (3 - 2 * k);
   let tick = false;
   function quadroReal() {
@@ -335,18 +335,17 @@ if (realSec) {
     const rect = pistaR.getBoundingClientRect(), total = rect.height - innerHeight;
     const q = reduce ? 1 : clamp(-rect.top / (total > 0 ? total : 1), 0, 1);
     const W = palcoR.clientWidth, H = palcoR.clientHeight, S = Math.min(W, H), estreito = W < 900;
-    // de: o quadrado da face no centro da tela (como terminou a estaca) · para: a lâmina ao lado do texto
-    const a = { x: (W - S) / 2, y: (H - S) / 2, w: S, h: S };
-    const bw = estreito ? W - 36 : W * 0.4, bh = estreito ? H * 0.42 : H * 0.7;
-    const b = { x: estreito ? 18 : W * 0.53, y: estreito ? H * 0.1 + 20 : (H - bh) / 2 + 30, w: bw, h: bh };
-    const k = ease(r(q, 0.08, 0.55));
+    // de: o quadrado da face no centro (como terminou a estaca) · para: o desenho ao lado do texto
+    const a = { x: (W - S) / 2, y: (H - S) / 2, s: S };
+    const bs = estreito ? Math.min(W * 0.7, H * 0.42) : Math.min(W * 0.4, H * 0.72);
+    const b = { x: estreito ? (W - bs) / 2 : W * 0.56, y: estreito ? H * 0.1 : (H - bs) / 2 + 20, s: bs };
+    const k = ease(r(q, 0.42, 0.78));
     quadro.style.transform = "translate3d(" + (a.x + (b.x - a.x) * k).toFixed(1) + "px," + (a.y + (b.y - a.y) * k).toFixed(1) + "px,0)";
-    quadro.style.width = (a.w + (b.w - a.w) * k).toFixed(1) + "px";
-    quadro.style.height = (a.h + (b.h - a.h) * k).toFixed(1) + "px";
-    fabrica.style.opacity = ease(r(q, 0.32, 0.6)).toFixed(3);
-    quadro.style.setProperty("--m", ease(r(q, 0.05, 0.3)).toFixed(3));
-    palcoR.style.setProperty("--fundo", (1 - ease(r(q, 0.1, 0.5))).toFixed(3));
-    const t = ease(r(q, 0.42, 0.7));
+    quadro.style.width = quadro.style.height = (a.s + (b.s - a.s) * k).toFixed(1) + "px";
+    // a foto se desfaz enquanto o traço do desenho é feito por cima, no mesmo lugar
+    foto.style.opacity = (1 - ease(r(q, 0.12, 0.4))).toFixed(3);
+    desenho.style.setProperty("--t", ease(r(q, 0.06, 0.36)).toFixed(4));
+    const t = ease(r(q, 0.6, 0.86));
     txt.style.opacity = t.toFixed(3);
     txt.style.transform = "translate3d(0," + ((1 - t) * 26).toFixed(1) + "px,0)";
   }
@@ -354,4 +353,49 @@ if (realSec) {
   addEventListener("scroll", pedirR, { passive: true });
   addEventListener("resize", pedirR);
   quadroReal();
+}
+
+/* ---------- Do silo à obra: as fotos chegam de trás para a frente, uma de cada vez ---------- */
+const galeria = $("[data-galeria]");
+if (galeria) {
+  const palcoG = $(".galeria__palco", galeria), fotos = $$(".galeria__foto", galeria), itens = $$(".galeria__item", galeria), barra = $("[data-galeria-barra]", galeria);
+  const n = fotos.length;
+  galeria.style.height = (n * 70 + 100) + "vh";
+  let tick = false, ativo = -1;
+  function quadroG() {
+    tick = false;
+    const rect = galeria.getBoundingClientRect(), total = rect.height - innerHeight;
+    const q = reduce ? 0 : clamp(-rect.top / (total > 0 ? total : 1), 0, 1);
+    const u = q * (n - 1);
+    const W = palcoG.clientWidth, H = palcoG.clientHeight, estreito = W < 900;
+    // para onde vai a que chega (do fundo, embaixo à direita) e a que sai (em cima, à esquerda)
+    const vem = estreito ? { x: W * 0.3, y: H * 0.17 } : { x: W * 0.3, y: H * 0.36 };
+    const vai = estreito ? { x: -W * 0.3, y: -H * 0.2 } : { x: -W * 0.21, y: -H * 0.33 };
+    fotos.forEach((f, i) => {
+      const d = i - u, ad = Math.abs(d);
+      if (ad > 1.35) { f.style.visibility = "hidden"; return; }
+      f.style.visibility = "";
+      const k = Math.min(1, ad), alvo = d > 0 ? vem : vai;
+      const sc = 1 - 0.86 * Math.pow(k, 0.7);
+      // a que chega vem por baixo (primeiro para a esquerda, depois sobe), sem passar sobre a legenda
+      const x = d > 0 ? alvo.x * k * k : alvo.x * k, y = d > 0 ? alvo.y * Math.sqrt(k) : alvo.y * k;
+      f.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
+      f.style.zIndex = String(100 - Math.round(ad * 40) + (d > 0 ? 0 : 1));
+      f.style.opacity = ad > 1 ? (1 - (ad - 1) / 0.35).toFixed(3) : "1";
+      f.style.setProperty("--k", k.toFixed(3));
+    });
+    const novo = Math.round(u);
+    if (novo !== ativo) {
+      ativo = novo;
+      itens.forEach((it, i) => { it.classList.toggle("is-on", i === novo); it.classList.toggle("is-antes", i < novo); });
+    }
+    // a legenda só aparece com a foto assentada no centro
+    const meio = Math.abs(u - Math.round(u));
+    palcoG.style.setProperty("--leg", (1 - clamp((meio - 0.18) / 0.2, 0, 1)).toFixed(3));
+    if (barra) barra.style.transform = "scaleX(" + ((u + 0.5) / n).toFixed(4) + ")";
+  }
+  const pedirG = () => { if (!tick) { tick = true; requestAnimationFrame(quadroG); } };
+  addEventListener("scroll", pedirG, { passive: true });
+  addEventListener("resize", pedirG);
+  quadroG();
 }

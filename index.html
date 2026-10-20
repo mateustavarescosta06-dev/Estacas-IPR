@@ -13,6 +13,9 @@
 <link rel="icon" href="assets/img/favicon.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@112..125,500..700&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>html{background:#ffffff}body[data-tone="patio"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="materia"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="aco"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="cura"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="terra"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="obra"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="papel"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}body[data-tone="noite"]{--ground:#ffffff;--ink:#0a1f3d;--ink-2:#51607a;--mark:#ffcd00}</style>
 <link rel="stylesheet" href="assets/css/style.css">
 <script type="importmap">{"imports":{"three":"./assets/vendor/three/three.module.min.js","three/addons/":"./assets/vendor/three/addons/"}}</script>
@@ -149,15 +152,42 @@
     <div class="real__azul" data-azul aria-hidden="true"></div>
     <div class="real__palco">
       <div class="real__quadro" data-real-quadro>
-        <figure class="real__foto"><picture><source type="image/avif" srcset="assets/media/secao-hexagonal-640.avif 640w, assets/media/secao-hexagonal-1080.avif 1080w, assets/media/secao-hexagonal-1600.avif 1600w" sizes="(max-width: 820px) 100vw, 60vw"><img src="assets/media/secao-hexagonal-1600.webp" srcset="assets/media/secao-hexagonal-640.webp 640w, assets/media/secao-hexagonal-1080.webp 1080w, assets/media/secao-hexagonal-1600.webp 1600w" sizes="(max-width: 820px) 100vw, 60vw" width="2048" height="2048" alt="Topo de uma estaca hexagonal de concreto com seis fios de protensão, um junto a cada canto" loading="lazy" decoding="async" style="--pos:50% 50%"></picture></figure>
-        <figure class="real__foto real__foto--fabrica" data-real-fabrica><picture><source type="image/avif" srcset="assets/media/topos-640.avif 640w, assets/media/topos-800.avif 800w" sizes="(max-width: 820px) 100vw, 60vw"><img src="assets/media/topos-800.webp" srcset="assets/media/topos-640.webp 640w, assets/media/topos-800.webp 800w" sizes="(max-width: 820px) 100vw, 60vw" width="800" height="1422" alt="Topos de estacas circulares empilhadas, com a textura do concreto curado" loading="lazy" decoding="async" style="--pos:50% 50%"></picture></figure>
+        <figure class="real__foto" data-real-foto><picture><source type="image/avif" srcset="assets/media/secao-hexagonal-640.avif 640w, assets/media/secao-hexagonal-1080.avif 1080w, assets/media/secao-hexagonal-1600.avif 1600w" sizes="(max-width: 820px) 100vw, 60vw"><img src="assets/media/secao-hexagonal-1600.webp" srcset="assets/media/secao-hexagonal-640.webp 640w, assets/media/secao-hexagonal-1080.webp 1080w, assets/media/secao-hexagonal-1600.webp 1600w" sizes="(max-width: 820px) 100vw, 60vw" width="2048" height="2048" alt="Topo de uma estaca hexagonal de concreto com seis fios de protensão, um junto a cada canto" loading="lazy" decoding="async" style="--pos:50% 50%"></picture></figure>
+        <div class="desenho desenho--scrub real__desenho" data-desenho="H33" data-real-desenho aria-hidden="true"></div>
       </div>
       <div class="wrap real__txt" data-real-txt>
+        <p class="real__num">Seção hexagonal Ø 33 · 6 fios Ø 6 mm</p>
         <h2 class="h-xl">Não é simulação. É a estaca que sai da nossa pista.</h2>
-        <p class="lead">Cada peça que você viu nascer existe no pátio da IPR: concreto C40, fios CP-175 tracionados e o ensaio de 24 horas registrado no lote.</p>
-        <a class="abre__link" href="central-de-concreto/">Conheça a fábrica <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
-        <p class="real__legenda" data-real-legenda>Topos de estacas no pátio de estocagem da IPR</p>
+        <p class="lead">Cada peça que você viu nascer tem desenho, ábaco e lote. Concreto C40, fios CP-175 tracionados e o ensaio de 24 horas registrado.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="galeria" aria-label="A fábrica, etapa por etapa">
+  <div class="wrap galeria__cab">
+    <h2 class="h-xl">Do silo à obra.</h2>
+    <p class="lead">Seis paradas dentro da fábrica da IPR, na ordem em que a estaca passa por elas.</p>
+  </div>
+  <div class="galeria__pista" data-galeria>
+    <div class="galeria__palco">
+      <div class="galeria__fotos">
+        <figure class="galeria__foto"><picture><source type="image/avif" srcset="assets/media/silos-640.avif 640w, assets/media/silos-1080.avif 1080w, assets/media/silos-1600.avif 1600w" sizes="(max-width: 820px) 80vw, 34vw"><img src="assets/media/silos-1600.webp" srcset="assets/media/silos-640.webp 640w, assets/media/silos-1080.webp 1080w, assets/media/silos-1600.webp 1600w" sizes="(max-width: 820px) 80vw, 34vw" width="1856" height="2304" alt="Silos amarelos de cimento da central de concreto da IPR" loading="lazy" decoding="async" style="--pos:45% 40%"></picture></figure>
+        <figure class="galeria__foto"><picture><source type="image/avif" srcset="assets/media/aco-rolo-640.avif 640w, assets/media/aco-rolo-1080.avif 1080w, assets/media/aco-rolo-1600.avif 1600w" sizes="(max-width: 820px) 80vw, 34vw"><img src="assets/media/aco-rolo-1600.webp" srcset="assets/media/aco-rolo-640.webp 640w, assets/media/aco-rolo-1080.webp 1080w, assets/media/aco-rolo-1600.webp 1600w" sizes="(max-width: 820px) 80vw, 34vw" width="1856" height="2304" alt="Rolo de aço de protensão no galpão da IPR" loading="lazy" decoding="async" style="--pos:50% 50%"></picture></figure>
+        <figure class="galeria__foto"><picture><source type="image/avif" srcset="assets/media/patio-pistas-640.avif 640w, assets/media/patio-pistas-1080.avif 1080w, assets/media/patio-pistas-1280.avif 1280w" sizes="(max-width: 820px) 80vw, 34vw"><img src="assets/media/patio-pistas-1280.webp" srcset="assets/media/patio-pistas-640.webp 640w, assets/media/patio-pistas-1080.webp 1080w, assets/media/patio-pistas-1280.webp 1280w" sizes="(max-width: 820px) 80vw, 34vw" width="1280" height="960" alt="Pistas de protensão da fábrica IPR em perspectiva, com os silos amarelos da central de concreto ao fundo" loading="lazy" decoding="async" style="--pos:50% 62%"></picture></figure>
+        <figure class="galeria__foto"><picture><source type="image/avif" srcset="assets/media/corpos-de-prova-640.avif 640w, assets/media/corpos-de-prova-1080.avif 1080w, assets/media/corpos-de-prova-1600.avif 1600w" sizes="(max-width: 820px) 80vw, 34vw"><img src="assets/media/corpos-de-prova-1600.webp" srcset="assets/media/corpos-de-prova-640.webp 640w, assets/media/corpos-de-prova-1080.webp 1080w, assets/media/corpos-de-prova-1600.webp 1600w" sizes="(max-width: 820px) 80vw, 34vw" width="1856" height="2304" alt="Corpos de prova cilíndricos de concreto empilhados para os ensaios de compressão" loading="lazy" decoding="async" style="--pos:50% 50%"></picture></figure>
+        <figure class="galeria__foto"><picture><source type="image/avif" srcset="assets/media/inspecao-640.avif 640w, assets/media/inspecao-800.avif 800w" sizes="(max-width: 820px) 80vw, 34vw"><img src="assets/media/inspecao-800.webp" srcset="assets/media/inspecao-640.webp 640w, assets/media/inspecao-800.webp 800w" sizes="(max-width: 820px) 80vw, 34vw" width="800" height="1200" alt="Profissional da IPR de capacete diante de estacas hexagonais" loading="lazy" decoding="async" style="--pos:50% 60%"></picture></figure>
+        <figure class="galeria__foto"><picture><source type="image/avif" srcset="assets/media/transporte-640.avif 640w, assets/media/transporte-1080.avif 1080w, assets/media/transporte-1600.avif 1600w" sizes="(max-width: 820px) 80vw, 34vw"><img src="assets/media/transporte-1600.webp" srcset="assets/media/transporte-640.webp 640w, assets/media/transporte-1080.webp 1080w, assets/media/transporte-1600.webp 1600w" sizes="(max-width: 820px) 80vw, 34vw" width="1856" height="2304" alt="Equipe da IPR içando estacas para a carreta, com estacas hexagonais vazadas em primeiro plano" loading="lazy" decoding="async" style="--pos:50% 26%"></picture></figure>
+      </div>
+      <div class="galeria__legendas">
+        <article class="galeria__item"><p class="galeria__num">[ 01 / 06 ]</p><h3>A central</h3><p>Cimento, areia e brita pesados em balanças calibradas. Cada metro cúbico fica registrado.</p></article>
+        <article class="galeria__item"><p class="galeria__num">[ 02 / 06 ]</p><h3>O aço</h3><p>Fios de protensão CP-175 RB, lisos, de 4 a 6 mm, conferidos rolo a rolo antes da pista.</p></article>
+        <article class="galeria__item"><p class="galeria__num">[ 03 / 06 ]</p><h3>A pista</h3><p>Os fios são tracionados de cabeceira a cabeceira e o concreto C40 é lançado nas fôrmas metálicas.</p></article>
+        <article class="galeria__item"><p class="galeria__num">[ 04 / 06 ]</p><h3>O ensaio</h3><p>Corpos de prova do mesmo lote rompidos com 24 horas, 3, 7 e 28 dias. O de 24 horas libera a peça.</p></article>
+        <article class="galeria__item"><p class="galeria__num">[ 05 / 06 ]</p><h3>A inspeção</h3><p>Cada estaca é conferida peça a peça: dimensão, alinhamento e superfície, antes de ir ao pátio.</p></article>
+        <article class="galeria__item"><p class="galeria__num">[ 06 / 06 ]</p><h3>A expedição</h3><p>A frota própria leva as estacas curadas do pátio direto para o canteiro.</p><a class="galeria__link" href="central-de-concreto/">Conheça a fábrica <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a></article>
+      </div>
+      <div class="galeria__barra" aria-hidden="true"><i data-galeria-barra></i></div>
     </div>
   </div>
 </section>

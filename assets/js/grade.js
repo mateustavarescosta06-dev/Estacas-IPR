@@ -1,28 +1,28 @@
-/* O fundo do site: papel branco com uma grade amarela simples. Quando a rolagem chega a uma parte
-   interativa ([data-azul]: a estaca que se monta, o corte, a cravação, o catálogo), a própria página
-   vai ficando azul, de forma contínua, e volta ao branco depois. A grade segue presa à página. */
+/* O fundo do site: papel branco levemente quente, com uma textura finíssima (no CSS) e uma régua
+   lateral discreta com marcas de metro que acompanha a rolagem: a página é medida como uma estaca.
+   Quando a rolagem chega a uma parte interativa ([data-azul]: a estaca que se monta, o corte, a
+   cravação, o catálogo), a página vai ficando azul de forma contínua e volta ao papel depois. */
 (function () {
   "use strict";
   var c = document.createElement("canvas");
-  c.className = "grade"; c.setAttribute("aria-hidden", "true");
+  c.className = "medida"; c.setAttribute("aria-hidden", "true");
   document.body.insertBefore(c, document.body.firstChild);
   var ctx = c.getContext("2d"), root = document.documentElement;
-  var STEP = 48;
-  var BRANCO = [255, 255, 255], AZUL = [10, 31, 61];
+  var PX_M = 120;                       // 1 m da régua = 120 px de rolagem
+  var LARG = 46;                        // largura da faixa da régua, na borda direita
   var azuis = Array.prototype.slice.call(document.querySelectorAll("[data-azul]"));
-  var W = 0, H = 0, dpr = 1, ox = 0, raf = 0, bAtual = -1;
+  var W = 0, H = 0, dpr = 1, raf = 0, bAtual = -1;
   var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+  var fonte = getComputedStyle(root).getPropertyValue("--f-mono").trim() || "monospace";
 
   function medir() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth; H = window.innerHeight;
+    W = LARG; H = window.innerHeight;
     c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
     c.style.width = W + "px"; c.style.height = H + "px";
-    var w = document.querySelector(".hd__inner");
-    ox = w ? w.getBoundingClientRect().left : 0; // uma linha da grade cai na margem do conteúdo
     bAtual = -1; pedir();
   }
-  // quanto de azul: entra enquanto o topo da parte interativa sobe de 45% a 15% da tela (o texto anterior já saiu), sai no espelho
+  // quanto de azul: entra enquanto o topo da parte interativa sobe de 45% a 15% da tela, sai no espelho
   function azul() {
     var b = 0;
     for (var i = 0; i < azuis.length; i++) {
@@ -38,25 +38,41 @@
     var b = azul();
     if (Math.abs(b - bAtual) > 0.001) {
       bAtual = b;
-      var cor = BRANCO.map(function (v, i) { return Math.round(v + (AZUL[i] - v) * b); });
-      root.style.backgroundColor = "rgb(" + cor.join(",") + ")";
-      // em oklch o branco vai ao azul sem passar pelo cinza (navegador sem suporte fica no rgb acima)
-      root.style.backgroundColor = "color-mix(in oklch, #0a1f3d " + (b * 100).toFixed(1) + "%, #ffffff)";
+      root.style.backgroundColor = "color-mix(in oklch, #0a1f3d " + (b * 100).toFixed(1) + "%, #fbfaf7)";
       root.style.setProperty("--azul", b.toFixed(3));
-      document.body.classList.toggle("no-azul", b > 0.5);
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgba(255,205,0," + (0.42 - b * 0.26).toFixed(3) + ")";
-    var sy = window.scrollY;
-    ctx.beginPath();
-    for (var x = ((ox % STEP) + STEP) % STEP; x <= W; x += STEP) { var px = Math.round(x) + 0.5; ctx.moveTo(px, 0); ctx.lineTo(px, H); }
-    for (var y = -(sy % STEP); y <= H; y += STEP) { var py = Math.round(y) + 0.5; ctx.moveTo(0, py); ctx.lineTo(W, py); }
-    ctx.stroke();
+    var tinta = b > 0.5 ? "255,255,255" : "10,31,61";
+    var sy = window.scrollY, x1 = W - 1;
+    // linha-mestra
+    ctx.fillStyle = "rgba(" + tinta + ",0.16)";
+    ctx.fillRect(x1, 0, 1, H);
+    // marcas: a cada 10 cm uma curta, a cada 50 cm uma média, a cada metro uma longa com o número
+    var passo = PX_M / 10, k0 = Math.floor(sy / passo), k1 = Math.ceil((sy + H) / passo);
+    ctx.font = "500 9px " + fonte;
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    for (var k = k0; k <= k1; k++) {
+      var y = Math.round(k * passo - sy) + 0.5, m = k % 10 === 0, meio = k % 5 === 0;
+      var len = m ? 14 : meio ? 9 : 4;
+      ctx.fillStyle = "rgba(" + tinta + "," + (m ? 0.42 : meio ? 0.26 : 0.16) + ")";
+      ctx.fillRect(x1 - len, y, len, 1);
+      if (m) {
+        ctx.fillStyle = "rgba(" + tinta + ",0.4)";
+        ctx.fillText((k / 10).toFixed(0), x1 - 18, y);
+      }
+    }
+    // o ponto de leitura: onde a tela está agora, em metros
+    var yl = Math.round(H * 0.5) + 0.5;
+    ctx.fillStyle = "#ffcd00";
+    ctx.fillRect(x1 - 22, yl, 22, 2);
+    ctx.font = "500 10px " + fonte;
+    ctx.fillStyle = "rgba(" + tinta + ",0.85)";
+    ctx.fillText(((sy + H * 0.5) / PX_M).toFixed(2).replace(".", ","), x1 - 26, yl - 9);
   }
   function pedir() { if (!raf) raf = requestAnimationFrame(desenhar); }
   window.addEventListener("resize", medir);
   window.addEventListener("scroll", pedir, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pedir);
   medir();
 })();

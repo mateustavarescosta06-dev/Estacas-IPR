@@ -1208,9 +1208,91 @@ main { position: relative; }
 }
 
 /* a foto da face se dissolve nas bordas enquanto se funde com a peça 3D; vira lâmina inteira depois */
-.dia__real, .real__quadro { -webkit-mask-image: radial-gradient(closest-side, #000 calc(68% + var(--m, 0) * 32%), transparent calc(100% + var(--m, 0) * 1%)); mask-image: radial-gradient(closest-side, #000 calc(68% + var(--m, 0) * 32%), transparent calc(100% + var(--m, 0) * 1%)); }
+.dia__real { -webkit-mask-image: radial-gradient(closest-side, #000 calc(68% + var(--m, 0) * 32%), transparent calc(100% + var(--m, 0) * 1%)); mask-image: radial-gradient(closest-side, #000 calc(68% + var(--m, 0) * 32%), transparent calc(100% + var(--m, 0) * 1%)); }
 .real__quadro { -webkit-mask-image: radial-gradient(farthest-side, #000 calc(68% + var(--m, 0) * 60%), transparent calc(100% + var(--m, 0) * 60%)); mask-image: radial-gradient(farthest-side, #000 calc(68% + var(--m, 0) * 60%), transparent calc(100% + var(--m, 0) * 60%)); }
 
 /* trecho da passagem que ainda está no azul: o cabeçalho e a página acompanham */
 .real__pista { position: relative; }
 .real__azul { position: absolute; left: 0; top: 0; width: 1px; height: 82vh; pointer-events: none; }
+
+/* =========================================================================
+   Tipografia de fábrica (referência metriccivil.ca): títulos em caixa alta
+   numa grotesca larga e quadrada (Saira expandida; troque --f-display por
+   "Geom Graphic" quando houver licença), contadores em mono (Azeret Mono).
+   Fundo: papel quase liso com régua de metros na borda.
+   ========================================================================= */
+:root { --f-display: "Saira", "Helvetica Neue", Arial, sans-serif; --f-mono: "Azeret Mono", ui-monospace, monospace; --papel: #fbfaf7; }
+html { background: var(--papel); }
+h1, h2, h3, .h-xxl, .h-xl, .h-lg, .h-md, .capitulo__titulo, .passagem__titulo, .numero b, .numero b small, .brand__text b {
+  font-family: var(--f-display); font-stretch: 125%; font-weight: 600; text-transform: uppercase; letter-spacing: -.005em; }
+.h-xxl { font-size: clamp(2.6rem, 5.6vw, 5.2rem); line-height: .98; }
+.h-xl { font-size: clamp(2.1rem, 4.2vw, 4rem); line-height: 1; }
+.h-lg { font-size: clamp(1.7rem, 2.9vw, 2.7rem); line-height: 1.04; }
+.h-md, .regua h3, .drive__step h3, .galeria__item h3 { font-size: clamp(1.15rem, 1.6vw, 1.45rem); line-height: 1.12; }
+.capitulo__titulo { font-size: clamp(1.8rem, 2.8vw, 2.7rem); line-height: 1.02; }
+.capitulo--abertura .capitulo__titulo { font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: .98; }
+.numero b { font-size: clamp(3rem, 6vw, 5.6rem); line-height: .95; }
+.numero b small { font-size: clamp(1.1rem, 1.7vw, 1.6rem); }
+.brand__text b { font-size: 1rem; letter-spacing: 0; }
+.capitulo__hora, .dia .capitulo__hora, .crumbs, .passagem__de, .foto figcaption, .faixa figcaption, .capa__figura figcaption, .dia__regua li, .dia__agora b, .dia__nota, .readout { font-family: var(--f-mono); letter-spacing: 0; }
+.dia .capitulo__hora { font-size: .95rem; font-weight: 500; }
+.crumbs, .foto figcaption, .faixa figcaption, .capa__figura figcaption { font-size: .78rem; }
+.dia__cota text { font-family: var(--f-mono); font-size: 11px; }
+
+/* ---------- Papel e régua (no lugar da grade) ---------- */
+.grade { display: none; }
+body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: calc(.5 - var(--azul, 0) * .5);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .04 0 0 0 0 .12 0 0 0 0 .24 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.medida { position: fixed; top: 0; right: 0; z-index: 40; pointer-events: none; }
+@media (max-width: 900px) { .medida { display: none; } }
+
+/* ---------- A face vira o desenho do ábaco ---------- */
+.real__pista { height: 240vh; }
+.real__palco { background: transparent; }
+.real__quadro { -webkit-mask-image: none; mask-image: none; overflow: visible; }
+.real__desenho { position: absolute; left: -13.8%; top: -7.4%; width: 124.6%; max-width: none; color: color-mix(in srgb, #fff calc(var(--azul, 0) * 100%), var(--navy)); }
+.desenho--scrub :is(.sec, .ext, line.dim) { transition: none !important; stroke-dasharray: 1000; stroke-dashoffset: calc(1000 * (1 - var(--t, 0))) !important; }
+.desenho--scrub .sec { fill: none !important; stroke-width: 1.6; }
+.desenho--scrub :is(.cover, .axis, .strand-ring, path.dim, text) { transition: none !important; opacity: calc(var(--t, 0) * .6) !important; }
+.desenho--scrub .strand { transition: none !important; fill: var(--ipr) !important; stroke: none; opacity: var(--t, 0) !important; }
+.real__txt { color: var(--navy); }
+.real__txt > * { max-width: 48%; }
+.real__num { margin: 0 0 18px; font: 500 .8rem var(--f-mono); color: var(--texto); }
+.real__txt h2 { max-width: 14ch; }
+
+/* ---------- Do silo à obra: fotos que chegam de trás com legenda ---------- */
+.galeria { position: relative; padding-top: clamp(72px, 9vw, 128px); }
+.galeria__cab { text-align: center; padding-bottom: 28px; border-bottom: 1px solid rgb(10 31 61 / .14); }
+.galeria__cab h2 { margin-inline: auto; }
+.galeria__cab .lead { margin: 18px auto 0; }
+.galeria__pista { position: relative; }
+.galeria__palco { position: sticky; top: 0; height: 100svh; overflow: clip; }
+.galeria__fotos { position: absolute; left: calc(var(--bleed) + 12%); top: 50%; width: min(30vw, 420px); aspect-ratio: 4 / 5.4; translate: 0 -46%; }
+.galeria__foto { position: absolute; inset: 0; margin: 0; transform-origin: 50% 50%; will-change: transform; }
+.galeria__foto picture, .galeria__foto img { display: block; width: 100%; height: 100%; }
+.galeria__foto img { object-fit: cover; filter: saturate(calc(1 - var(--k, 0) * .5)); }
+.galeria__legendas { position: absolute; left: calc(var(--bleed) + 12% + min(30vw, 420px) + clamp(28px, 4vw, 64px)); top: 50%; width: min(340px, 26vw); translate: 0 -78%; }
+.galeria__item { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; transform: translateY(18px); transition: opacity .55s var(--ease-mat), transform .8s var(--ease-out); pointer-events: none; }
+.galeria__item.is-antes { transform: translateY(-18px); }
+.galeria__item.is-on { opacity: var(--leg, 1); transform: none; pointer-events: auto; }
+.galeria__num { margin: 0 0 14px; font: 500 .8rem var(--f-mono); color: var(--texto); white-space: pre; }
+.galeria__item h3 { margin: 0 0 12px; }
+.galeria__item p:not(.galeria__num) { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--texto); }
+.galeria__link { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 11px 16px; background: var(--navy); color: #fff; font: 500 .85rem var(--f-body); }
+.galeria__barra { position: absolute; left: var(--bleed); right: var(--bleed); bottom: 6vh; height: 2px; background: rgb(10 31 61 / .12); }
+.galeria__barra i { position: absolute; inset: 0; background: var(--ipr); transform-origin: 0 50%; transform: scaleX(0); }
+@media (max-width: 900px) {
+  .real__txt > * { max-width: none; }
+  .galeria__fotos { left: 50%; top: 13svh; width: min(64vw, 300px); translate: -50% 0; }
+  .galeria__legendas { left: var(--gutter); right: var(--gutter); top: auto; bottom: 10svh; width: auto; translate: none; }
+  .galeria__item { top: auto; bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .galeria__pista { height: auto !important; }
+  .galeria__palco { position: relative; height: auto; overflow: visible; }
+  .galeria__fotos { position: relative; left: auto; top: auto; translate: none; width: auto; aspect-ratio: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 24px var(--bleed); }
+  .galeria__foto { position: relative; transform: none !important; visibility: visible !important; opacity: 1 !important; aspect-ratio: 4 / 5; }
+  .galeria__legendas { position: relative; left: auto; top: auto; width: auto; translate: none; padding: 0 var(--bleed); display: grid; gap: 24px; }
+  .galeria__item { position: relative; opacity: 1; transform: none; }
+  .galeria__barra { display: none; }
+}
