@@ -189,13 +189,32 @@
     s += '<pattern id="pCamadas" width="14" height="6" patternUnits="userSpaceOnUse"><path d="M0 5h7" stroke="rgba(0,0,0,.16)" stroke-width="1"/></pattern>';
     s += '<pattern id="pTrelica" width="10" height="14" patternUnits="userSpaceOnUse"><path d="M0 0L10 14M10 0L0 14" stroke="' + AMARELO + '" stroke-width="1.1"/></pattern>';
     s += '<linearGradient id="gPile" x1="0" x2="1"><stop offset="0" stop-color="#a39d92"/><stop offset=".45" stop-color="#e6e1d7"/><stop offset="1" stop-color="#9a948a"/></linearGradient></defs>';
+    // corte do terreno como folha técnica: fronteiras onduladas, uma textura por camada e luz de cima
+    s += '<pattern id="tAterro" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="4" r="1.4" fill="rgba(220,232,250,.16)"/><circle cx="9" cy="9" r="1" fill="rgba(220,232,250,.1)"/><path d="M7 2l2 1-1 2z" fill="rgba(220,232,250,.12)"/></pattern>';
+    s += '<pattern id="tArgila" width="18" height="7" patternUnits="userSpaceOnUse"><path d="M0 4h10M12 4h4" stroke="rgba(220,232,250,.1)" stroke-width="1"/></pattern>';
+    s += '<pattern id="tSilte" width="24" height="9" patternUnits="userSpaceOnUse"><path d="M0 5q6-3 12 0t12 0" fill="none" stroke="rgba(220,232,250,.09)" stroke-width="1"/></pattern>';
+    s += '<pattern id="tAreia" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".7" fill="rgba(220,232,250,.17)"/><circle cx="5.5" cy="5" r=".55" fill="rgba(220,232,250,.12)"/></pattern>';
+    s += '<pattern id="tRocha" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M0 14L14 0M-4 4L4-4M10 18l8-8" stroke="rgba(220,232,250,.08)" stroke-width="1"/></pattern>';
+    s += '<linearGradient id="gLuz" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="rgba(120,160,220,.18)"/><stop offset=".55" stop-color="rgba(120,160,220,0)"/></linearGradient>';
+    var TEX = ["tAterro", "tArgila", "tSilte", "tAreia", "tRocha"], COR = ["#21487d", "#1a3c6c", "#14325c", "#0f284c", "#0a1d3a"];
+    function onda(y, fase, amp) {
+      var d = "M40 " + y.toFixed(1);
+      for (var x = 40; x <= 420; x += 20) d += " L" + x + " " + (y + Math.sin(x / 38 + fase) * amp + Math.sin(x / 13 + fase * 2) * amp * 0.35).toFixed(1);
+      return d;
+    }
     layers.forEach(function (L, i) {
-      var y = G + L.a * PX, h = (Math.min(L.b, 28) - L.a) * PX;
-      s += '<rect x="40" y="' + y + '" width="380" height="' + h + '" fill="' + L.cor + '"/>';
-      s += '<rect x="40" y="' + y + '" width="380" height="' + h + '" fill="url(#' + (i % 2 ? "pCamadas" : "pGraos") + ')"/>';
-      s += '<line x1="40" x2="420" y1="' + y + '" y2="' + y + '" stroke="rgba(240,230,218,.16)"/>';
-      s += '<text x="412" y="' + (y + 16) + '" text-anchor="end" class="drive-layer" data-layer="' + i + '">' + L.nome.toUpperCase() + "</text>";
+      var y0 = G + L.a * PX, y1 = G + Math.min(L.b, 28) * PX, topo = i === 0 ? "M40 " + G + " L420 " + G : onda(y0, i * 1.7, 3.2);
+      // a área vai pela fronteira de cima e volta pela de baixo, de trás para a frente
+      var baixo = i === layers.length - 1 ? ["420 " + y1, "40 " + y1] : onda(y1, (i + 1) * 1.7, 3.2).slice(1).split(" L").reverse();
+      var area = topo + " L" + baixo.join(" L") + " Z";
+      s += '<path d="' + area + '" fill="' + COR[i] + '"/>';
+      s += '<path d="' + area + '" fill="url(#' + TEX[i] + ')"/>';
+      if (i) s += '<path d="' + onda(y0, i * 1.7, 3.2) + '" fill="none" stroke="rgba(220,232,250,.22)" stroke-width="1"/>';
+      // rótulo da camada à direita, com a faixa de profundidade
+      s += '<text x="412" y="' + (y0 + 18) + '" text-anchor="end" class="drive-layer" data-layer="' + i + '">' + L.nome.toUpperCase() + "</text>";
+      s += '<text x="412" y="' + (y0 + 31) + '" text-anchor="end" class="drive-layer drive-layer--m">' + L.a + " a " + (L.b > 28 ? "28+" : L.b) + " m</text>";
     });
+    s += '<rect x="40" y="' + G + '" width="380" height="' + (760 - G) + '" fill="url(#gLuz)"/>';
     // régua de profundidade
     for (var m = 0; m <= 27; m++) {
       var yy = G + m * PX;
@@ -224,10 +243,13 @@
     s += '<span>Profundidade</span><b data-r="prof">0,00 m</b><span>Golpes</span><b data-r="golpes">0</b>';
     s += '<span>Nega (10 golpes)</span><b data-r="nega" class="y">aguardando</b><span>Camada</span><b data-r="camada">superfície</b></div>';
     viz.innerHTML = s;
+    // o registro sai de cima do desenho e vai para a coluna do texto, embaixo das etapas
+    var registro = $(".readout", viz), dotsEl = $(".drive__dots", root);
+    if (registro && dotsEl) dotsEl.parentNode.insertBefore(registro, dotsEl.nextSibling);
 
     var pile = $("[data-pile]", viz), seg1 = $("[data-seg1]", viz), seg2 = $("[data-seg2]", viz), ring = $("[data-ring]", viz);
     var hammer = $("[data-hammer]", viz), plumb = $("[data-plumb]", viz), impact = $("[data-impact]", viz);
-    var r = { prof: $('[data-r="prof"]', viz), golpes: $('[data-r="golpes"]', viz), nega: $('[data-r="nega"]', viz), camada: $('[data-r="camada"]', viz) };
+    var r = { prof: $('[data-r="prof"]', root), golpes: $('[data-r="golpes"]', root), nega: $('[data-r="nega"]', root), camada: $('[data-r="camada"]', root) };
     var layerText = $$(".drive-layer", viz);
 
     function layerAt(d) { for (var i = layers.length - 1; i >= 0; i--) if (d >= layers[i].a) return i; return 0; }

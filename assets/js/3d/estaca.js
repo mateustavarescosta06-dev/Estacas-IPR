@@ -174,7 +174,7 @@ export function createEstaca(canvas, opts = {}) {
   const sun = new THREE.DirectionalLight(0xffffff, 2);
   sun.castShadow = true;
   sun.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
-  Object.assign(sun.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 0.5, far: 30 });
+  Object.assign(sun.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: 0.5, far: 34 });
   sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
   const sunTarget = new THREE.Object3D(); sunTarget.position.set(0, 0, -L / 2); sun.target = sunTarget;
   const sodium = new THREE.PointLight(0xffb347, 0, 18, 1.2);
@@ -200,6 +200,11 @@ export function createEstaca(canvas, opts = {}) {
   });
   fixed.add(bed, ...heads);
   scene.add(fixed);
+  // chão invisível que só recebe a sombra: a pista assenta no azul da página em vez de flutuar
+  const M_sombra = new THREE.ShadowMaterial({ color: 0x020814, opacity: 0.42 });
+  const chao = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), M_sombra);
+  chao.rotation.x = -Math.PI / 2; chao.position.set(0, -BED_H - 0.002, -L / 2); chao.receiveShadow = true;
+  scene.add(chao);
 
   const bucket = new THREE.Group();
   const cone = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.09, 0.42, 28, 1, true), M.bucket); cone.castShadow = true;
@@ -343,6 +348,7 @@ export function createEstaca(canvas, opts = {}) {
     M.head.opacity = form * ground;
     M.form.opacity = form * (1 - open * 0.9) * ground;
     fixed.visible = M.slab.opacity > 0.01;
+    M_sombra.opacity = 0.42 * Math.min(1, form * 1.4) * ground;
     formGroup.visible = M.form.opacity > 0.01;
     formGroup.position.y = y0 + (1 - form) * 0.25;
     formL.rotation.z = open * 1.25; formR.rotation.z = -open * 1.25;
@@ -450,6 +456,9 @@ export function createEstaca(canvas, opts = {}) {
     camera.position.set(...P);
     camera.lookAt(...Tt);
     camera.fov = lerp(30, 26, turn);
+    // a peça fica à direita do texto durante a montagem e volta ao centro quando gira para a face
+    const sh = desloc * (1 - turn);
+    if (sh > 0.0005) camera.setViewOffset(vw, vh, -vw * sh, 0, vw, vh); else camera.clearViewOffset();
     camera.updateProjectionMatrix();
   }
 
@@ -459,13 +468,13 @@ export function createEstaca(canvas, opts = {}) {
     camera.aspect = w / h;
     // telas estreitas: afasta a câmera para a peça caber
     camera.zoom = w / h < 0.6 ? 0.55 : w / h < 0.9 ? 0.72 : w / h < 1.35 ? 0.86 : 1; // painel mais estreito que a tela: a peça inteira cabe
-    const shift = w / h > 1.2 ? (opts.shiftX || 0) : 0;
-    if (shift) camera.setViewOffset(w, h, -w * shift, 0, w, h); else camera.clearViewOffset();
+    vw = w; vh = h; desloc = w / h > 1.2 ? (opts.shiftX || 0) : 0;
     camera.updateProjectionMatrix();
     dirty = true;
   }
 
   let dirty = true, raf = 0;
+  let vw = 1, vh = 1, desloc = 0;
   function loop() {
     raf = 0;
     if (!dirty) return;

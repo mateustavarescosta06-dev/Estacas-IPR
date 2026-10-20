@@ -1360,3 +1360,60 @@ body:not([data-page="index"]) .ft__grid > :last-child { display: none; }
 }
 
 .capa[data-faixa] .capa__desenho circle[fill] { fill: var(--faixa) !important; }
+
+/* ---------- Fundo das partes azuis: planta da fábrica e luz de sódio (fundo.js) ---------- */
+.fundo { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; }
+
+/* ---------- Abertura: a estaca à direita, o título à esquerda sem cobrir a peça ---------- */
+.capitulo--abertura { width: min(600px, 46vw); }
+.capitulo--abertura .capitulo__titulo { font-size: clamp(2.4rem, 4.4vw, 4.4rem); }
+.capitulo--abertura p:not([class]) { max-width: 40ch; }
+
+/* ---------- Cravação: o desenho grande e livre, o registro na coluna do texto ---------- */
+.drive__layout { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.drive__cena { height: min(80svh, 780px); }
+.drive__texto, .drive__layout > div:first-child { align-self: center; }
+.drive__layout .readout { position: static; display: grid; grid-template-columns: repeat(4, auto); gap: 6px 28px; margin-top: 34px; padding: 18px 0 0; background: none; border: 0; border-top: 1px solid rgb(255 255 255 / .18); font: 500 .8rem/1.35 var(--f-mono); color: rgb(255 255 255 / .6); }
+.drive__layout .readout__title { grid-column: 1 / -1; padding: 0 0 8px; margin: 0; border: 0; font-size: .72rem; color: rgb(255 255 255 / .55); }
+.drive__layout .readout > span:not(.readout__title) { grid-row: 2; }
+.drive__layout .readout > b { grid-row: 3; text-align: left; font: 600 1.35rem/1.1 var(--f-display); font-stretch: 125%; color: #fff; }
+.drive__layout .readout > b.y { color: var(--ipr); }
+@media (max-width: 900px) {
+  .capitulo--abertura { width: 100%; }
+  .drive__layout .readout { grid-template-columns: repeat(2, auto); }
+  .drive__layout .readout > span:not(.readout__title), .drive__layout .readout > b { grid-row: auto; }
+}
+
+/* nas partes azuis a régua de metros sai: a estaca tem a sua própria régua de horas */
+.medida { opacity: calc(1 - var(--azul, 0)); }
+body:not([data-page="index"]) .medida { opacity: calc(.8 - var(--azul, 0) * .8); }
+@media (max-width: 900px) {
+  .drive__layout { grid-template-columns: 1fr; gap: 14px; padding-block: 12px 18px; }
+  .drive__cena { order: -1; height: 40svh; }
+  .drive__layout .readout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px; margin-top: 18px; }
+  .drive__layout .readout > b { font-size: 1.05rem; }
+}
+
+/* rótulos da peça no estilo de folha técnica (referência rapidkert): traço fino, texto mono, sem caixa */
+.rotulo3d i { left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgb(255 205 0 / .35); }
+.rotulo3d span, .corte .rotulo3d span { padding: 0 0 6px; background: none; color: #fff; border-bottom: 1px solid rgb(255 255 255 / .6); font: 500 .74rem/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; text-shadow: 0 1px 8px rgb(2 8 20 / .8); bottom: 30px; left: 34px; }
+.rotulo3d--e span { left: auto; right: 34px; }
+.rotulo3d::before { background: rgb(255 255 255 / .6); }
+
+/* ---------- Entrada da home: título que sobe linha a linha, a primeira vazada ---------- */
+.abre-titulo .abre-l { display: block; }
+.abre-l--vazada { color: transparent; -webkit-text-stroke: 1.5px rgb(255 255 255 / .92); }
+.js:not(.reduz) .abre-titulo .abre-l { clip-path: inset(0 0 100% 0); transform: translateY(.35em); animation: abre-sobe 1.1s var(--ease-out) forwards; }
+.js:not(.reduz) .abre-titulo .abre-l:nth-child(2) { animation-delay: .18s; }
+.js:not(.reduz) .capitulo--abertura p, .js:not(.reduz) .capitulo--abertura .btn-row { opacity: 0; animation: abre-aparece .9s var(--ease-mat) .55s forwards; }
+@keyframes abre-sobe { to { clip-path: inset(0 0 -10% 0); transform: none; } }
+@keyframes abre-aparece { to { opacity: 1; } }
+
+/* ---------- Índice dos capítulos: 01 · 06:00 ---------- */
+.dia__capitulos { counter-reset: cap; }
+.dia__capitulos .capitulo .capitulo__hora::before { counter-increment: cap; content: counter(cap, decimal-leading-zero) "  ·  "; color: rgb(255 255 255 / .55); white-space: pre; }
+
+/* ---------- Corte do terreno ---------- */
+.drive-layer { font: 500 10px var(--f-mono); letter-spacing: .06em; fill: rgb(220 232 250 / .7); }
+.drive-layer--m { font-size: 9px; fill: rgb(220 232 250 / .4); letter-spacing: .02em; }
+.drive-layer.is-on { fill: var(--ipr); }

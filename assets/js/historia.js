@@ -95,7 +95,7 @@ if (dia) {
   ]);
   let estaca = null, pAtual = 0;
   if (webgl && canvas) {
-    try { estaca = createEstaca(canvas, { shiftX: 0, onRender: () => { const a = estaca.anchors(); labels.place(a, pAtual); cotar(a); } }); } catch (e) { estaca = null; }
+    try { estaca = createEstaca(canvas, { shiftX: 0.24, onRender: () => { const a = estaca.anchors(); labels.place(a, pAtual); cotar(a); } }); } catch (e) { estaca = null; }
   }
   if (!estaca && canvas) canvas.hidden = true;
   dia.classList.toggle("sem-3d", !estaca);
@@ -138,9 +138,32 @@ if (dia) {
   }
   const hhmm = (m) => { m = ((Math.round(m) % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); };
 
+  // entrada: ao carregar, a pista e a fôrma montam-se sozinhas antes de a rolagem assumir
+  let intro = reduce ? 1 : 0;
+  if (!reduce) {
+    const t0 = performance.now() + 250;
+    const passo = (t) => { intro = clamp((t - t0) / 1700, 0, 1); last = -1; onScroll(); if (intro < 1) requestAnimationFrame(passo); };
+    requestAnimationFrame(passo);
+  }
+  // o mouse inclina de leve a câmera: a peça responde ao visitante
+  let yaw = 0, pitch = 0, yawAlvo = 0, pitchAlvo = 0, girando = false;
+  if (!reduce && matchMedia("(pointer: fine)").matches) {
+    addEventListener("pointermove", (e) => {
+      yawAlvo = (e.clientX / innerWidth - 0.5) * -0.12; pitchAlvo = (e.clientY / innerHeight - 0.5) * -0.06;
+      if (!girando) { girando = true; requestAnimationFrame(inclinar); }
+    }, { passive: true });
+  }
+  function inclinar() {
+    yaw += (yawAlvo - yaw) * 0.07; pitch += (pitchAlvo - pitch) * 0.07;
+    if (estaca && pAtual < 0.9) estaca.set({ yaw, pitch });
+    if (Math.abs(yawAlvo - yaw) > 0.0004 || Math.abs(pitchAlvo - pitch) > 0.0004) requestAnimationFrame(inclinar); else girando = false;
+  }
+
   function estado(p) {
+    const fade = 1 - r(p, 0.86, 0.9); // a inclinação some antes do giro final para a face
     return {
-      form: r(p, -0.04, 0.035), wireIn: r(p, 0.08, 0.12), tension: r(p, 0.12, 0.185), view: r(p, 0.07, 0.12) * (1 - r(p, 0.27, 0.3)),
+      yaw: yaw * fade, pitch: pitch * fade,
+      form: Math.min(intro, 1), wireIn: r(p, 0.08, 0.12), tension: r(p, 0.12, 0.185), view: r(p, 0.07, 0.12) * (1 - r(p, 0.27, 0.3)),
       fill: r(p, 0.29, 0.37), cps: r(p, 0.34, 0.4), cure: r(p, 0.52, 0.6),
       test: r(p, 0.72, 0.82), release: r(p, 0.84, 0.875), open: r(p, 0.87, 0.91), lift: r(p, 0.9, 0.95), turn: r(p, 0.905, 0.95), dive: r(p, 0.955, 0.99),
     };
@@ -185,6 +208,7 @@ if (dia) {
     MARCOS.forEach((v, i) => { if (p >= v - 0.035) atual = i; });
     etapas.forEach((el, i) => { el.classList.toggle("is-on", i === atual); el.classList.toggle("is-past", i < atual); });
     dia.classList.toggle("is-inicio", p < 0.03);
+    dia.classList.toggle("entrou", intro >= 1);
 
     // capítulos e interlúdios: entram e saem com margens curtas
     let cobre = 0;
